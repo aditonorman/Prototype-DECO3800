@@ -98,7 +98,7 @@ export default function CheckerApp({
           <Text style={styles.activeBannerTitle}>✅ Checker is active</Text>
           <Text style={styles.activeBannerBody}>
             A small floating bubble will appear while you browse Instagram,
-            WhatsApp, and X.
+            WhatsApp, X, and TikTok.
           </Text>
         </View>
       )}

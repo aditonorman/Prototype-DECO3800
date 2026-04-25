@@ -6,7 +6,7 @@
 // non-CS students.
 //
 // Flow:
-//   lock -> home -> (instagram | whatsapp | twitter | checker)
+//   lock -> home -> (instagram | whatsapp | twitter | tiktok | checker)
 //   The floating checker bubble appears on social-media screens once activated.
 //   Tapping the bubble opens a confirmation modal, then a result modal.
 
@@ -22,6 +22,7 @@ import CheckerApp from './components/CheckerApp';
 import FakeInstagram from './components/FakeInstagram';
 import FakeWhatsApp from './components/FakeWhatsApp';
 import FakeTwitter from './components/FakeTwitter';
+import FakeTikTok from './components/FakeTikTok';
 import FloatingCheckerBubble from './components/FloatingCheckerBubble';
 import CheckerModal from './components/CheckerModal';
 
@@ -29,10 +30,11 @@ import {
   instagramPosts,
   whatsappMessages,
   twitterPosts,
+  tiktokPosts,
 } from './data/dummyContent';
 
 // The app names that should show the floating bubble.
-const SOCIAL_SCREENS = ['instagram', 'whatsapp', 'twitter'];
+const SOCIAL_SCREENS = ['instagram', 'whatsapp', 'twitter', 'tiktok'];
 
 export default function App() {
   // Which screen is currently visible inside the fake phone.
@@ -88,6 +90,18 @@ export default function App() {
         preview: tw.text,
         riskType: tw.riskType,
         contentCategory: tw.contentCategory,
+      };
+    }
+
+    const tk = tiktokPosts.find((t) => t.id === selectedPostId);
+    if (tk) {
+      return {
+        id: tk.id,
+        appName: 'TikTok',
+        source: `${tk.user} ${tk.handle}`,
+        preview: tk.caption,
+        riskType: tk.riskType,
+        contentCategory: tk.contentCategory,
       };
     }
 
@@ -180,6 +194,16 @@ export default function App() {
   } else if (screen === 'twitter') {
     screenContent = (
       <FakeTwitter
+        onBackHome={goHome}
+        onSelectPost={setSelectedPostId}
+        onShareAttempt={handleShareAttempt}
+        selectedPostId={selectedPostId}
+        checkerActive={checkerActive}
+      />
+    );
+  } else if (screen === 'tiktok') {
+    screenContent = (
+      <FakeTikTok
         onBackHome={goHome}
         onSelectPost={setSelectedPostId}
         onShareAttempt={handleShareAttempt}

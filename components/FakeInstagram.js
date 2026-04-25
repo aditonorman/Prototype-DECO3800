@@ -10,8 +10,9 @@ import {
   StyleSheet,
   ScrollView,
   Pressable,
+  Image,
 } from 'react-native';
-import { instagramPosts } from '../data/dummyContent';
+import { appLogos, instagramPosts } from '../data/dummyContent';
 
 export default function FakeInstagram({
   onBackHome,
@@ -27,8 +28,15 @@ export default function FakeInstagram({
         <Pressable onPress={onBackHome} style={styles.backBtn}>
           <Text style={styles.backText}>← Home</Text>
         </Pressable>
-        <Text style={styles.appTitle}>Instagram</Text>
-        <Text style={{ width: 50 }} />
+        <View style={styles.centerHeader}>
+          <Image
+            source={{ uri: appLogos.instagram }}
+            style={styles.appLogo}
+            resizeMode="contain"
+          />
+          <Text style={styles.appTitle}>Instagram</Text>
+        </View>
+        <Text style={{ width: 60 }} />
       </View>
 
       <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
@@ -45,9 +53,13 @@ export default function FakeInstagram({
                 <Text style={styles.username}>{post.user}</Text>
               </View>
 
-              {/* Big image area (using emoji as a placeholder) */}
+              {/* Big image area (loaded from web URL) */}
               <View style={styles.imageArea}>
-                <Text style={styles.bigEmoji}>{post.image}</Text>
+                <Image
+                  source={{ uri: post.imageUrl }}
+                  style={styles.postImage}
+                  resizeMode="cover"
+                />
               </View>
 
               {/* Action row — Share button intercepts the share moment */}
@@ -119,11 +131,20 @@ const styles = StyleSheet.create({
   },
   backBtn: { width: 60 },
   backText: { color: '#111827', fontSize: 14 },
+  centerHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  appLogo: {
+    width: 20,
+    height: 20,
+  },
   appTitle: {
     fontSize: 18,
     fontWeight: '700',
     fontStyle: 'italic',
     color: '#111827',
+    marginLeft: 8,
   },
   post: {
     paddingBottom: 14,
@@ -153,8 +174,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  bigEmoji: {
-    fontSize: 90,
+  postImage: {
+    width: '100%',
+    height: '100%',
   },
   actionRow: {
     flexDirection: 'row',

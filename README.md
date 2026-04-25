@@ -4,7 +4,7 @@ A React Native (Expo) visual prototype for a university design project on
 **digital literacy and misinformation in Indonesia**.
 
 The app simulates a phone environment: a lock screen, a home screen with app
-icons, and three dummy apps (Instagram, WhatsApp, X/Twitter). After the user
+icons, and four dummy apps (Instagram, WhatsApp, X/Twitter, TikTok). After the user
 activates the **Legitimate Checker**, a small floating bubble appears on top
 of those apps. Tapping the bubble opens a reflective pop-up that helps the
 user pause, check sources, and notice warning signs — without claiming to
@@ -43,7 +43,7 @@ code/
 ├── README.md                    # This file
 │
 ├── data/
-│   └── dummyContent.js          # Posts, messages, tweets, result templates
+│   └── dummyContent.js          # Posts, messages, tweets, videos, result templates
 │
 └── components/
     ├── PhoneFrame.js            # Black phone-shaped frame (for desktop preview)
@@ -54,6 +54,7 @@ code/
     ├── FakeInstagram.js         # Dummy Instagram feed
     ├── FakeWhatsApp.js          # Dummy WhatsApp Family Group chat
     ├── FakeTwitter.js           # Dummy X/Twitter feed
+    ├── FakeTikTok.js            # Dummy TikTok-style vertical feed
     ├── FloatingCheckerBubble.js # Round button shown on top of social apps
     ├── CheckerModal.js          # Bottom-sheet modal (confirm + result steps)
     └── ResultCard.js            # The reflective result view
@@ -67,13 +68,13 @@ uses a simple **LC** circle so no asset is required.
 ## How the prototype flows
 
 1. **Lock screen** → tap *Swipe up to unlock*.
-2. **Home screen** → four app icons: Instagram, WhatsApp, X, Legitimate Checker.
+2. **Home screen** → five app icons: Instagram, WhatsApp, X, TikTok, Legitimate Checker.
 3. **Open Legitimate Checker** → read the purpose, tick the three agreement
    boxes, then tap *Activate Checker*. You can also toggle visual settings
    (Simple language mode, Show source reminders, One-tap dismiss).
-4. **Back to Home** → open Instagram, WhatsApp, or X. The blue **LC** floating
+4. **Back to Home** → open Instagram, WhatsApp, X, or TikTok. The blue **LC** floating
    bubble now appears at bottom-right.
-5. **Tap a post / message / tweet** to select it for checking.
+5. **Tap a post / message / tweet / video** to select it for checking.
 6. **Tap the floating bubble** → confirm in the bottom sheet → see the result.
 7. The result includes: overall judgement label, source check, evidence check,
    bias check, digital literacy reminders, suggested references, and a

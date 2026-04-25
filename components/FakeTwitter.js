@@ -8,8 +8,9 @@ import {
   StyleSheet,
   ScrollView,
   Pressable,
+  Image,
 } from 'react-native';
-import { twitterPosts } from '../data/dummyContent';
+import { appLogos, twitterPosts } from '../data/dummyContent';
 
 export default function FakeTwitter({
   onBackHome,
@@ -25,8 +26,15 @@ export default function FakeTwitter({
         <Pressable onPress={onBackHome} style={styles.backBtn}>
           <Text style={styles.backText}>← Home</Text>
         </Pressable>
-        <Text style={styles.appTitle}>𝕏</Text>
-        <Text style={{ width: 50 }} />
+        <View style={styles.centerHeader}>
+          <Image
+            source={{ uri: appLogos.twitter }}
+            style={styles.appLogo}
+            resizeMode="contain"
+          />
+          <Text style={styles.appTitle}>X</Text>
+        </View>
+        <Text style={{ width: 60 }} />
       </View>
 
       <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
@@ -46,6 +54,13 @@ export default function FakeTwitter({
                     <Text style={styles.handle}>{tweet.handle}</Text>
                   </Text>
                   <Text style={styles.tweetText}>{tweet.text}</Text>
+                  {tweet.imageUrl && (
+                    <Image
+                      source={{ uri: tweet.imageUrl }}
+                      style={styles.tweetImage}
+                      resizeMode="cover"
+                    />
+                  )}
 
                   <View style={styles.metaRow}>
                     <Text style={styles.meta}>💬  120</Text>
@@ -105,10 +120,20 @@ const styles = StyleSheet.create({
   },
   backBtn: { width: 60 },
   backText: { color: '#fff', fontSize: 14 },
+  centerHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  appLogo: {
+    width: 18,
+    height: 18,
+  },
   appTitle: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: '900',
     color: '#fff',
+    marginTop: -1,
+    marginLeft: 8,
   },
   tweet: {
     paddingHorizontal: 14,
@@ -139,6 +164,13 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontSize: 14,
     lineHeight: 19,
+  },
+  tweetImage: {
+    marginTop: 10,
+    width: '100%',
+    height: 180,
+    borderRadius: 12,
+    backgroundColor: '#111827',
   },
   metaRow: {
     flexDirection: 'row',

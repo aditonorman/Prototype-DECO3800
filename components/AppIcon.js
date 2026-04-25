@@ -2,14 +2,27 @@
 // One app icon on the fake home screen — colored square + label.
 
 import React from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
 
-export default function AppIcon({ label, emoji, color, onPress, isLogo }) {
+export default function AppIcon({
+  label,
+  emoji,
+  color,
+  onPress,
+  isLogo,
+  iconUri,
+}) {
   return (
     <Pressable style={styles.wrapper} onPress={onPress}>
       <View style={[styles.iconBox, { backgroundColor: color }]}>
         {isLogo ? (
           <Text style={styles.logoText}>LC</Text>
+        ) : iconUri ? (
+          <Image
+            source={{ uri: iconUri }}
+            style={styles.iconImage}
+            resizeMode="contain"
+          />
         ) : (
           <Text style={styles.emoji}>{emoji}</Text>
         )}
@@ -23,7 +36,7 @@ export default function AppIcon({ label, emoji, color, onPress, isLogo }) {
 
 const styles = StyleSheet.create({
   wrapper: {
-    width: '25%',
+    width: '20%',
     alignItems: 'center',
     marginBottom: 22,
   },
@@ -42,6 +55,10 @@ const styles = StyleSheet.create({
   },
   emoji: {
     fontSize: 30,
+  },
+  iconImage: {
+    width: 36,
+    height: 36,
   },
   logoText: {
     color: '#fff',

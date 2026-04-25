@@ -9,8 +9,9 @@ import {
   StyleSheet,
   ScrollView,
   Pressable,
+  Image,
 } from 'react-native';
-import { whatsappMessages } from '../data/dummyContent';
+import { appLogos, whatsappMessages } from '../data/dummyContent';
 
 export default function FakeWhatsApp({
   onBackHome,
@@ -27,7 +28,14 @@ export default function FakeWhatsApp({
           <Text style={styles.backText}>← Home</Text>
         </Pressable>
         <View style={{ flex: 1 }}>
-          <Text style={styles.groupName}>Family Group</Text>
+          <View style={styles.groupTitleRow}>
+            <Image
+              source={{ uri: appLogos.whatsapp }}
+              style={styles.appLogo}
+              resizeMode="contain"
+            />
+            <Text style={styles.groupName}>Family Group</Text>
+          </View>
           <Text style={styles.groupSub}>Mom, Dad, Sister, Uncle Budi, You</Text>
         </View>
       </View>
@@ -120,6 +128,15 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '700',
     fontSize: 16,
+    marginLeft: 6,
+  },
+  groupTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  appLogo: {
+    width: 16,
+    height: 16,
   },
   groupSub: {
     color: '#D1FAE5',

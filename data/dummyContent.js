@@ -3,12 +3,20 @@
 // riskType values: "reliable", "bias", "low_evidence", "misleading"
 // We use plain English so non-CS students can read this file easily.
 
+// Public logo links (online images).
+export const appLogos = {
+  instagram: 'https://img.icons8.com/fluency/96/instagram-new.png',
+  whatsapp: 'https://img.icons8.com/color/96/whatsapp--v1.png',
+  twitter: 'https://img.icons8.com/ios-filled/100/ffffff/twitterx--v1.png',
+  tiktok: 'https://img.icons8.com/color/96/tiktok--v1.png',
+};
+
 export const instagramPosts = [
   {
     id: 'ig1',
     user: 'wellness_daily_id',
     avatar: '🌿',
-    image: '🥤',
+    imageUrl: 'https://picsum.photos/seed/ig-post-1/1080/1080',
     caption:
       'Viral video claims a new herbal drink can cure serious disease overnight. Doctors are "shocked"!',
     likes: '24,512',
@@ -20,7 +28,7 @@ export const instagramPosts = [
     id: 'ig2',
     user: 'sarah.travels',
     avatar: '🌅',
-    image: '🏖️',
+    imageUrl: 'https://picsum.photos/seed/ig-post-2/1080/1080',
     caption: 'Sunset in Bali — taking a break from screens this week. ✨',
     likes: '1,204',
     comments: 38,
@@ -31,7 +39,7 @@ export const instagramPosts = [
     id: 'ig3',
     user: 'politik_now',
     avatar: '📣',
-    image: '🏛️',
+    imageUrl: 'https://picsum.photos/seed/ig-post-3/1080/1080',
     caption:
       'Opinion: Government policy is destroying our future! Share if you agree — they don\'t want you to see this.',
     likes: '8,930',
@@ -95,6 +103,7 @@ export const twitterPosts = [
     user: 'ViralUpdates24',
     handle: '@viralupdates24',
     avatar: '🔥',
+    imageUrl: 'https://picsum.photos/seed/tw-post-1/1200/800',
     text:
       'BREAKING: Famous public figure confirmed dead, according to viral accounts. Details unclear. RT to spread!',
     likes: '12.4K',
@@ -107,6 +116,7 @@ export const twitterPosts = [
     user: 'KompasNews',
     handle: '@kompascom',
     avatar: '📰',
+    imageUrl: 'https://picsum.photos/seed/tw-post-2/1200/800',
     text:
       'New national education budget announced today. Full breakdown and official statements in our article.',
     likes: '2.1K',
@@ -119,10 +129,56 @@ export const twitterPosts = [
     user: 'OpinionDaily',
     handle: '@opiniondaily',
     avatar: '💬',
+    imageUrl: 'https://picsum.photos/seed/tw-post-3/1200/800',
     text:
       'They are LYING to you again. Wake up! The other side will never tell you the real truth about this policy.',
     likes: '5.8K',
     retweets: '3.2K',
+    riskType: 'bias',
+    contentCategory: 'political',
+  },
+];
+
+export const tiktokPosts = [
+  {
+    id: 'tk1',
+    user: 'health_hacks.id',
+    handle: '@health_hacks.id',
+    avatar: '🧪',
+    imageUrl: 'https://picsum.photos/seed/tk-post-1/1080/1920',
+    caption:
+      'Quick tip: this kitchen drink can flush all toxins in 1 day. Save and share now!',
+    likes: '45.8K',
+    comments: '4,210',
+    shares: '9,302',
+    riskType: 'misleading',
+    contentCategory: 'health',
+  },
+  {
+    id: 'tk2',
+    user: 'newsminute.id',
+    handle: '@newsminute.id',
+    avatar: '📰',
+    imageUrl: 'https://picsum.photos/seed/tk-post-2/1080/1920',
+    caption:
+      'Today\'s recap: Parliament session highlights with source links in bio.',
+    likes: '8,114',
+    comments: '320',
+    shares: '412',
+    riskType: 'reliable',
+    contentCategory: 'news',
+  },
+  {
+    id: 'tk3',
+    user: 'hottakesdaily',
+    handle: '@hottakesdaily',
+    avatar: '📢',
+    imageUrl: 'https://picsum.photos/seed/tk-post-3/1080/1920',
+    caption:
+      'They never tell you this side of the story. Repost before this gets buried!',
+    likes: '21.3K',
+    comments: '2,081',
+    shares: '5,145',
     riskType: 'bias',
     contentCategory: 'political',
   },

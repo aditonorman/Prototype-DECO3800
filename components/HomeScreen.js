@@ -1,10 +1,11 @@
 // HomeScreen
-// The fake phone home screen showing 4 app icons:
-// Instagram, WhatsApp, X (Twitter), and Legitimate Checker.
+// The fake phone home screen showing 5 app icons:
+// Instagram, WhatsApp, X (Twitter), TikTok, and Legitimate Checker.
 
 import React from 'react';
-import { View, Text, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import AppIcon from './AppIcon';
+import { appLogos } from '../data/dummyContent';
 
 export default function HomeScreen({ onOpenApp, checkerActive }) {
   return (
@@ -29,21 +30,27 @@ export default function HomeScreen({ onOpenApp, checkerActive }) {
       <View style={styles.grid}>
         <AppIcon
           label="Instagram"
-          emoji="📷"
-          color="#E1306C"
+          color="#fff"
+          iconUri={appLogos.instagram}
           onPress={() => onOpenApp('instagram')}
         />
         <AppIcon
           label="WhatsApp"
-          emoji="💬"
-          color="#25D366"
+          color="#fff"
+          iconUri={appLogos.whatsapp}
           onPress={() => onOpenApp('whatsapp')}
         />
         <AppIcon
           label="X"
-          emoji="𝕏"
           color="#000"
+          iconUri={appLogos.twitter}
           onPress={() => onOpenApp('twitter')}
+        />
+        <AppIcon
+          label="TikTok"
+          color="#fff"
+          iconUri={appLogos.tiktok}
+          onPress={() => onOpenApp('tiktok')}
         />
         <AppIcon
           label="Checker"
