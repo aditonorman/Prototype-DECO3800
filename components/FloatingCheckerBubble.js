@@ -6,9 +6,15 @@
 import React from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 
-export default function FloatingCheckerBubble({ onPress }) {
+export default function FloatingCheckerBubble({
+  onPress,
+  bottomOffset = 28,
+}) {
   return (
-    <View style={styles.wrapper} pointerEvents="box-none">
+    <View
+      style={[styles.wrapper, { bottom: bottomOffset }]}
+      pointerEvents="box-none"
+    >
       <Pressable style={styles.bubble} onPress={onPress}>
         {/* Inner ring + LC label */}
         <View style={styles.inner}>
@@ -26,7 +32,6 @@ const styles = StyleSheet.create({
     // Sit on top of every screen.
     position: 'absolute',
     right: 16,
-    bottom: 28,
     zIndex: 100,
   },
   bubble: {

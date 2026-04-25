@@ -106,7 +106,8 @@ const styles = StyleSheet.create({
   },
   dock: {
     marginTop: 'auto',
-    marginBottom: 30,
+    // Keep this above the Samsung footer.
+    marginBottom: 86,
     backgroundColor: 'rgba(255,255,255,0.18)',
     borderRadius: 24,
     paddingVertical: 18,
