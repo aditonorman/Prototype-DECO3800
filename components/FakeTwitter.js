@@ -10,7 +10,7 @@ import {
   Pressable,
   Image,
 } from 'react-native';
-import { appLogos, twitterPosts } from '../data/dummyContent';
+import { appLogos, twitterPosts, uiIcons } from '../data/dummyContent';
 
 export default function FakeTwitter({
   onBackHome,
@@ -47,7 +47,7 @@ export default function FakeTwitter({
               style={[styles.tweet, isSelected && styles.tweetSelected]}
             >
               <View style={styles.tweetRow}>
-                <Text style={styles.avatar}>{tweet.avatar}</Text>
+                <Image source={{ uri: tweet.avatarUrl }} style={styles.avatarImage} />
                 <View style={{ flex: 1 }}>
                   <Text style={styles.user}>
                     {tweet.user}{' '}
@@ -63,8 +63,20 @@ export default function FakeTwitter({
                   )}
 
                   <View style={styles.metaRow}>
-                    <Text style={styles.meta}>💬  120</Text>
-                    <Text style={styles.meta}>♡ {tweet.likes}</Text>
+                    <View style={styles.metaMain}>
+                      <View style={styles.metaGroup}>
+                        <Image source={{ uri: uiIcons.dark.comment }} style={styles.metaIcon} />
+                        <Text style={styles.meta}>120</Text>
+                      </View>
+                      <View style={styles.metaGroup}>
+                        <Image source={{ uri: uiIcons.dark.like }} style={styles.metaIcon} />
+                        <Text style={styles.meta}>{tweet.likes}</Text>
+                      </View>
+                      <View style={styles.metaGroup}>
+                        <Image source={{ uri: uiIcons.dark.save }} style={styles.metaIcon} />
+                        <Text style={styles.meta}>Save</Text>
+                      </View>
+                    </View>
                     {/* Repost — Finding 2: pause at the moment of sharing. */}
                     <Pressable
                       onPress={(e) => {
@@ -77,9 +89,8 @@ export default function FakeTwitter({
                       }}
                       style={styles.repostBtn}
                     >
-                      <Text style={styles.repostBtnText}>
-                        🔁 Repost
-                      </Text>
+                      <Image source={{ uri: uiIcons.dark.repost }} style={styles.repostIcon} />
+                      <Text style={styles.repostBtnText}>Repost</Text>
                     </Pressable>
                   </View>
 
@@ -147,9 +158,12 @@ const styles = StyleSheet.create({
   tweetRow: {
     flexDirection: 'row',
   },
-  avatar: {
-    fontSize: 28,
+  avatarImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     marginRight: 10,
+    backgroundColor: '#111827',
   },
   user: {
     color: '#fff',
@@ -175,18 +189,39 @@ const styles = StyleSheet.create({
   metaRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginTop: 10,
-    paddingRight: 30,
+  },
+  metaMain: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  metaGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 14,
+  },
+  metaIcon: {
+    width: 14,
+    height: 14,
+    marginRight: 5,
   },
   meta: {
     color: '#9CA3AF',
     fontSize: 12,
   },
   repostBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#1D4ED8',
     paddingVertical: 4,
     paddingHorizontal: 10,
     borderRadius: 12,
+  },
+  repostIcon: {
+    width: 12,
+    height: 12,
+    marginRight: 5,
   },
   repostBtnText: {
     color: '#fff',

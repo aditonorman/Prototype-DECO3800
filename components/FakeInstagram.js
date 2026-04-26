@@ -12,7 +12,7 @@ import {
   Pressable,
   Image,
 } from 'react-native';
-import { appLogos, instagramPosts } from '../data/dummyContent';
+import { appLogos, instagramPosts, uiIcons } from '../data/dummyContent';
 
 export default function FakeInstagram({
   onBackHome,
@@ -49,7 +49,7 @@ export default function FakeInstagram({
             >
               {/* User row */}
               <View style={styles.userRow}>
-                <Text style={styles.avatar}>{post.avatar}</Text>
+                <Image source={{ uri: post.avatarUrl }} style={styles.avatarImage} />
                 <Text style={styles.username}>{post.user}</Text>
               </View>
 
@@ -64,7 +64,11 @@ export default function FakeInstagram({
 
               {/* Action row — Share button intercepts the share moment */}
               <View style={styles.actionRow}>
-                <Text style={styles.action}>♡  💬</Text>
+                <View style={styles.actionIcons}>
+                  <Image source={{ uri: uiIcons.light.like }} style={styles.actionIcon} />
+                  <Image source={{ uri: uiIcons.light.comment }} style={styles.actionIcon} />
+                  <Image source={{ uri: uiIcons.light.save }} style={styles.actionIcon} />
+                </View>
                 <Pressable
                   onPress={() =>
                     checkerActive
@@ -73,7 +77,8 @@ export default function FakeInstagram({
                   }
                   style={styles.shareBtn}
                 >
-                  <Text style={styles.shareBtnText}>↗ Share</Text>
+                  <Image source={{ uri: uiIcons.dark.share }} style={styles.shareIcon} />
+                  <Text style={styles.shareBtnText}>Share</Text>
                 </Pressable>
               </View>
 
@@ -160,9 +165,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 10,
   },
-  avatar: {
-    fontSize: 24,
+  avatarImage: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     marginRight: 10,
+    backgroundColor: '#E5E7EB',
   },
   username: {
     fontWeight: '600',
@@ -181,15 +189,31 @@ const styles = StyleSheet.create({
   actionRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 8,
   },
-  action: { fontSize: 18, letterSpacing: 4 },
+  actionIcons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  actionIcon: {
+    width: 18,
+    height: 18,
+    marginRight: 14,
+  },
   shareBtn: {
     backgroundColor: '#111827',
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 6,
     paddingHorizontal: 12,
     borderRadius: 16,
+  },
+  shareIcon: {
+    width: 13,
+    height: 13,
+    marginRight: 6,
   },
   shareBtnText: {
     color: '#fff',

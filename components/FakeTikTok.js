@@ -11,7 +11,7 @@ import {
   Image,
   FlatList,
 } from 'react-native';
-import { appLogos, tiktokPosts } from '../data/dummyContent';
+import { appLogos, tiktokPosts, uiIcons } from '../data/dummyContent';
 
 export default function FakeTikTok({
   onBackHome,
@@ -54,12 +54,17 @@ export default function FakeTikTok({
 
         <View style={styles.bottomOverlay}>
           <View style={styles.metaColumn}>
-            <Text style={styles.userLine}>
-              {item.avatar} {item.user}{' '}
-              <Text style={styles.followText}>Follow</Text>
-            </Text>
+            <View style={styles.userRow}>
+              <Image source={{ uri: item.avatarUrl }} style={styles.inlineAvatar} />
+              <Text style={styles.userLine}>
+                @{item.user} <Text style={styles.followText}>Follow</Text>
+              </Text>
+            </View>
             <Text style={styles.caption}>{item.caption}</Text>
-            <Text style={styles.audioLine}>♫ {getSongLabel(item, index)}</Text>
+            <View style={styles.audioRow}>
+              <Image source={{ uri: uiIcons.dark.music }} style={styles.audioIcon} />
+              <Text style={styles.audioLine}>{getSongLabel(item, index)}</Text>
+            </View>
             <Text style={[styles.selectHint, isSelected && styles.selectHintActive]}>
               {isSelected
                 ? '✓ Selected for Legitimate Checker'
@@ -69,17 +74,22 @@ export default function FakeTikTok({
 
           <View style={styles.actionRail}>
             <View style={styles.profileChip}>
-              <Text style={styles.profileEmoji}>{item.avatar}</Text>
+              <Image source={{ uri: item.avatarUrl }} style={styles.profileImage} />
             </View>
 
             <View style={styles.railItem}>
-              <Text style={styles.railIcon}>❤️</Text>
+              <Image source={{ uri: uiIcons.dark.like }} style={styles.railIcon} />
               <Text style={styles.railLabel}>{item.likes}</Text>
             </View>
 
             <View style={styles.railItem}>
-              <Text style={styles.railIcon}>💬</Text>
+              <Image source={{ uri: uiIcons.dark.comment }} style={styles.railIcon} />
               <Text style={styles.railLabel}>{item.comments}</Text>
+            </View>
+
+            <View style={styles.railItem}>
+              <Image source={{ uri: uiIcons.dark.save }} style={styles.railIcon} />
+              <Text style={styles.railLabel}>Save</Text>
             </View>
 
             <Pressable
@@ -93,7 +103,7 @@ export default function FakeTikTok({
               }}
               style={styles.shareRailBtn}
             >
-              <Text style={styles.railIcon}>↗</Text>
+              <Image source={{ uri: uiIcons.dark.share }} style={styles.shareIcon} />
               <Text style={styles.railLabel}>Share</Text>
             </Pressable>
           </View>
@@ -243,6 +253,18 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingRight: 10,
   },
+  userRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  inlineAvatar: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    marginRight: 7,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.75)',
+  },
   userLine: {
     color: '#fff',
     fontSize: 15,
@@ -258,10 +280,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 19,
   },
+  audioRow: {
+    marginTop: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  audioIcon: {
+    width: 12,
+    height: 12,
+    marginRight: 5,
+  },
   audioLine: {
     color: '#E5E7EB',
     fontSize: 12,
-    marginTop: 6,
   },
   selectHint: {
     color: '#93C5FD',
@@ -287,16 +318,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 12,
   },
-  profileEmoji: {
-    fontSize: 21,
+  profileImage: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
   },
   railItem: {
     alignItems: 'center',
     marginBottom: 12,
   },
   railIcon: {
-    color: '#fff',
-    fontSize: 23,
+    width: 20,
+    height: 20,
   },
   railLabel: {
     color: '#fff',
@@ -310,5 +343,9 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     paddingVertical: 6,
     paddingHorizontal: 12,
+  },
+  shareIcon: {
+    width: 18,
+    height: 18,
   },
 });

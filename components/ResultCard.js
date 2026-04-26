@@ -1,7 +1,7 @@
 // ResultCard
 // The "result" view shown after the user taps "Check this content".
 // It contains:
-//   1. Overall judgement label (with colour and emoji)
+//   1. Overall judgement label (with colour and icon)
 //   2. Source check
 //   3. Evidence check
 //   4. Bias / emotional language check
@@ -17,8 +17,10 @@ import {
   StyleSheet,
   ScrollView,
   Pressable,
+  Image,
 } from 'react-native';
 import {
+  checkerIcons,
   resultTemplates,
   referencesByCategory,
   literacyQuestions,
@@ -30,28 +32,64 @@ function buildSectionChecks(riskType) {
   switch (riskType) {
     case 'reliable':
       return {
-        source: '✓ Source appears recognised.',
-        evidence: '✓ Claim is supported by other references.',
-        bias: '⚠ Always read beyond the headline before sharing.',
+        source: {
+          iconUri: checkerIcons.section.good,
+          text: 'Source appears recognised.',
+        },
+        evidence: {
+          iconUri: checkerIcons.section.good,
+          text: 'Claim is supported by other references.',
+        },
+        bias: {
+          iconUri: checkerIcons.section.warn,
+          text: 'Always read beyond the headline before sharing.',
+        },
       };
     case 'bias':
       return {
-        source: '⚠ Source may have a strong viewpoint.',
-        evidence: '⚠ Evidence is partial or one-sided.',
-        bias: '⚠ Language is emotional. It may try to influence your opinion.',
+        source: {
+          iconUri: checkerIcons.section.warn,
+          text: 'Source may have a strong viewpoint.',
+        },
+        evidence: {
+          iconUri: checkerIcons.section.warn,
+          text: 'Evidence is partial or one-sided.',
+        },
+        bias: {
+          iconUri: checkerIcons.section.warn,
+          text: 'Language is emotional. It may try to influence your opinion.',
+        },
       };
     case 'low_evidence':
       return {
-        source: '⚠ Source is unclear or unverified.',
-        evidence: '⚠ No clear evidence or references.',
-        bias: 'ℹ Tone is rushed or based on rumour.',
+        source: {
+          iconUri: checkerIcons.section.warn,
+          text: 'Source is unclear or unverified.',
+        },
+        evidence: {
+          iconUri: checkerIcons.section.warn,
+          text: 'No clear evidence or references.',
+        },
+        bias: {
+          iconUri: checkerIcons.section.info,
+          text: 'Tone is rushed or based on rumour.',
+        },
       };
     case 'misleading':
     default:
       return {
-        source: '✗ Source is unknown or suspicious.',
-        evidence: '✗ Claim is unsupported (e.g. unproven health/scam claim).',
-        bias: '✗ Uses urgent, emotional, or pressuring language.',
+        source: {
+          iconUri: checkerIcons.section.bad,
+          text: 'Source is unknown or suspicious.',
+        },
+        evidence: {
+          iconUri: checkerIcons.section.bad,
+          text: 'Claim is unsupported (e.g. unproven health/scam claim).',
+        },
+        bias: {
+          iconUri: checkerIcons.section.bad,
+          text: 'Uses urgent, emotional, or pressuring language.',
+        },
       };
   }
 }
@@ -73,6 +111,8 @@ function buildNextAction(riskType) {
 export default function ResultCard({ content, onClose }) {
   // Pick the right template + references using the selected content.
   const template = resultTemplates[content.riskType] || resultTemplates.low_evidence;
+  const statusIcon =
+    checkerIcons.status[content.riskType] || checkerIcons.status.low_evidence;
   const refs = referencesByCategory[content.contentCategory] || [];
   const checks = buildSectionChecks(content.riskType);
   const nextAction = buildNextAction(content.riskType);
@@ -84,7 +124,7 @@ export default function ResultCard({ content, onClose }) {
     >
       {/* Big judgement label */}
       <View style={[styles.labelBox, { backgroundColor: template.color }]}>
-        <Text style={styles.labelEmoji}>{template.emoji}</Text>
+        <Image source={{ uri: statusIcon }} style={styles.labelIcon} />
         <View style={{ flex: 1 }}>
           <Text style={styles.labelText}>{template.label}</Text>
           <Text style={styles.labelSub}>Final decision remains with you.</Text>
@@ -94,13 +134,13 @@ export default function ResultCard({ content, onClose }) {
       <Text style={styles.explanation}>{template.explanation}</Text>
 
       {/* Section: Source check */}
-      <Section title="Source check" body={checks.source} />
+      <Section title="Source check" item={checks.source} />
 
       {/* Section: Evidence check */}
-      <Section title="Evidence check" body={checks.evidence} />
+      <Section title="Evidence check" item={checks.evidence} />
 
       {/* Section: Bias / emotional language check */}
-      <Section title="Bias / emotional language" body={checks.bias} />
+      <Section title="Bias / emotional language" item={checks.bias} />
 
       {/* Section: Digital literacy reminder */}
       <View style={styles.section}>
@@ -116,9 +156,10 @@ export default function ResultCard({ content, onClose }) {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Suggested references to compare</Text>
         {refs.map((r, i) => (
-          <Text key={i} style={styles.refItem}>
-            🔗 {r}
-          </Text>
+          <View key={i} style={styles.refRow}>
+            <Image source={{ uri: checkerIcons.link }} style={styles.refIcon} />
+            <Text style={styles.refItem}>{r}</Text>
+          </View>
         ))}
       </View>
 
@@ -142,11 +183,14 @@ export default function ResultCard({ content, onClose }) {
 }
 
 // Tiny helper component so each labelled section looks the same.
-function Section({ title, body }) {
+function Section({ title, item }) {
   return (
     <View style={styles.section}>
       <Text style={styles.sectionTitle}>{title}</Text>
-      <Text style={styles.sectionBody}>{body}</Text>
+      <View style={styles.sectionBodyRow}>
+        <Image source={{ uri: item.iconUri }} style={styles.sectionIcon} />
+        <Text style={styles.sectionBody}>{item.text}</Text>
+      </View>
     </View>
   );
 }
@@ -163,8 +207,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 4,
   },
-  labelEmoji: {
-    fontSize: 28,
+  labelIcon: {
+    width: 24,
+    height: 24,
     marginRight: 12,
   },
   labelText: {
@@ -203,6 +248,17 @@ const styles = StyleSheet.create({
     color: '#374151',
     fontSize: 13,
     lineHeight: 19,
+    flex: 1,
+  },
+  sectionBodyRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  sectionIcon: {
+    width: 12,
+    height: 12,
+    marginRight: 7,
+    marginTop: 3,
   },
   bullet: {
     color: '#374151',
@@ -210,10 +266,20 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     marginBottom: 2,
   },
+  refRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  refIcon: {
+    width: 12,
+    height: 12,
+    marginRight: 6,
+  },
   refItem: {
     color: '#1E40AF',
     fontSize: 13,
-    marginBottom: 4,
+    flex: 1,
   },
   actionText: {
     color: '#1E3A8A',

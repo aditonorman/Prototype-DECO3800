@@ -2,7 +2,8 @@
 // Fake phone lock screen with current time, date, and a "Swipe up to unlock" button.
 
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
+import { checkerIcons } from '../data/dummyContent';
 
 export default function LockScreen({ onUnlock }) {
   // Update the time every minute so the lock screen feels alive.
@@ -40,7 +41,10 @@ export default function LockScreen({ onUnlock }) {
 
       {/* Notification card */}
       <View style={styles.notificationCard}>
-        <Text style={styles.notifTitle}>🔔 Legitimate Checker</Text>
+        <View style={styles.notifTitleRow}>
+          <Image source={{ uri: checkerIcons.bell }} style={styles.notifIcon} />
+          <Text style={styles.notifTitle}>Legitimate Checker</Text>
+        </View>
         <Text style={styles.notifBody}>
           Pause. Check. Think before sharing.
         </Text>
@@ -94,10 +98,19 @@ const styles = StyleSheet.create({
     padding: 14,
     marginBottom: 30,
   },
+  notifTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  notifIcon: {
+    width: 12,
+    height: 12,
+    marginRight: 5,
+  },
   notifTitle: {
     color: '#fff',
     fontWeight: '600',
-    marginBottom: 4,
     fontSize: 14,
   },
   notifBody: {

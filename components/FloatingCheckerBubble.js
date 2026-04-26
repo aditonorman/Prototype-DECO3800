@@ -4,7 +4,8 @@
 // Tapping it opens the Checker modal.
 
 import React from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
+import { checkerIcons } from '../data/dummyContent';
 
 export default function FloatingCheckerBubble({
   onPress,
@@ -21,7 +22,7 @@ export default function FloatingCheckerBubble({
           <Text style={styles.label}>LC</Text>
         </View>
         {/* Tiny shield icon */}
-        <Text style={styles.shield}>🛡️</Text>
+        <Image source={{ uri: checkerIcons.shield }} style={styles.shield} />
       </Pressable>
     </View>
   );
@@ -63,6 +64,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -4,
     right: -4,
-    fontSize: 14,
+    width: 14,
+    height: 14,
   },
 });

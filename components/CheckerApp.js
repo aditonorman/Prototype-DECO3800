@@ -13,14 +13,21 @@ import {
   Pressable,
   ScrollView,
   Switch,
+  Image,
 } from 'react-native';
+import { checkerIcons } from '../data/dummyContent';
 
 // A small checkbox row component used in the agreement card.
 function CheckRow({ label, checked, onToggle }) {
   return (
     <Pressable style={styles.checkRow} onPress={onToggle}>
       <View style={[styles.checkbox, checked && styles.checkboxChecked]}>
-        {checked && <Text style={styles.checkmark}>✓</Text>}
+        {checked && (
+          <Image
+            source={{ uri: checkerIcons.check }}
+            style={styles.checkmarkIcon}
+          />
+        )}
       </View>
       <Text style={styles.checkLabel}>{label}</Text>
     </Pressable>
@@ -95,7 +102,10 @@ export default function CheckerApp({
       {/* If user just activated OR already active, show success view */}
       {(justActivated || checkerActive) && !justActivated && (
         <View style={styles.activeBanner}>
-          <Text style={styles.activeBannerTitle}>✅ Checker is active</Text>
+          <View style={styles.statusRow}>
+            <Image source={{ uri: checkerIcons.active }} style={styles.statusIcon} />
+            <Text style={styles.activeBannerTitle}>Checker is active</Text>
+          </View>
           <Text style={styles.activeBannerBody}>
             A small floating bubble will appear while you browse Instagram,
             WhatsApp, X, and TikTok.
@@ -106,7 +116,10 @@ export default function CheckerApp({
       {justActivated ? (
         // Big success screen shown right after the user activates the checker.
         <View style={styles.successCard}>
-          <Text style={styles.successTitle}>✅ Checker is active</Text>
+          <View style={styles.statusRow}>
+            <Image source={{ uri: checkerIcons.active }} style={styles.statusIcon} />
+            <Text style={styles.successTitle}>Checker is active</Text>
+          </View>
           <Text style={styles.successBody}>
             A small floating bubble will now appear while you browse.
           </Text>
@@ -134,11 +147,20 @@ export default function CheckerApp({
               Hidden behind a tap so it doesn't crowd the page. */}
           <View style={styles.card}>
             <Pressable
+              style={styles.expandHeader}
               onPress={() => setShowAlgoExplainer(!showAlgoExplainer)}
             >
-              <Text style={styles.cardTitle}>
-                Why am I seeing this on my feed? {showAlgoExplainer ? '▴' : '▾'}
+              <Text style={[styles.cardTitle, styles.expandTitle]}>
+                Why am I seeing this on my feed?
               </Text>
+              <Image
+                source={{
+                  uri: showAlgoExplainer
+                    ? checkerIcons.collapse
+                    : checkerIcons.expand,
+                }}
+                style={styles.expandIcon}
+              />
             </Pressable>
             {showAlgoExplainer && (
               <Text style={styles.cardBody}>
@@ -171,14 +193,23 @@ export default function CheckerApp({
                     !isFamilyMode && styles.setupChipActive,
                   ]}
                 >
-                  <Text
-                    style={[
-                      styles.setupChipText,
-                      !isFamilyMode && styles.setupChipTextActive,
-                    ]}
-                  >
-                    👤 Just me
-                  </Text>
+                  <View style={styles.setupChipContent}>
+                    <Image
+                      source={{ uri: checkerIcons.self }}
+                      style={[
+                        styles.setupChipIcon,
+                        !isFamilyMode && styles.setupChipIconActive,
+                      ]}
+                    />
+                    <Text
+                      style={[
+                        styles.setupChipText,
+                        !isFamilyMode && styles.setupChipTextActive,
+                      ]}
+                    >
+                      Just me
+                    </Text>
+                  </View>
                 </Pressable>
                 <Pressable
                   onPress={() => handleSetupForChange('family')}
@@ -187,14 +218,23 @@ export default function CheckerApp({
                     isFamilyMode && styles.setupChipActive,
                   ]}
                 >
-                  <Text
-                    style={[
-                      styles.setupChipText,
-                      isFamilyMode && styles.setupChipTextActive,
-                    ]}
-                  >
-                    👨‍👩‍👧 For a family member
-                  </Text>
+                  <View style={styles.setupChipContent}>
+                    <Image
+                      source={{ uri: checkerIcons.family }}
+                      style={[
+                        styles.setupChipIcon,
+                        isFamilyMode && styles.setupChipIconActive,
+                      ]}
+                    />
+                    <Text
+                      style={[
+                        styles.setupChipText,
+                        isFamilyMode && styles.setupChipTextActive,
+                      ]}
+                    >
+                      For a family member
+                    </Text>
+                  </View>
                 </Pressable>
               </View>
               {isFamilyMode && (
@@ -341,10 +381,19 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 12,
   },
+  statusRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 2,
+  },
+  statusIcon: {
+    width: 15,
+    height: 15,
+    marginRight: 6,
+  },
   activeBannerTitle: {
     color: '#15803D',
     fontWeight: '700',
-    marginBottom: 2,
   },
   activeBannerBody: {
     color: '#166534',
@@ -367,6 +416,20 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#111827',
     marginBottom: 8,
+  },
+  expandHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  expandTitle: {
+    marginBottom: 0,
+    flex: 1,
+    marginRight: 8,
+  },
+  expandIcon: {
+    width: 14,
+    height: 14,
   },
   cardBody: {
     color: '#4B5563',
@@ -392,10 +455,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#2563EB',
     borderColor: '#2563EB',
   },
-  checkmark: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: '700',
+  checkmarkIcon: {
+    width: 12,
+    height: 12,
   },
   checkLabel: {
     flex: 1,
@@ -434,12 +496,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     color: '#15803D',
-    marginBottom: 6,
   },
   successBody: {
     color: '#374151',
     textAlign: 'center',
     fontSize: 14,
+    marginTop: 6,
     marginBottom: 10,
   },
   onboardNote: {
@@ -491,6 +553,19 @@ const styles = StyleSheet.create({
     color: '#374151',
     fontSize: 12,
     fontWeight: '600',
+  },
+  setupChipContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  setupChipIcon: {
+    width: 12,
+    height: 12,
+    marginRight: 5,
+    tintColor: '#374151',
+  },
+  setupChipIconActive: {
+    tintColor: '#fff',
   },
   setupChipTextActive: {
     color: '#fff',

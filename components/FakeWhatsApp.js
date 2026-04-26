@@ -11,7 +11,7 @@ import {
   Pressable,
   Image,
 } from 'react-native';
-import { appLogos, whatsappMessages } from '../data/dummyContent';
+import { appLogos, uiIcons, whatsappMessages } from '../data/dummyContent';
 
 export default function FakeWhatsApp({
   onBackHome,
@@ -66,13 +66,23 @@ export default function FakeWhatsApp({
                 ]}
               >
                 {!isMine && (
-                  <Text style={styles.sender}>
-                    {msg.avatar} {msg.sender}
-                  </Text>
+                  <View style={styles.senderRow}>
+                    <Image
+                      source={{ uri: msg.avatarUrl }}
+                      style={styles.senderAvatar}
+                    />
+                    <Text style={styles.sender}>{msg.sender}</Text>
+                  </View>
                 )}
 
                 {msg.forwarded && (
-                  <Text style={styles.forwarded}>↪ Forwarded many times</Text>
+                  <View style={styles.forwardedRow}>
+                    <Image
+                      source={{ uri: uiIcons.light.forward }}
+                      style={styles.forwardedIcon}
+                    />
+                    <Text style={styles.forwarded}>Forwarded many times</Text>
+                  </View>
                 )}
 
                 <Text style={styles.bubbleText}>{msg.text}</Text>
@@ -96,7 +106,11 @@ export default function FakeWhatsApp({
                       }}
                       style={styles.forwardBtn}
                     >
-                      <Text style={styles.forwardBtnText}>↪ Forward</Text>
+                      <Image
+                        source={{ uri: uiIcons.dark.forward }}
+                        style={styles.forwardBtnIcon}
+                      />
+                      <Text style={styles.forwardBtnText}>Forward</Text>
                     </Pressable>
                   </View>
                 )}
@@ -176,17 +190,38 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#2563EB',
   },
+  senderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 2,
+  },
+  senderAvatar: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    marginRight: 6,
+    backgroundColor: '#D1D5DB',
+  },
   sender: {
     fontWeight: '700',
     color: '#075E54',
     fontSize: 12,
-    marginBottom: 2,
+  },
+  forwardedRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  forwardedIcon: {
+    width: 11,
+    height: 11,
+    marginRight: 4,
+    opacity: 0.8,
   },
   forwarded: {
     color: '#6B7280',
     fontSize: 11,
     fontStyle: 'italic',
-    marginBottom: 4,
   },
   bubbleText: {
     color: '#111827',
@@ -211,10 +246,17 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   forwardBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#075E54',
     paddingVertical: 4,
     paddingHorizontal: 10,
     borderRadius: 12,
+  },
+  forwardBtnIcon: {
+    width: 10,
+    height: 10,
+    marginRight: 4,
   },
   forwardBtnText: {
     color: '#fff',

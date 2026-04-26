@@ -11,11 +11,58 @@ export const appLogos = {
   tiktok: 'https://img.icons8.com/color/96/tiktok--v1.png',
 };
 
+// Shared UI icon links for action bars so we don't rely on emoji glyph support.
+export const uiIcons = {
+  light: {
+    like: 'https://img.icons8.com/ios-glyphs/100/000000/like--v1.png',
+    comment: 'https://img.icons8.com/ios-glyphs/100/000000/topic.png',
+    share: 'https://img.icons8.com/ios-glyphs/100/000000/share.png',
+    save: 'https://img.icons8.com/ios-glyphs/100/000000/bookmark-ribbon.png',
+    repost: 'https://img.icons8.com/ios-glyphs/100/000000/repeat.png',
+    forward: 'https://img.icons8.com/ios-glyphs/100/000000/forward.png',
+    music: 'https://img.icons8.com/ios-glyphs/100/000000/musical-notes.png',
+  },
+  dark: {
+    like: 'https://img.icons8.com/ios-glyphs/100/ffffff/like--v1.png',
+    comment: 'https://img.icons8.com/ios-glyphs/100/ffffff/topic.png',
+    share: 'https://img.icons8.com/ios-glyphs/100/ffffff/share.png',
+    save: 'https://img.icons8.com/ios-glyphs/100/ffffff/bookmark-ribbon.png',
+    repost: 'https://img.icons8.com/ios-glyphs/100/ffffff/repeat.png',
+    forward: 'https://img.icons8.com/ios-glyphs/100/ffffff/forward.png',
+    music: 'https://img.icons8.com/ios-glyphs/100/ffffff/musical-notes.png',
+  },
+};
+
+// Dedicated icons for Legitimate Checker screens (avoid emoji rendering issues).
+export const checkerIcons = {
+  active: 'https://img.icons8.com/ios-glyphs/100/16a34a/approval.png',
+  check: 'https://img.icons8.com/ios-glyphs/100/16a34a/checkmark--v1.png',
+  self: 'https://img.icons8.com/ios-glyphs/100/111827/user--v1.png',
+  family: 'https://img.icons8.com/ios-glyphs/100/111827/family.png',
+  expand: 'https://img.icons8.com/ios-glyphs/100/111827/chevron-down.png',
+  collapse: 'https://img.icons8.com/ios-glyphs/100/111827/chevron-up.png',
+  shield: 'https://img.icons8.com/ios-glyphs/100/ffffff/shield.png',
+  bell: 'https://img.icons8.com/ios-glyphs/100/ffffff/alarm.png',
+  link: 'https://img.icons8.com/ios-glyphs/100/1e40af/link.png',
+  status: {
+    reliable: 'https://img.icons8.com/ios-glyphs/100/ffffff/verified-account.png',
+    bias: 'https://img.icons8.com/ios-glyphs/100/ffffff/high-priority.png',
+    low_evidence: 'https://img.icons8.com/ios-glyphs/100/ffffff/help.png',
+    misleading: 'https://img.icons8.com/ios-glyphs/100/ffffff/error--v1.png',
+  },
+  section: {
+    good: 'https://img.icons8.com/ios-glyphs/100/16a34a/checkmark--v1.png',
+    warn: 'https://img.icons8.com/ios-glyphs/100/f59e0b/high-priority.png',
+    bad: 'https://img.icons8.com/ios-glyphs/100/dc2626/cancel--v1.png',
+    info: 'https://img.icons8.com/ios-glyphs/100/6b7280/info.png',
+  },
+};
+
 export const instagramPosts = [
   {
     id: 'ig1',
     user: 'wellness_daily_id',
-    avatar: '🌿',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/44.jpg',
     imageUrl: 'https://picsum.photos/seed/ig-post-1/1080/1080',
     caption:
       'Viral video claims a new herbal drink can cure serious disease overnight. Doctors are "shocked"!',
@@ -27,7 +74,7 @@ export const instagramPosts = [
   {
     id: 'ig2',
     user: 'sarah.travels',
-    avatar: '🌅',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/68.jpg',
     imageUrl: 'https://picsum.photos/seed/ig-post-2/1080/1080',
     caption: 'Sunset in Bali — taking a break from screens this week. ✨',
     likes: '1,204',
@@ -38,7 +85,7 @@ export const instagramPosts = [
   {
     id: 'ig3',
     user: 'politik_now',
-    avatar: '📣',
+    avatarUrl: 'https://randomuser.me/api/portraits/men/32.jpg',
     imageUrl: 'https://picsum.photos/seed/ig-post-3/1080/1080',
     caption:
       'Opinion: Government policy is destroying our future! Share if you agree — they don\'t want you to see this.',
@@ -53,7 +100,7 @@ export const whatsappMessages = [
   {
     id: 'wa1',
     sender: 'Mom',
-    avatar: '👩',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/33.jpg',
     text: 'Good morning everyone! Don\'t forget lunch on Sunday 🍲',
     time: '08:12',
     forwarded: false,
@@ -64,7 +111,7 @@ export const whatsappMessages = [
   {
     id: 'wa2',
     sender: 'Uncle Budi',
-    avatar: '👨',
+    avatarUrl: 'https://randomuser.me/api/portraits/men/54.jpg',
     text:
       'Forwarded many times: Government will give free money to every citizen if you click this link today! Hurry, only valid 24 hours 👉 bit.ly/free-money-id',
     time: '08:45',
@@ -76,7 +123,7 @@ export const whatsappMessages = [
   {
     id: 'wa3',
     sender: 'Sister',
-    avatar: '👧',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/12.jpg',
     text: 'Mom, I\'ll bring the cake 🎂',
     time: '09:02',
     forwarded: false,
@@ -87,7 +134,7 @@ export const whatsappMessages = [
   {
     id: 'wa4',
     sender: 'You',
-    avatar: '🙂',
+    avatarUrl: 'https://randomuser.me/api/portraits/men/11.jpg',
     text: 'See you all on Sunday!',
     time: '09:05',
     forwarded: false,
@@ -102,7 +149,7 @@ export const twitterPosts = [
     id: 'tw1',
     user: 'ViralUpdates24',
     handle: '@viralupdates24',
-    avatar: '🔥',
+    avatarUrl: 'https://randomuser.me/api/portraits/men/75.jpg',
     imageUrl: 'https://picsum.photos/seed/tw-post-1/1200/800',
     text:
       'BREAKING: Famous public figure confirmed dead, according to viral accounts. Details unclear. RT to spread!',
@@ -115,7 +162,7 @@ export const twitterPosts = [
     id: 'tw2',
     user: 'KompasNews',
     handle: '@kompascom',
-    avatar: '📰',
+    avatarUrl: 'https://randomuser.me/api/portraits/men/41.jpg',
     imageUrl: 'https://picsum.photos/seed/tw-post-2/1200/800',
     text:
       'New national education budget announced today. Full breakdown and official statements in our article.',
@@ -128,7 +175,7 @@ export const twitterPosts = [
     id: 'tw3',
     user: 'OpinionDaily',
     handle: '@opiniondaily',
-    avatar: '💬',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/21.jpg',
     imageUrl: 'https://picsum.photos/seed/tw-post-3/1200/800',
     text:
       'They are LYING to you again. Wake up! The other side will never tell you the real truth about this policy.',
@@ -144,7 +191,7 @@ export const tiktokPosts = [
     id: 'tk1',
     user: 'health_hacks.id',
     handle: '@health_hacks.id',
-    avatar: '🧪',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/68.jpg',
     imageUrl: 'https://picsum.photos/seed/tk-post-1/1080/1920',
     caption:
       'Quick tip: this kitchen drink can flush all toxins in 1 day. Save and share now!',
@@ -158,7 +205,7 @@ export const tiktokPosts = [
     id: 'tk2',
     user: 'newsminute.id',
     handle: '@newsminute.id',
-    avatar: '📰',
+    avatarUrl: 'https://randomuser.me/api/portraits/men/41.jpg',
     imageUrl: 'https://picsum.photos/seed/tk-post-2/1080/1920',
     caption:
       'Today\'s recap: Parliament session highlights with source links in bio.',
@@ -172,7 +219,7 @@ export const tiktokPosts = [
     id: 'tk3',
     user: 'hottakesdaily',
     handle: '@hottakesdaily',
-    avatar: '📢',
+    avatarUrl: 'https://randomuser.me/api/portraits/men/32.jpg',
     imageUrl: 'https://picsum.photos/seed/tk-post-3/1080/1920',
     caption:
       'They never tell you this side of the story. Repost before this gets buried!',
