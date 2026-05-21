@@ -2,7 +2,7 @@
 // Full-screen vertical pager to better match TikTok's interaction model.
 // Tapping a page selects the current video for the Checker.
 
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   View,
   Text,
@@ -34,9 +34,9 @@ export default function FakeTikTok({
 
   function getSongLabel(video, index) {
     const songs = [
-      'Original sound - wellness_daily_id',
-      'News mix - civic updates',
-      'Trending beat - hot takes',
+      'Suara asli - wellness_daily_id',
+      'Mix berita - update sipil',
+      'Beat tren - opini panas',
     ];
     return songs[index % songs.length];
   }
@@ -57,7 +57,7 @@ export default function FakeTikTok({
             <View style={styles.userRow}>
               <Image source={{ uri: item.avatarUrl }} style={styles.inlineAvatar} />
               <Text style={styles.userLine}>
-                @{item.user} <Text style={styles.followText}>Follow</Text>
+                @{item.user} <Text style={styles.followText}>Ikuti</Text>
               </Text>
             </View>
             <Text style={styles.caption}>{item.caption}</Text>
@@ -67,8 +67,8 @@ export default function FakeTikTok({
             </View>
             <Text style={[styles.selectHint, isSelected && styles.selectHintActive]}>
               {isSelected
-                ? '✓ Selected for Legitimate Checker'
-                : 'Tap video to select for Legitimate Checker'}
+                ? '✓ Dipilih untuk Legitimate Checker'
+                : 'Ketuk video untuk memilih untuk Legitimate Checker'}
             </Text>
           </View>
 
@@ -89,7 +89,7 @@ export default function FakeTikTok({
 
             <View style={styles.railItem}>
               <Image source={{ uri: uiIcons.dark.save }} style={styles.railIcon} />
-              <Text style={styles.railLabel}>Save</Text>
+              <Text style={styles.railLabel}>Simpan</Text>
             </View>
 
             <Pressable
@@ -104,7 +104,7 @@ export default function FakeTikTok({
               style={styles.shareRailBtn}
             >
               <Image source={{ uri: uiIcons.dark.share }} style={styles.shareIcon} />
-              <Text style={styles.railLabel}>Share</Text>
+              <Text style={styles.railLabel}>Bagikan</Text>
             </Pressable>
           </View>
         </View>
@@ -146,7 +146,7 @@ export default function FakeTikTok({
 
       <View style={styles.headerOverlay} pointerEvents="box-none">
         <Pressable style={styles.backPill} onPress={onBackHome}>
-          <Text style={styles.backText}>← Home</Text>
+          <Text style={styles.backText}>← Beranda</Text>
         </Pressable>
 
         <View style={styles.topCenter}>
@@ -155,8 +155,8 @@ export default function FakeTikTok({
             style={styles.topLogo}
             resizeMode="contain"
           />
-          <Text style={styles.topTabMuted}>Following</Text>
-          <Text style={styles.topTabActive}>For You</Text>
+          <Text style={styles.topTabMuted}>Mengikuti</Text>
+          <Text style={styles.topTabActive}>Untukmu</Text>
         </View>
 
         <Text style={styles.indexText}>

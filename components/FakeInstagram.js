@@ -3,7 +3,6 @@
 // Each post has a "Check this post" button which selects that post for the Checker.
 // The selected post is highlighted so the user knows what the bubble will check.
 
-import React from 'react';
 import {
   View,
   Text,
@@ -26,7 +25,7 @@ export default function FakeInstagram({
       {/* App-style top bar */}
       <View style={styles.topBar}>
         <Pressable onPress={onBackHome} style={styles.backBtn}>
-          <Text style={styles.backText}>← Home</Text>
+          <Text style={styles.backText}>← Beranda</Text>
         </Pressable>
         <View style={styles.centerHeader}>
           <Image
@@ -78,18 +77,18 @@ export default function FakeInstagram({
                   style={styles.shareBtn}
                 >
                   <Image source={{ uri: uiIcons.dark.share }} style={styles.shareIcon} />
-                  <Text style={styles.shareBtnText}>Share</Text>
+                  <Text style={styles.shareBtnText}>Bagikan</Text>
                 </Pressable>
               </View>
 
               {/* Likes + caption */}
-              <Text style={styles.likes}>{post.likes} likes</Text>
+              <Text style={styles.likes}>{post.likes} suka</Text>
               <Text style={styles.caption}>
                 <Text style={styles.usernameInline}>{post.user} </Text>
                 {post.caption}
               </Text>
               <Text style={styles.commentsHint}>
-                View all {post.comments} comments
+                Lihat semua {post.comments} komentar
               </Text>
 
               {/* Secondary: tap to select for the floating bubble (no share). */}
@@ -107,8 +106,8 @@ export default function FakeInstagram({
                   ]}
                 >
                   {isSelected
-                    ? '✓ Selected for Checker'
-                    : 'Tap to select for Checker'}
+                    ? '✓ Dipilih untuk Checker'
+                    : 'Ketuk untuk memilih untuk Checker'}
                 </Text>
               </Pressable>
             </View>

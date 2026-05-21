@@ -19,6 +19,8 @@ import PhoneFrame from './components/PhoneFrame';
 import LockScreen from './components/LockScreen';
 import HomeScreen from './components/HomeScreen';
 import CheckerApp from './components/CheckerApp';
+import OnboardingEntry from './components/OnboardingEntry';
+import SoloOnboarding from './components/SoloOnboarding';
 import FakeInstagram from './components/FakeInstagram';
 import FakeWhatsApp from './components/FakeWhatsApp';
 import FakeTwitter from './components/FakeTwitter';
@@ -57,10 +59,22 @@ export default function App() {
   // Whether the user has activated the Checker.
   const [checkerActive, setCheckerActive] = useState(false);
 
+  // Which onboarding flow the user is in (proposal §5.2.1–§5.2.3).
+  //   'unset'    — first time, show the OnboardingEntry chooser.
+  //   'assisted' — State A, existing CheckerApp flow.
+  //   'solo'     — State B, SoloOnboarding flow.
+  const [onboardingPath, setOnboardingPath] = useState('unset');
+
+  // One-time tooltip explaining the source-verification step. Shown the first
+  // time a solo-onboarded user reaches the source step.
+  const [sourceTooltipShown, setSourceTooltipShown] = useState(false);
+
   // Which content (post / message / tweet) is selected to be checked.
   const [selectedPostId, setSelectedPostId] = useState(null);
 
-  // Modal state. step: 'confirm' (first pop-up) or 'result' (after Check).
+  // Modal state.
+  //   step: 'confirm' | 'source' | 'result'
+  //   'source' is the new source-verification layer (proposal §5.4).
   const [modalVisible, setModalVisible] = useState(false);
   const [modalStep, setModalStep] = useState('confirm');
   const [recentsVisible, setRecentsVisible] = useState(false);
@@ -100,7 +114,7 @@ export default function App() {
       return {
         id: wa.id,
         appName: 'WhatsApp',
-        source: wa.forwarded ? `${wa.sender} (forwarded)` : wa.sender,
+        source: wa.forwarded ? `${wa.sender} (diteruskan)` : wa.sender,
         preview: wa.text,
         riskType: wa.riskType,
         contentCategory: wa.contentCategory,
@@ -154,6 +168,20 @@ export default function App() {
     setCheckerActive(true);
   }
 
+  // Onboarding path handlers — picked from the entry chooser.
+  function pickAssistedOnboarding() {
+    setOnboardingPath('assisted');
+  }
+
+  function pickSoloOnboarding() {
+    setOnboardingPath('solo');
+  }
+
+  function activateAndGoHome() {
+    activateChecker();
+    goHome();
+  }
+
   function openCheckerModal() {
     setRecentsVisible(false);
     setModalStep('confirm');
@@ -171,8 +199,21 @@ export default function App() {
     setModalVisible(true);
   }
 
-  function confirmCheck() {
+  // Step transitions for the Checker modal (proposal §5.4).
+  function goToSourceStep() {
+    setModalStep('source');
+  }
+
+  function goToResultStep() {
     setModalStep('result');
+  }
+
+  function goBackToConfirmStep() {
+    setModalStep('confirm');
+  }
+
+  function dismissSourceTooltip() {
+    setSourceTooltipShown(true);
   }
 
   function closeModal() {
@@ -255,13 +296,31 @@ export default function App() {
       <HomeScreen onOpenApp={openApp} checkerActive={checkerActive} />
     );
   } else if (screen === 'checker') {
-    screenContent = (
-      <CheckerApp
-        onActivate={activateChecker}
-        onBackHome={goHome}
-        checkerActive={checkerActive}
-      />
-    );
+    // Route through onboarding entry on first visit (proposal §5.2.1–§5.2.3).
+    if (!checkerActive && onboardingPath === 'unset') {
+      screenContent = (
+        <OnboardingEntry
+          onPickAssisted={pickAssistedOnboarding}
+          onPickSolo={pickSoloOnboarding}
+          onBackHome={goHome}
+        />
+      );
+    } else if (!checkerActive && onboardingPath === 'solo') {
+      screenContent = (
+        <SoloOnboarding
+          onActivate={activateAndGoHome}
+          onBackHome={goHome}
+        />
+      );
+    } else {
+      screenContent = (
+        <CheckerApp
+          onActivate={activateChecker}
+          onBackHome={goHome}
+          checkerActive={checkerActive}
+        />
+      );
+    }
   } else if (screen === 'instagram') {
     screenContent = (
       <FakeInstagram
@@ -341,8 +400,14 @@ export default function App() {
               visible={modalVisible}
               selectedContent={getSelectedContent()}
               step={modalStep}
-              onConfirm={confirmCheck}
+              onCheckSource={goToSourceStep}
+              onSeeResult={goToResultStep}
+              onBackToConfirm={goBackToConfirmStep}
               onClose={closeModal}
+              showSourceTooltip={
+                onboardingPath === 'solo' && !sourceTooltipShown
+              }
+              onDismissSourceTooltip={dismissSourceTooltip}
             />
           </View>
         </PhoneFrame>

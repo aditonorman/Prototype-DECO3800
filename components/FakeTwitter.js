@@ -1,7 +1,6 @@
 // FakeTwitter (X)
 // A short feed of fake tweets. Tap a tweet to select it for the Checker.
 
-import React from 'react';
 import {
   View,
   Text,
@@ -24,7 +23,7 @@ export default function FakeTwitter({
       {/* Top bar */}
       <View style={styles.topBar}>
         <Pressable onPress={onBackHome} style={styles.backBtn}>
-          <Text style={styles.backText}>← Home</Text>
+          <Text style={styles.backText}>← Beranda</Text>
         </Pressable>
         <View style={styles.centerHeader}>
           <Image
@@ -74,7 +73,7 @@ export default function FakeTwitter({
                       </View>
                       <View style={styles.metaGroup}>
                         <Image source={{ uri: uiIcons.dark.save }} style={styles.metaIcon} />
-                        <Text style={styles.meta}>Save</Text>
+                        <Text style={styles.meta}>Simpan</Text>
                       </View>
                     </View>
                     {/* Repost — Finding 2: pause at the moment of sharing. */}
@@ -101,8 +100,8 @@ export default function FakeTwitter({
                     ]}
                   >
                     {isSelected
-                      ? '✓ Selected for Checker'
-                      : 'Tap to select for Checker'}
+                      ? '✓ Dipilih untuk Checker'
+                      : 'Ketuk untuk memilih untuk Checker'}
                   </Text>
                 </View>
               </View>

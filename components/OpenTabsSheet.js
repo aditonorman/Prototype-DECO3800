@@ -27,12 +27,13 @@ export default function OpenTabsSheet({
 
       <View style={[styles.sheet, { marginBottom: bottomInset }]}>
         <View style={styles.handle} />
-        <Text style={styles.title}>Open Tabs</Text>
+        <Text style={styles.title}>Aplikasi yang terbuka</Text>
 
         {tabs.length === 0 ? (
           <View style={styles.emptyState}>
             <Text style={styles.emptyText}>
-              No recent apps yet. Open Instagram, WhatsApp, X, TikTok, or Checker.
+              Belum ada aplikasi yang dibuka. Buka Instagram, WhatsApp, X,
+              TikTok, atau Checker.
             </Text>
           </View>
         ) : (
@@ -65,7 +66,7 @@ export default function OpenTabsSheet({
                     {tab.label}
                   </Text>
                   <Text style={styles.tabSub}>
-                    {isActive ? 'Current app' : 'Tap to open'}
+                    {isActive ? 'Aplikasi saat ini' : 'Ketuk untuk membuka'}
                   </Text>
                 </Pressable>
               );

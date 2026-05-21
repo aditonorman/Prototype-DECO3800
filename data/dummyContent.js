@@ -65,7 +65,7 @@ export const instagramPosts = [
     avatarUrl: 'https://randomuser.me/api/portraits/women/44.jpg',
     imageUrl: 'https://picsum.photos/seed/ig-post-1/1080/1080',
     caption:
-      'Viral video claims a new herbal drink can cure serious disease overnight. Doctors are "shocked"!',
+      'Video viral! Minuman herbal ini bisa menyembuhkan penyakit berat dalam semalam. Para dokter terkejut!',
     likes: '24,512',
     comments: 1820,
     riskType: 'misleading',
@@ -76,7 +76,7 @@ export const instagramPosts = [
     user: 'sarah.travels',
     avatarUrl: 'https://randomuser.me/api/portraits/women/68.jpg',
     imageUrl: 'https://picsum.photos/seed/ig-post-2/1080/1080',
-    caption: 'Sunset in Bali — taking a break from screens this week. ✨',
+    caption: 'Matahari terbenam di Bali — rehat sejenak dari layar minggu ini. ✨',
     likes: '1,204',
     comments: 38,
     riskType: 'reliable',
@@ -88,7 +88,7 @@ export const instagramPosts = [
     avatarUrl: 'https://randomuser.me/api/portraits/men/32.jpg',
     imageUrl: 'https://picsum.photos/seed/ig-post-3/1080/1080',
     caption:
-      'Opinion: Government policy is destroying our future! Share if you agree — they don\'t want you to see this.',
+      'Opini: Kebijakan pemerintah merusak masa depan kita! Bagikan kalau setuju — mereka tidak ingin kamu melihat ini.',
     likes: '8,930',
     comments: 612,
     riskType: 'bias',
@@ -99,9 +99,9 @@ export const instagramPosts = [
 export const whatsappMessages = [
   {
     id: 'wa1',
-    sender: 'Mom',
+    sender: 'Ibu',
     avatarUrl: 'https://randomuser.me/api/portraits/women/33.jpg',
-    text: 'Good morning everyone! Don\'t forget lunch on Sunday 🍲',
+    text: 'Selamat pagi semua! Jangan lupa makan siang hari Minggu 🍲',
     time: '08:12',
     forwarded: false,
     isMine: false,
@@ -110,10 +110,10 @@ export const whatsappMessages = [
   },
   {
     id: 'wa2',
-    sender: 'Uncle Budi',
+    sender: 'Om Budi',
     avatarUrl: 'https://randomuser.me/api/portraits/men/54.jpg',
     text:
-      'Forwarded many times: Government will give free money to every citizen if you click this link today! Hurry, only valid 24 hours 👉 bit.ly/free-money-id',
+      'Diteruskan banyak kali: Pemerintah akan memberi uang gratis ke setiap warga jika kamu klik tautan ini hari ini! Buruan, hanya berlaku 24 jam 👉 bit.ly/uang-gratis-id',
     time: '08:45',
     forwarded: true,
     isMine: false,
@@ -122,9 +122,9 @@ export const whatsappMessages = [
   },
   {
     id: 'wa3',
-    sender: 'Sister',
+    sender: 'Kakak',
     avatarUrl: 'https://randomuser.me/api/portraits/women/12.jpg',
-    text: 'Mom, I\'ll bring the cake 🎂',
+    text: 'Bu, aku bawa kuenya 🎂',
     time: '09:02',
     forwarded: false,
     isMine: false,
@@ -133,9 +133,9 @@ export const whatsappMessages = [
   },
   {
     id: 'wa4',
-    sender: 'You',
+    sender: 'Saya',
     avatarUrl: 'https://randomuser.me/api/portraits/men/11.jpg',
-    text: 'See you all on Sunday!',
+    text: 'Sampai ketemu hari Minggu!',
     time: '09:05',
     forwarded: false,
     isMine: true,
@@ -152,7 +152,7 @@ export const twitterPosts = [
     avatarUrl: 'https://randomuser.me/api/portraits/men/75.jpg',
     imageUrl: 'https://picsum.photos/seed/tw-post-1/1200/800',
     text:
-      'BREAKING: Famous public figure confirmed dead, according to viral accounts. Details unclear. RT to spread!',
+      'BERITA: Tokoh publik terkenal dikabarkan meninggal menurut akun-akun viral. Detail belum jelas. RT untuk sebarkan!',
     likes: '12.4K',
     retweets: '8.1K',
     riskType: 'low_evidence',
@@ -165,7 +165,7 @@ export const twitterPosts = [
     avatarUrl: 'https://randomuser.me/api/portraits/men/41.jpg',
     imageUrl: 'https://picsum.photos/seed/tw-post-2/1200/800',
     text:
-      'New national education budget announced today. Full breakdown and official statements in our article.',
+      'Anggaran pendidikan nasional baru diumumkan hari ini. Rincian lengkap dan pernyataan resmi ada di artikel kami.',
     likes: '2.1K',
     retweets: '540',
     riskType: 'reliable',
@@ -178,7 +178,7 @@ export const twitterPosts = [
     avatarUrl: 'https://randomuser.me/api/portraits/women/21.jpg',
     imageUrl: 'https://picsum.photos/seed/tw-post-3/1200/800',
     text:
-      'They are LYING to you again. Wake up! The other side will never tell you the real truth about this policy.',
+      'Mereka MEMBOHONGI kamu lagi. Bangun! Pihak lain tidak akan pernah memberi tahu kebenaran sebenarnya tentang kebijakan ini.',
     likes: '5.8K',
     retweets: '3.2K',
     riskType: 'bias',
@@ -194,7 +194,7 @@ export const tiktokPosts = [
     avatarUrl: 'https://randomuser.me/api/portraits/women/68.jpg',
     imageUrl: 'https://picsum.photos/seed/tk-post-1/1080/1920',
     caption:
-      'Quick tip: this kitchen drink can flush all toxins in 1 day. Save and share now!',
+      'Tips cepat: minuman dapur ini bisa membersihkan racun dalam 1 hari. Simpan dan bagikan sekarang!',
     likes: '45.8K',
     comments: '4,210',
     shares: '9,302',
@@ -208,7 +208,7 @@ export const tiktokPosts = [
     avatarUrl: 'https://randomuser.me/api/portraits/men/41.jpg',
     imageUrl: 'https://picsum.photos/seed/tk-post-2/1080/1920',
     caption:
-      'Today\'s recap: Parliament session highlights with source links in bio.',
+      'Rangkuman hari ini: Sorotan sidang parlemen dengan tautan sumber di bio.',
     likes: '8,114',
     comments: '320',
     shares: '412',
@@ -222,7 +222,7 @@ export const tiktokPosts = [
     avatarUrl: 'https://randomuser.me/api/portraits/men/32.jpg',
     imageUrl: 'https://picsum.photos/seed/tk-post-3/1080/1920',
     caption:
-      'They never tell you this side of the story. Repost before this gets buried!',
+      'Mereka tidak pernah memberi tahu sisi cerita ini. Repost sebelum ini dihilangkan!',
     likes: '21.3K',
     comments: '2,081',
     shares: '5,145',
@@ -232,83 +232,85 @@ export const tiktokPosts = [
 ];
 
 // Result text shown in the Checker pop-up based on riskType + contentCategory.
-// We deliberately avoid absolute words like "true" or "false".
+// We deliberately avoid absolute words like "benar" or "salah".
+// Wording is in plain Bahasa Indonesia — proposal §5.4 commits to Bahasa as a
+// design requirement, not a translation step.
 export const resultTemplates = {
   reliable: {
-    label: 'Most likely reliable',
+    label: 'Kemungkinan dapat dipercaya',
     color: '#16A34A',
     emoji: '✅',
     explanation:
-      'This content appears to come from a recognised source and the claim is supported by other references. Still, you should read beyond the headline before sharing.',
+      'Konten ini tampaknya berasal dari sumber yang dikenali dan klaimnya didukung oleh referensi lain. Tetap baca lebih dari sekadar judul sebelum membagikan.',
   },
   bias: {
-    label: 'Possible bias',
+    label: 'Mungkin ada bias',
     color: '#F59E0B',
     emoji: '⚖️',
     explanation:
-      'This content may contain emotional or one-sided language. It may not be completely false, but it may be trying to influence your opinion. Compare it with another source before sharing.',
+      'Konten ini mungkin mengandung bahasa yang emosional atau satu sisi. Belum tentu salah seluruhnya, tapi bisa jadi sedang mencoba memengaruhi opinimu. Bandingkan dengan sumber lain sebelum membagikan.',
   },
   low_evidence: {
-    label: 'Not enough evidence',
+    label: 'Bukti tidak cukup',
     color: '#6B7280',
     emoji: '❓',
     explanation:
-      'This claim does not provide clear evidence or reliable references. It is better to pause and check other sources before trusting it.',
+      'Klaim ini tidak menyertakan bukti atau referensi yang jelas. Lebih baik berhenti sejenak dan memeriksa sumber lain sebelum mempercayainya.',
   },
   misleading: {
-    label: 'Likely misleading',
+    label: 'Kemungkinan menyesatkan',
     color: '#DC2626',
     emoji: '⚠️',
     explanation:
-      'This content shows warning signs such as urgent language, unclear source, unsupported health claims, or suspicious links. Do not share it until you verify it through reliable sources.',
+      'Konten ini menunjukkan tanda peringatan seperti bahasa yang mendesak, sumber yang tidak jelas, klaim kesehatan yang tidak didukung, atau tautan mencurigakan. Jangan dibagikan sampai kamu memverifikasinya lewat sumber terpercaya.',
   },
 };
 
 // Reference suggestions vary by content category.
 export const referencesByCategory = {
   health: [
-    'Official health organisation source',
-    'Medical research database',
-    'Trusted news outlet',
+    'Sumber organisasi kesehatan resmi',
+    'Basis data penelitian medis',
+    'Media berita terpercaya',
   ],
   political: [
-    'Established news outlet',
-    'Official government source',
-    'Independent fact-checking source',
+    'Media berita yang sudah dikenal',
+    'Sumber resmi pemerintah',
+    'Sumber pemeriksa fakta independen',
   ],
   scam: [
-    'Official bank or government warning page',
-    'Cyber safety source',
-    'Trusted news report',
+    'Halaman peringatan resmi bank atau pemerintah',
+    'Sumber keamanan siber',
+    'Laporan dari media terpercaya',
   ],
   celebrity: [
-    'Official statement from the person or their team',
-    'Established news outlet',
-    'Independent fact-checking source',
+    'Pernyataan resmi dari orang tersebut atau timnya',
+    'Media berita yang sudah dikenal',
+    'Sumber pemeriksa fakta independen',
   ],
   news: [
-    'Established news outlet',
-    'Official government source',
-    'Independent fact-checking source',
+    'Media berita yang sudah dikenal',
+    'Sumber resmi pemerintah',
+    'Sumber pemeriksa fakta independen',
   ],
   lifestyle: [
-    'Original creator profile',
-    'Trusted lifestyle publication',
+    'Profil pembuat konten asli',
+    'Publikasi gaya hidup terpercaya',
   ],
   family: [
-    'Direct conversation with the person',
-    'Trusted community source',
+    'Percakapan langsung dengan orangnya',
+    'Sumber komunitas terpercaya',
   ],
 };
 
 // Generic literacy reminder questions used across all results.
 export const literacyQuestions = [
-  'Who posted this?',
-  'Is the source clear?',
-  'Is there evidence?',
-  'Are other reliable sources reporting the same thing?',
-  'Is the language trying to make you angry, afraid, or rushed?',
-  'Could this image, video, or caption be edited or taken out of context?',
+  'Siapa yang memposting ini?',
+  'Apakah sumbernya jelas?',
+  'Apakah ada bukti?',
+  'Apakah sumber terpercaya lain melaporkan hal yang sama?',
+  'Apakah bahasanya mencoba membuatmu marah, takut, atau terburu-buru?',
+  'Mungkinkah gambar, video, atau caption ini sudah diedit atau diambil di luar konteks?',
 ];
 
 // Category-specific source-first question used in the confirm pop-up.
@@ -316,17 +318,205 @@ export const literacyQuestions = [
 // (Finding 5: foreground source questions, not "judge the claim".)
 export const categoryQuestions = {
   health:
-    'Is this medical claim from a recognised health source (e.g. official health body, doctor, hospital)?',
+    'Apakah klaim medis ini berasal dari sumber kesehatan yang dikenali (mis. lembaga kesehatan resmi, dokter, rumah sakit)?',
   political:
-    'Is this from an established outlet — or could it be one-sided framing?',
+    'Apakah ini dari media yang sudah dikenal — atau mungkinkah ini pembingkaian satu sisi?',
   scam:
-    'Is the link or instruction from an official bank or government source you can verify?',
+    'Apakah tautan atau instruksinya berasal dari bank atau pemerintah resmi yang bisa kamu verifikasi?',
   celebrity:
-    'Has the person, their team, or an established outlet actually confirmed this?',
+    'Apakah orang tersebut, timnya, atau media yang sudah dikenal benar-benar mengonfirmasinya?',
   news:
-    'Is this from an outlet you recognise (e.g. Kompas, Detik, IDN, CNN Indonesia)?',
+    'Apakah ini dari media yang kamu kenali (mis. Kompas, Detik, IDN, CNN Indonesia)?',
   lifestyle:
-    'Is this the original creator, or has the post been reshared without context?',
+    'Apakah ini dari pembuat aslinya, atau unggahan ini sudah dibagikan ulang tanpa konteks?',
   family:
-    'Was this written by the person, or forwarded from somewhere else?',
+    'Apakah ini ditulis oleh orangnya, atau diteruskan dari tempat lain?',
 };
+
+// -------------------------------------------------------------------------
+// Source-verification layer (proposal §5.4).
+//
+// The verdict labels are deliberately soft and avoid "true"/"false". The
+// fallback verdict for unknown sources is "Sumber belum dikonfirmasi" so the
+// design never silently invents a verdict it cannot justify.
+// -------------------------------------------------------------------------
+export const verificationLabels = {
+  confirmed: {
+    id: 'Sumber dikonfirmasi',
+    color: '#16A34A',
+  },
+  opinion: {
+    id: 'Sumber teridentifikasi sebagai opini',
+    color: '#F59E0B',
+  },
+  personal: {
+    id: 'Konten pribadi, bukan klaim faktual',
+    color: '#6B7280',
+  },
+  unconfirmed: {
+    id: 'Sumber belum dikonfirmasi',
+    color: '#DC2626',
+  },
+};
+
+// Each key matches the `source` string produced by App.getSelectedContent().
+// Records contain the simulated "outlet's own profile" view plus
+// corroboration from other recognised Indonesian outlets.
+const sourceVerificationDb = {
+  // ---------- Instagram ----------
+  'wellness_daily_id': {
+    accountName: '@wellness_daily_id',
+    accountType: 'Akun lifestyle / influencer',
+    profileSummary:
+      'Akun ini tidak terdaftar sebagai sumber kesehatan resmi. Tidak ada tautan ke profesional medis atau institusi kesehatan.',
+    corroboration: [
+      { outlet: 'Kementerian Kesehatan RI', status: 'Tidak menyebut klaim ini' },
+      { outlet: 'Kompas Health', status: 'Tidak ada laporan serupa' },
+      { outlet: 'CNN Indonesia', status: 'Tidak ada laporan' },
+    ],
+    verdict: 'unconfirmed',
+  },
+  'sarah.travels': {
+    accountName: '@sarah.travels',
+    accountType: 'Akun pribadi (traveller)',
+    profileSummary:
+      'Akun pribadi. Unggahan berisi foto perjalanan, bukan klaim berita atau kesehatan.',
+    corroboration: [
+      { outlet: 'Profil pengguna', status: 'Konsisten dengan unggahan pribadi lain' },
+    ],
+    verdict: 'personal',
+  },
+  'politik_now': {
+    accountName: '@politik_now',
+    accountType: 'Akun komentar politik',
+    profileSummary:
+      'Halaman yang fokus pada opini politik. Bahasa cenderung emosional dan satu sisi.',
+    corroboration: [
+      { outlet: 'Detik', status: 'Berita berbeda nadanya' },
+      { outlet: 'Kompas', status: 'Berita berbeda nadanya' },
+    ],
+    verdict: 'opinion',
+  },
+  // ---------- WhatsApp ----------
+  'Ibu': {
+    accountName: 'Ibu',
+    accountType: 'Kontak pribadi (keluarga)',
+    profileSummary:
+      'Pesan langsung dari kontak yang kamu kenal. Bukan klaim berita.',
+    corroboration: [
+      { outlet: 'Percakapan langsung', status: 'Pesan pribadi keluarga' },
+    ],
+    verdict: 'personal',
+  },
+  'Om Budi (diteruskan)': {
+    accountName: 'Om Budi (diteruskan)',
+    accountType: 'Pesan diteruskan dari sumber tidak jelas',
+    profileSummary:
+      'Pesan diteruskan banyak kali. Tautan tidak menuju situs resmi pemerintah atau bank.',
+    corroboration: [
+      { outlet: 'Kementerian Keuangan RI', status: 'Tidak ada program seperti ini' },
+      { outlet: 'OJK', status: 'Memperingatkan modus penipuan serupa' },
+      { outlet: 'CNN Indonesia', status: 'Tidak ada laporan' },
+    ],
+    verdict: 'unconfirmed',
+  },
+  'Kakak': {
+    accountName: 'Kakak',
+    accountType: 'Kontak pribadi (keluarga)',
+    profileSummary:
+      'Pesan langsung dari kontak yang kamu kenal. Bukan klaim berita.',
+    corroboration: [
+      { outlet: 'Percakapan langsung', status: 'Pesan pribadi keluarga' },
+    ],
+    verdict: 'personal',
+  },
+  // ---------- X / Twitter ----------
+  'ViralUpdates24 @viralupdates24': {
+    accountName: '@viralupdates24',
+    accountType: 'Akun "viral updates" tanpa verifikasi',
+    profileSummary:
+      'Akun ini tidak memiliki centang verifikasi. Banyak unggahan bersifat sensasional dan tidak menyertakan tautan resmi.',
+    corroboration: [
+      { outlet: 'Kompas', status: 'Tidak ada laporan' },
+      { outlet: 'Detik', status: 'Tidak ada laporan' },
+      { outlet: 'CNN Indonesia', status: 'Tidak ada laporan' },
+    ],
+    verdict: 'unconfirmed',
+  },
+  'KompasNews @kompascom': {
+    accountName: '@kompascom',
+    accountType: 'Outlet berita nasional terverifikasi',
+    profileSummary:
+      'Akun resmi Kompas. Artikel yang sama juga terbit di kompas.com.',
+    corroboration: [
+      { outlet: 'kompas.com', status: 'Artikel resmi tersedia' },
+      { outlet: 'Detik', status: 'Melaporkan kejadian yang sama' },
+      { outlet: 'CNN Indonesia', status: 'Melaporkan kejadian yang sama' },
+    ],
+    verdict: 'confirmed',
+  },
+  'OpinionDaily @opiniondaily': {
+    accountName: '@opiniondaily',
+    accountType: 'Akun opini / komentar politik',
+    profileSummary:
+      'Akun yang fokus pada komentar politik. Bahasa emosional dan satu sisi.',
+    corroboration: [
+      { outlet: 'Kompas', status: 'Berita berbeda nadanya' },
+      { outlet: 'CNN Indonesia', status: 'Tidak menggunakan kerangka serupa' },
+    ],
+    verdict: 'opinion',
+  },
+  // ---------- TikTok ----------
+  'health_hacks.id @health_hacks.id': {
+    accountName: '@health_hacks.id',
+    accountType: 'Akun tips kesehatan tanpa verifikasi',
+    profileSummary:
+      'Tidak terdaftar sebagai akun resmi kesehatan. Tidak ada profesional medis yang tertera di profil.',
+    corroboration: [
+      { outlet: 'Kementerian Kesehatan RI', status: 'Tidak menyebut klaim ini' },
+      { outlet: 'Kompas Health', status: 'Tidak ada laporan serupa' },
+    ],
+    verdict: 'unconfirmed',
+  },
+  'newsminute.id @newsminute.id': {
+    accountName: '@newsminute.id',
+    accountType: 'Akun ringkasan berita',
+    profileSummary:
+      'Akun menyertakan tautan ke artikel asli pada profil. Cocokkan dengan outlet sumber sebelum membagikan.',
+    corroboration: [
+      { outlet: 'Kompas', status: 'Melaporkan kejadian yang sama' },
+      { outlet: 'Detik', status: 'Melaporkan kejadian yang sama' },
+    ],
+    verdict: 'confirmed',
+  },
+  'hottakesdaily @hottakesdaily': {
+    accountName: '@hottakesdaily',
+    accountType: 'Akun komentar politik',
+    profileSummary:
+      'Akun fokus pada opini politik. Mendorong "repost" dengan bahasa emosional.',
+    corroboration: [
+      { outlet: 'Kompas', status: 'Berita berbeda nadanya' },
+      { outlet: 'CNN Indonesia', status: 'Tidak ada laporan' },
+    ],
+    verdict: 'opinion',
+  },
+};
+
+// Look up a verification record for a given source string.
+// Falls back to a neutral "Sumber belum dikonfirmasi" record so the design
+// never invents a verdict it cannot justify (proposal §5.4 signature line).
+export function lookupSourceVerification(sourceString) {
+  if (sourceString && sourceVerificationDb[sourceString]) {
+    return sourceVerificationDb[sourceString];
+  }
+  return {
+    accountName: sourceString || 'Sumber tidak dikenali',
+    accountType: 'Tidak ditemukan di basis data sumber',
+    profileSummary:
+      'Kami tidak menemukan profil resmi yang cocok untuk sumber ini. Periksa langsung ke media atau lembaga yang disebutkan.',
+    corroboration: [
+      { outlet: 'Tidak ada media yang dicocokkan', status: '—' },
+    ],
+    verdict: 'unconfirmed',
+  };
+}

@@ -8,17 +8,21 @@
 // Instead we render an absolutely-positioned overlay that stays inside the
 // phone screen.
 
-import React from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import ResultCard from './ResultCard';
+import SourceVerificationModal from './SourceVerificationModal';
 import { categoryQuestions } from '../data/dummyContent';
 
 export default function CheckerModal({
   visible,
   selectedContent,
-  step, // 'confirm' or 'result'
-  onConfirm,
+  step, // 'confirm' | 'source' | 'result'
+  onCheckSource, // confirm -> source
+  onSeeResult, // source -> result
+  onBackToConfirm, // source -> confirm
   onClose,
+  showSourceTooltip,
+  onDismissSourceTooltip,
 }) {
   // When not visible, render nothing.
   if (!visible) return null;
@@ -37,34 +41,34 @@ export default function CheckerModal({
           <View style={{ padding: 20 }}>
             {/* Source-first headline (Finding 5). The first thing the user sees
                 is the *source*, not a verdict. */}
-            <Text style={styles.eyebrow}>Pause — before you share</Text>
-            <Text style={styles.title}>Who posted this?</Text>
+            <Text style={styles.eyebrow}>Berhenti — sebelum kamu membagikan</Text>
+            <Text style={styles.title}>Siapa yang memposting ini?</Text>
 
             {selectedContent ? (
               <>
                 {/* Big source name — most prominent element */}
                 <View style={styles.sourceBox}>
-                  <Text style={styles.sourceLabel}>Source</Text>
+                  <Text style={styles.sourceLabel}>Sumber</Text>
                   <Text style={styles.sourceName}>
-                    {selectedContent.source || 'Unknown'}
+                    {selectedContent.source || 'Tidak diketahui'}
                   </Text>
                   <Text style={styles.sourceMeta}>
-                    Seen on {selectedContent.appName}
+                    Dilihat di {selectedContent.appName}
                   </Text>
                 </View>
 
                 {/* Category-specific source question (Finding 3) */}
                 <View style={styles.questionBox}>
-                  <Text style={styles.questionLabel}>Ask yourself</Text>
+                  <Text style={styles.questionLabel}>Tanyakan pada diri sendiri</Text>
                   <Text style={styles.questionText}>
                     {categoryQuestions[selectedContent.contentCategory] ||
-                      'Is the source clear and trustworthy?'}
+                      'Apakah sumbernya jelas dan dapat dipercaya?'}
                   </Text>
                 </View>
 
                 {/* The content itself comes second, not first */}
                 <View style={styles.previewBox}>
-                  <Text style={styles.previewLabel}>The content</Text>
+                  <Text style={styles.previewLabel}>Konten</Text>
                   <Text style={styles.previewText} numberOfLines={3}>
                     “{selectedContent.preview}”
                   </Text>
@@ -72,16 +76,16 @@ export default function CheckerModal({
               </>
             ) : (
               <View style={styles.previewBox}>
-                <Text style={styles.previewLabel}>No content selected</Text>
+                <Text style={styles.previewLabel}>Tidak ada konten yang dipilih</Text>
                 <Text style={styles.previewText}>
-                  Tap a post or message in the app first, then tap the bubble.
+                  Ketuk unggahan atau pesan di aplikasi dulu, lalu ketuk bulatan.
                 </Text>
               </View>
             )}
 
             <View style={styles.buttonRow}>
               <Pressable style={styles.secondaryBtn} onPress={onClose}>
-                <Text style={styles.secondaryText}>Cancel</Text>
+                <Text style={styles.secondaryText}>Batal</Text>
               </Pressable>
               <Pressable
                 style={[
@@ -89,12 +93,22 @@ export default function CheckerModal({
                   !selectedContent && styles.primaryBtnDisabled,
                 ]}
                 disabled={!selectedContent}
-                onPress={onConfirm}
+                onPress={onCheckSource}
               >
-                <Text style={styles.primaryText}>See full check</Text>
+                <Text style={styles.primaryText}>Periksa sumber</Text>
               </Pressable>
             </View>
           </View>
+        )}
+
+        {step === 'source' && (
+          <SourceVerificationModal
+            selectedContent={selectedContent}
+            onSeeResult={onSeeResult}
+            onBack={onBackToConfirm}
+            showTooltip={showSourceTooltip}
+            onDismissTooltip={onDismissSourceTooltip}
+          />
         )}
 
         {step === 'result' && selectedContent && (

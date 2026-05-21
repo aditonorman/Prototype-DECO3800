@@ -34,45 +34,45 @@ function buildSectionChecks(riskType) {
       return {
         source: {
           iconUri: checkerIcons.section.good,
-          text: 'Source appears recognised.',
+          text: 'Sumber tampak dikenali.',
         },
         evidence: {
           iconUri: checkerIcons.section.good,
-          text: 'Claim is supported by other references.',
+          text: 'Klaim didukung oleh referensi lain.',
         },
         bias: {
           iconUri: checkerIcons.section.warn,
-          text: 'Always read beyond the headline before sharing.',
+          text: 'Tetap baca lebih dari sekadar judul sebelum membagikan.',
         },
       };
     case 'bias':
       return {
         source: {
           iconUri: checkerIcons.section.warn,
-          text: 'Source may have a strong viewpoint.',
+          text: 'Sumber mungkin memiliki sudut pandang yang kuat.',
         },
         evidence: {
           iconUri: checkerIcons.section.warn,
-          text: 'Evidence is partial or one-sided.',
+          text: 'Bukti tidak lengkap atau satu sisi.',
         },
         bias: {
           iconUri: checkerIcons.section.warn,
-          text: 'Language is emotional. It may try to influence your opinion.',
+          text: 'Bahasanya emosional. Mungkin mencoba memengaruhi opinimu.',
         },
       };
     case 'low_evidence':
       return {
         source: {
           iconUri: checkerIcons.section.warn,
-          text: 'Source is unclear or unverified.',
+          text: 'Sumber tidak jelas atau belum terverifikasi.',
         },
         evidence: {
           iconUri: checkerIcons.section.warn,
-          text: 'No clear evidence or references.',
+          text: 'Tidak ada bukti atau referensi yang jelas.',
         },
         bias: {
           iconUri: checkerIcons.section.info,
-          text: 'Tone is rushed or based on rumour.',
+          text: 'Nadanya terburu-buru atau berdasarkan rumor.',
         },
       };
     case 'misleading':
@@ -80,15 +80,15 @@ function buildSectionChecks(riskType) {
       return {
         source: {
           iconUri: checkerIcons.section.bad,
-          text: 'Source is unknown or suspicious.',
+          text: 'Sumber tidak dikenali atau mencurigakan.',
         },
         evidence: {
           iconUri: checkerIcons.section.bad,
-          text: 'Claim is unsupported (e.g. unproven health/scam claim).',
+          text: 'Klaim tidak didukung (mis. klaim kesehatan yang belum terbukti atau penipuan).',
         },
         bias: {
           iconUri: checkerIcons.section.bad,
-          text: 'Uses urgent, emotional, or pressuring language.',
+          text: 'Menggunakan bahasa yang mendesak, emosional, atau menekan.',
         },
       };
   }
@@ -97,14 +97,14 @@ function buildSectionChecks(riskType) {
 function buildNextAction(riskType) {
   switch (riskType) {
     case 'reliable':
-      return 'You may share, but consider adding context or the original source.';
+      return 'Boleh dibagikan, tapi pertimbangkan menambahkan konteks atau sumber aslinya.';
     case 'bias':
-      return 'Compare with another source before sharing. Notice the framing.';
+      return 'Bandingkan dengan sumber lain sebelum membagikan. Perhatikan cara pembingkaiannya.';
     case 'low_evidence':
-      return 'Pause. Wait for confirmation from a reliable source before sharing.';
+      return 'Berhenti dulu. Tunggu konfirmasi dari sumber terpercaya sebelum membagikan.';
     case 'misleading':
     default:
-      return 'Do not share. Verify with a trusted source first.';
+      return 'Jangan dibagikan. Verifikasi dengan sumber terpercaya dulu.';
   }
 }
 
@@ -122,29 +122,29 @@ export default function ResultCard({ content, onClose }) {
       style={styles.scroll}
       contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 30 }}
     >
-      {/* Big judgement label */}
+      {/* Big judgement label (plain Bahasa Indonesia — proposal §5.4). */}
       <View style={[styles.labelBox, { backgroundColor: template.color }]}>
         <Image source={{ uri: statusIcon }} style={styles.labelIcon} />
         <View style={{ flex: 1 }}>
           <Text style={styles.labelText}>{template.label}</Text>
-          <Text style={styles.labelSub}>Final decision remains with you.</Text>
+          <Text style={styles.labelSub}>Keputusan akhir tetap di tanganmu.</Text>
         </View>
       </View>
 
       <Text style={styles.explanation}>{template.explanation}</Text>
 
       {/* Section: Source check */}
-      <Section title="Source check" item={checks.source} />
+      <Section title="Pemeriksaan sumber" item={checks.source} />
 
       {/* Section: Evidence check */}
-      <Section title="Evidence check" item={checks.evidence} />
+      <Section title="Pemeriksaan bukti" item={checks.evidence} />
 
       {/* Section: Bias / emotional language check */}
-      <Section title="Bias / emotional language" item={checks.bias} />
+      <Section title="Bias / bahasa emosional" item={checks.bias} />
 
       {/* Section: Digital literacy reminder */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Digital Literacy Reminder</Text>
+        <Text style={styles.sectionTitle}>Pengingat Literasi Digital</Text>
         {literacyQuestions.map((q, i) => (
           <Text key={i} style={styles.bullet}>
             • {q}
@@ -154,7 +154,7 @@ export default function ResultCard({ content, onClose }) {
 
       {/* Section: References */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Suggested references to compare</Text>
+        <Text style={styles.sectionTitle}>Referensi yang disarankan untuk dibandingkan</Text>
         {refs.map((r, i) => (
           <View key={i} style={styles.refRow}>
             <Image source={{ uri: checkerIcons.link }} style={styles.refIcon} />
@@ -165,18 +165,19 @@ export default function ResultCard({ content, onClose }) {
 
       {/* Section: Recommended next action */}
       <View style={[styles.section, styles.actionSection]}>
-        <Text style={styles.sectionTitle}>Recommended next action</Text>
+        <Text style={styles.sectionTitle}>Tindakan selanjutnya yang disarankan</Text>
         <Text style={styles.actionText}>{nextAction}</Text>
       </View>
 
       {/* Soft reminder line */}
       <Text style={styles.disclaimer}>
-        This tool is a guide. It does not decide truth for you. Check before sharing.
+        Alat ini hanyalah panduan. Alat ini tidak memutuskan kebenaran untukmu.
+        Periksa dulu sebelum membagikan.
       </Text>
 
       {/* Close button */}
       <Pressable style={styles.closeBtn} onPress={onClose}>
-        <Text style={styles.closeText}>Close</Text>
+        <Text style={styles.closeText}>Tutup</Text>
       </Pressable>
     </ScrollView>
   );

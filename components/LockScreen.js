@@ -14,12 +14,12 @@ export default function LockScreen({ onUnlock }) {
     return () => clearInterval(interval);
   }, []);
 
-  const timeString = now.toLocaleTimeString([], {
+  const timeString = now.toLocaleTimeString('id-ID', {
     hour: '2-digit',
     minute: '2-digit',
   });
 
-  const dateString = now.toLocaleDateString([], {
+  const dateString = now.toLocaleDateString('id-ID', {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
@@ -46,14 +46,14 @@ export default function LockScreen({ onUnlock }) {
           <Text style={styles.notifTitle}>Legitimate Checker</Text>
         </View>
         <Text style={styles.notifBody}>
-          Pause. Check. Think before sharing.
+          Berhenti. Periksa. Pikir dulu sebelum membagikan.
         </Text>
       </View>
 
       {/* Swipe-up button (just a tap in this prototype) */}
       <Pressable style={styles.unlockButton} onPress={onUnlock}>
         <Text style={styles.unlockArrow}>⌃</Text>
-        <Text style={styles.unlockText}>Swipe up to unlock</Text>
+        <Text style={styles.unlockText}>Geser ke atas untuk membuka</Text>
       </Pressable>
     </View>
   );

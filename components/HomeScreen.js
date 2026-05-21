@@ -18,11 +18,11 @@ export default function HomeScreen({ onOpenApp, checkerActive }) {
 
       {/* Greeting */}
       <View style={styles.greeting}>
-        <Text style={styles.greetingTitle}>Good day</Text>
+        <Text style={styles.greetingTitle}>Selamat datang</Text>
         <Text style={styles.greetingSub}>
           {checkerActive
-            ? 'Checker is active — bubble will appear inside apps.'
-            : 'Open Legitimate Checker to begin.'}
+            ? 'Checker aktif — bulatan akan muncul di dalam aplikasi.'
+            : 'Buka Legitimate Checker untuk memulai.'}
         </Text>
       </View>
 
@@ -60,9 +60,9 @@ export default function HomeScreen({ onOpenApp, checkerActive }) {
         />
       </View>
 
-      {/* Dock */}
+      {/* Hint dock */}
       <View style={styles.dock}>
-        <Text style={styles.dockHint}>Tap an app to open</Text>
+        <Text style={styles.dockHint}>Ketuk aplikasi untuk membuka</Text>
       </View>
     </View>
   );

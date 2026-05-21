@@ -2,7 +2,6 @@
 // Fake "Family Group" chat. Includes one suspicious forwarded message.
 // Each non-mine message is tappable so it can be selected for the Checker.
 
-import React from 'react';
 import {
   View,
   Text,
@@ -25,7 +24,7 @@ export default function FakeWhatsApp({
       {/* Top bar */}
       <View style={styles.topBar}>
         <Pressable onPress={onBackHome} style={styles.backBtn}>
-          <Text style={styles.backText}>← Home</Text>
+          <Text style={styles.backText}>← Beranda</Text>
         </Pressable>
         <View style={{ flex: 1 }}>
           <View style={styles.groupTitleRow}>
@@ -34,9 +33,9 @@ export default function FakeWhatsApp({
               style={styles.appLogo}
               resizeMode="contain"
             />
-            <Text style={styles.groupName}>Family Group</Text>
+            <Text style={styles.groupName}>Grup Keluarga</Text>
           </View>
-          <Text style={styles.groupSub}>Mom, Dad, Sister, Uncle Budi, You</Text>
+          <Text style={styles.groupSub}>Ibu, Ayah, Kakak, Om Budi, Saya</Text>
         </View>
       </View>
 
@@ -81,7 +80,7 @@ export default function FakeWhatsApp({
                       source={{ uri: uiIcons.light.forward }}
                       style={styles.forwardedIcon}
                     />
-                    <Text style={styles.forwarded}>Forwarded many times</Text>
+                    <Text style={styles.forwarded}>Diteruskan banyak kali</Text>
                   </View>
                 )}
 
@@ -91,7 +90,7 @@ export default function FakeWhatsApp({
                 {!isMine && (
                   <View style={styles.bubbleActions}>
                     <Text style={styles.tapHint}>
-                      {isSelected ? '✓ Selected' : 'Tap to select'}
+                      {isSelected ? '✓ Dipilih' : 'Ketuk untuk memilih'}
                     </Text>
                     {/* Forward button — Finding 2: pause at the moment of sharing. */}
                     <Pressable
@@ -110,7 +109,7 @@ export default function FakeWhatsApp({
                         source={{ uri: uiIcons.dark.forward }}
                         style={styles.forwardBtnIcon}
                       />
-                      <Text style={styles.forwardBtnText}>Forward</Text>
+                      <Text style={styles.forwardBtnText}>Teruskan</Text>
                     </Pressable>
                   </View>
                 )}
