@@ -2,7 +2,7 @@
 // Full-screen vertical pager to better match TikTok's interaction model.
 // Tapping a page selects the current video for the Checker.
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   View,
   Text,
@@ -17,7 +17,6 @@ export default function FakeTikTok({
   onBackHome,
   onSelectPost,
   onShareAttempt,
-  selectedPostId,
   checkerActive,
 }) {
   const [pageHeight, setPageHeight] = useState(0);
@@ -25,11 +24,37 @@ export default function FakeTikTok({
 
   const feedData = useMemo(() => tiktokPosts, []);
 
+  // TikTok shows one video per screen, so the bubble can act on the visible
+  // video directly. We auto-select whichever video is currently active —
+  // usability feedback: requiring a separate selection tap added friction.
+  useEffect(() => {
+    const active = feedData[activeIndex];
+    if (active && onSelectPost) {
+      onSelectPost(active.id);
+    }
+  }, [activeIndex, feedData, onSelectPost]);
+
   function handleSnapEnd(event) {
     if (!pageHeight) return;
     const offsetY = event.nativeEvent.contentOffset.y;
     const nextIndex = Math.round(offsetY / pageHeight);
     setActiveIndex(nextIndex);
+  }
+
+  // Continuous tracker — `onMomentumScrollEnd` doesn't fire reliably on web
+  // (or on slow drags that never trigger momentum), so this watches every
+  // scroll event and bumps activeIndex as soon as a new video is centred.
+  function handleScroll(event) {
+    if (!pageHeight) return;
+    const offsetY = event.nativeEvent.contentOffset.y;
+    const nextIndex = Math.round(offsetY / pageHeight);
+    if (
+      nextIndex !== activeIndex &&
+      nextIndex >= 0 &&
+      nextIndex < feedData.length
+    ) {
+      setActiveIndex(nextIndex);
+    }
   }
 
   function getSongLabel(video, index) {
@@ -42,8 +67,6 @@ export default function FakeTikTok({
   }
 
   function renderVideo({ item, index }) {
-    const isSelected = selectedPostId === item.id;
-
     return (
       <Pressable
         onPress={() => onSelectPost(item.id)}
@@ -65,11 +88,14 @@ export default function FakeTikTok({
               <Image source={{ uri: uiIcons.dark.music }} style={styles.audioIcon} />
               <Text style={styles.audioLine}>{getSongLabel(item, index)}</Text>
             </View>
-            <Text style={[styles.selectHint, isSelected && styles.selectHintActive]}>
-              {isSelected
-                ? '✓ Dipilih untuk Legitimate Checker'
-                : 'Ketuk video untuk memilih untuk Legitimate Checker'}
-            </Text>
+            {/* Only show the LC hint when the Checker is actually active.
+                The video is auto-selected on scroll, so the user just needs
+                to tap the floating bubble — no extra select step required. */}
+            {checkerActive && (
+              <Text style={[styles.selectHint, styles.selectHintActive]}>
+                ✓ Video ini sudah siap — ketuk bulatan LC untuk memeriksa
+              </Text>
+            )}
           </View>
 
           <View style={styles.actionRail}>
@@ -133,6 +159,8 @@ export default function FakeTikTok({
           decelerationRate="fast"
           disableIntervalMomentum
           showsVerticalScrollIndicator={false}
+          onScroll={handleScroll}
+          scrollEventThrottle={32}
           onMomentumScrollEnd={handleSnapEnd}
           getItemLayout={(_, index) => ({
             length: pageHeight,

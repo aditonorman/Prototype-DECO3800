@@ -59,11 +59,24 @@ export default function App() {
   // Whether the user has activated the Checker.
   const [checkerActive, setCheckerActive] = useState(false);
 
+  // Which screens the user has temporarily dismissed the floating bubble on.
+  // Bubble is re-shown when they move to a different social-media screen
+  // (usability testing finding: bubble should be dismissible without
+  // permanently disabling it).
+  const [dismissedOn, setDismissedOn] = useState({});
+
   // Which onboarding flow the user is in (proposal §5.2.1–§5.2.3).
   //   'unset'    — first time, show the OnboardingEntry chooser.
   //   'assisted' — State A, existing CheckerApp flow.
   //   'solo'     — State B, SoloOnboarding flow.
   const [onboardingPath, setOnboardingPath] = useState('unset');
+
+  // Visual mode picked at onboarding. Drives a separate "big, simpler"
+  // interface for elderly users so we never have to ask "who is this for?"
+  // again after the entry chooser.
+  //   'self'   — standard interface for digitally-literate users.
+  //   'family' — large fonts, bigger buttons, simpler layouts for elderly users.
+  const [interfaceMode, setInterfaceMode] = useState('self');
 
   // One-time tooltip explaining the source-verification step. Shown the first
   // time a solo-onboarded user reaches the source step.
@@ -156,12 +169,21 @@ export default function App() {
     setScreen(appName);
     rememberTab(appName);
     setRecentsVisible(false);
+    // Bubble dismissal clears on navigation, so the bubble reappears.
+    setDismissedOn({});
   }
 
   function goHome() {
     setScreen('home');
     setSelectedPostId(null);
     setRecentsVisible(false);
+    setDismissedOn({});
+    // If the user left the onboarding without activating the Checker, reset
+    // the path so the next visit starts fresh at the entry chooser instead
+    // of dropping them back into the same half-completed flow.
+    if (!checkerActive) {
+      setOnboardingPath('unset');
+    }
   }
 
   function activateChecker() {
@@ -169,11 +191,14 @@ export default function App() {
   }
 
   // Onboarding path handlers — picked from the entry chooser.
-  function pickAssistedOnboarding() {
+  // The mode argument is the visible interface mode that will follow.
+  function pickAssistedOnboarding(mode = 'self') {
+    setInterfaceMode(mode);
     setOnboardingPath('assisted');
   }
 
-  function pickSoloOnboarding() {
+  function pickSoloOnboarding(mode = 'family') {
+    setInterfaceMode(mode);
     setOnboardingPath('solo');
   }
 
@@ -186,6 +211,11 @@ export default function App() {
     setRecentsVisible(false);
     setModalStep('confirm');
     setModalVisible(true);
+  }
+
+  // Bubble X-button — hide bubble until the user moves to a different screen.
+  function dismissBubble() {
+    setDismissedOn((prev) => ({ ...prev, [screen]: true }));
   }
 
   // Finding 2: prompt verification at the moment of sharing.
@@ -265,12 +295,15 @@ export default function App() {
     setSelectedPostId(null);
     rememberTab(tabKey);
     setRecentsVisible(false);
+    setDismissedOn({});
   }
 
   // -- Render --------------------------------------------------------------
 
-  // Decide whether to show the floating bubble.
-  const showBubble = checkerActive && SOCIAL_SCREENS.includes(screen);
+  // Decide whether to show the floating bubble. Hidden while temporarily
+  // dismissed on the current screen.
+  const showBubble =
+    checkerActive && SOCIAL_SCREENS.includes(screen) && !dismissedOn[screen];
   const tabItems = useMemo(
     () => recentTabs.filter((tab) => TAB_META[tab]).map((tab) => ({
       key: tab,
@@ -318,6 +351,7 @@ export default function App() {
           onActivate={activateChecker}
           onBackHome={goHome}
           checkerActive={checkerActive}
+          interfaceMode={interfaceMode}
         />
       );
     }
@@ -392,7 +426,9 @@ export default function App() {
             {showBubble && (
               <FloatingCheckerBubble
                 onPress={openCheckerModal}
+                onDismiss={dismissBubble}
                 bottomOffset={SAMSUNG_FOOTER_HEIGHT + 14}
+                interfaceMode={interfaceMode}
               />
             )}
 
@@ -404,6 +440,7 @@ export default function App() {
               onSeeResult={goToResultStep}
               onBackToConfirm={goBackToConfirmStep}
               onClose={closeModal}
+              interfaceMode={interfaceMode}
               showSourceTooltip={
                 onboardingPath === 'solo' && !sourceTooltipShown
               }

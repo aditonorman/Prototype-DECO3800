@@ -23,7 +23,9 @@ export default function CheckerModal({
   onClose,
   showSourceTooltip,
   onDismissSourceTooltip,
+  interfaceMode = 'self',
 }) {
+  const isFamilyMode = interfaceMode === 'family';
   // When not visible, render nothing.
   if (!visible) return null;
 
@@ -41,26 +43,34 @@ export default function CheckerModal({
           <View style={{ padding: 20 }}>
             {/* Source-first headline (Finding 5). The first thing the user sees
                 is the *source*, not a verdict. */}
-            <Text style={styles.eyebrow}>Berhenti — sebelum kamu membagikan</Text>
-            <Text style={styles.title}>Siapa yang memposting ini?</Text>
+            <Text style={[styles.eyebrow, isFamilyMode && styles.eyebrowLg]}>
+              Berhenti — sebelum kamu membagikan
+            </Text>
+            <Text style={[styles.title, isFamilyMode && styles.titleLg]}>
+              Siapa yang memposting ini?
+            </Text>
 
             {selectedContent ? (
               <>
                 {/* Big source name — most prominent element */}
                 <View style={styles.sourceBox}>
-                  <Text style={styles.sourceLabel}>Sumber</Text>
-                  <Text style={styles.sourceName}>
+                  <Text style={[styles.sourceLabel, isFamilyMode && styles.sourceLabelLg]}>
+                    Sumber
+                  </Text>
+                  <Text style={[styles.sourceName, isFamilyMode && styles.sourceNameLg]}>
                     {selectedContent.source || 'Tidak diketahui'}
                   </Text>
-                  <Text style={styles.sourceMeta}>
+                  <Text style={[styles.sourceMeta, isFamilyMode && styles.sourceMetaLg]}>
                     Dilihat di {selectedContent.appName}
                   </Text>
                 </View>
 
                 {/* Category-specific source question (Finding 3) */}
                 <View style={styles.questionBox}>
-                  <Text style={styles.questionLabel}>Tanyakan pada diri sendiri</Text>
-                  <Text style={styles.questionText}>
+                  <Text style={[styles.questionLabel, isFamilyMode && styles.questionLabelLg]}>
+                    Tanyakan pada diri sendiri
+                  </Text>
+                  <Text style={[styles.questionText, isFamilyMode && styles.questionTextLg]}>
                     {categoryQuestions[selectedContent.contentCategory] ||
                       'Apakah sumbernya jelas dan dapat dipercaya?'}
                   </Text>
@@ -68,34 +78,49 @@ export default function CheckerModal({
 
                 {/* The content itself comes second, not first */}
                 <View style={styles.previewBox}>
-                  <Text style={styles.previewLabel}>Konten</Text>
-                  <Text style={styles.previewText} numberOfLines={3}>
+                  <Text style={[styles.previewLabel, isFamilyMode && styles.previewLabelLg]}>
+                    Konten
+                  </Text>
+                  <Text
+                    style={[styles.previewText, isFamilyMode && styles.previewTextLg]}
+                    numberOfLines={3}
+                  >
                     “{selectedContent.preview}”
                   </Text>
                 </View>
               </>
             ) : (
               <View style={styles.previewBox}>
-                <Text style={styles.previewLabel}>Tidak ada konten yang dipilih</Text>
-                <Text style={styles.previewText}>
+                <Text style={[styles.previewLabel, isFamilyMode && styles.previewLabelLg]}>
+                  Tidak ada konten yang dipilih
+                </Text>
+                <Text style={[styles.previewText, isFamilyMode && styles.previewTextLg]}>
                   Ketuk unggahan atau pesan di aplikasi dulu, lalu ketuk bulatan.
                 </Text>
               </View>
             )}
 
             <View style={styles.buttonRow}>
-              <Pressable style={styles.secondaryBtn} onPress={onClose}>
-                <Text style={styles.secondaryText}>Batal</Text>
+              <Pressable
+                style={[styles.secondaryBtn, isFamilyMode && styles.btnLg]}
+                onPress={onClose}
+              >
+                <Text style={[styles.secondaryText, isFamilyMode && styles.btnTextLg]}>
+                  Batal
+                </Text>
               </Pressable>
               <Pressable
                 style={[
                   styles.primaryBtn,
+                  isFamilyMode && styles.btnLg,
                   !selectedContent && styles.primaryBtnDisabled,
                 ]}
                 disabled={!selectedContent}
                 onPress={onCheckSource}
               >
-                <Text style={styles.primaryText}>Periksa sumber</Text>
+                <Text style={[styles.primaryText, isFamilyMode && styles.btnTextLg]}>
+                  Periksa sumber
+                </Text>
               </Pressable>
             </View>
           </View>
@@ -108,11 +133,16 @@ export default function CheckerModal({
             onBack={onBackToConfirm}
             showTooltip={showSourceTooltip}
             onDismissTooltip={onDismissSourceTooltip}
+            interfaceMode={interfaceMode}
           />
         )}
 
         {step === 'result' && selectedContent && (
-          <ResultCard content={selectedContent} onClose={onClose} />
+          <ResultCard
+            content={selectedContent}
+            onClose={onClose}
+            interfaceMode={interfaceMode}
+          />
         )}
       </View>
     </View>
@@ -262,4 +292,24 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '600',
   },
+
+  // -----------------------------------------------------------------------
+  // Family-mode size overrides — bigger than self mode but conservative
+  // enough to fit the 380 px phone frame without clipping.
+  // -----------------------------------------------------------------------
+  eyebrowLg: { fontSize: 12 },
+  titleLg: { fontSize: 23, lineHeight: 28, marginBottom: 14 },
+
+  sourceLabelLg: { fontSize: 12 },
+  sourceNameLg: { fontSize: 20, lineHeight: 25 },
+  sourceMetaLg: { fontSize: 12, marginTop: 4 },
+
+  questionLabelLg: { fontSize: 12 },
+  questionTextLg: { fontSize: 15, lineHeight: 21 },
+
+  previewLabelLg: { fontSize: 12 },
+  previewTextLg: { fontSize: 14, lineHeight: 20 },
+
+  btnLg: { paddingVertical: 14, borderRadius: 14 },
+  btnTextLg: { fontSize: 16 },
 });

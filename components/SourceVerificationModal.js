@@ -25,7 +25,9 @@ export default function SourceVerificationModal({
   onBack,
   showTooltip,
   onDismissTooltip,
+  interfaceMode = 'self',
 }) {
+  const isFamilyMode = interfaceMode === 'family';
   // If for some reason no content is selected, show a friendly fallback.
   if (!selectedContent) {
     return (
@@ -50,8 +52,12 @@ export default function SourceVerificationModal({
       contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 30 }}
     >
       {/* Eyebrow + source-first title */}
-      <Text style={styles.eyebrow}>Periksa sumber</Text>
-      <Text style={styles.title}>Apa yang dikatakan sumbernya?</Text>
+      <Text style={[styles.eyebrow, isFamilyMode && styles.eyebrowLg]}>
+        Periksa sumber
+      </Text>
+      <Text style={[styles.title, isFamilyMode && styles.titleLg]}>
+        Apa yang dikatakan sumbernya?
+      </Text>
 
       {/* One-time tooltip for solo-onboarded users explaining the step */}
       {showTooltip && (
@@ -68,46 +74,91 @@ export default function SourceVerificationModal({
 
       {/* Simulated outlet profile */}
       <View style={styles.profileCard}>
-        <Text style={styles.cardLabel}>Profil sumber</Text>
-        <Text style={styles.accountName}>{record.accountName}</Text>
-        <Text style={styles.accountType}>{record.accountType}</Text>
-        <Text style={styles.profileSummary}>{record.profileSummary}</Text>
-        <Text style={styles.profileMeta}>
+        <Text style={[styles.cardLabel, isFamilyMode && styles.cardLabelLg]}>
+          Profil sumber
+        </Text>
+        <Text style={[styles.accountName, isFamilyMode && styles.accountNameLg]}>
+          {record.accountName}
+        </Text>
+        <Text style={[styles.accountType, isFamilyMode && styles.accountTypeLg]}>
+          {record.accountType}
+        </Text>
+
+        {/* Contact-status chip — WhatsApp-only quick cue, added after
+            usability testing flagged that older users wanted to know
+            how close/distant the sender was. */}
+        {record.contactStatus === 'saved' && (
+          <View style={[styles.contactChip, styles.contactChipSaved]}>
+            <Text style={styles.contactChipText}>
+              ✓ Tersimpan di kontak
+            </Text>
+          </View>
+        )}
+        {record.contactStatus === 'forwarded_unknown' && (
+          <View style={[styles.contactChip, styles.contactChipForwarded]}>
+            <Text style={styles.contactChipText}>
+              ⚠ Diteruskan — sumber asli tidak diketahui
+            </Text>
+          </View>
+        )}
+
+        <Text style={[styles.profileSummary, isFamilyMode && styles.profileSummaryLg]}>
+          {record.profileSummary}
+        </Text>
+        <Text style={[styles.profileMeta, isFamilyMode && styles.profileMetaLg]}>
           Dilihat di {selectedContent.appName}
         </Text>
       </View>
 
       {/* Corroboration list */}
       <View style={styles.corroborationCard}>
-        <Text style={styles.cardLabel}>
+        <Text style={[styles.cardLabel, isFamilyMode && styles.cardLabelLg]}>
           Apakah outlet lain melaporkan hal yang sama?
         </Text>
         {record.corroboration.map((row, i) => (
           <View key={i} style={styles.corroborationRow}>
-            <Text style={styles.outletName}>{row.outlet}</Text>
-            <Text style={styles.outletStatus}>{row.status}</Text>
+            <Text style={[styles.outletName, isFamilyMode && styles.outletNameLg]}>
+              {row.outlet}
+            </Text>
+            <Text style={[styles.outletStatus, isFamilyMode && styles.outletStatusLg]}>
+              {row.status}
+            </Text>
           </View>
         ))}
       </View>
 
       {/* Verdict line (one of four soft labels — never true/false) */}
       <View style={[styles.verdictBox, { backgroundColor: verdict.color }]}>
-        <Text style={styles.verdictLabel}>Status sumber</Text>
-        <Text style={styles.verdictText}>{verdict.id}</Text>
+        <Text style={[styles.verdictLabel, isFamilyMode && styles.verdictLabelLg]}>
+          Status sumber
+        </Text>
+        <Text style={[styles.verdictText, isFamilyMode && styles.verdictTextLg]}>
+          {verdict.id}
+        </Text>
       </View>
 
-      <Text style={styles.disclaimer}>
+      <Text style={[styles.disclaimer, isFamilyMode && styles.disclaimerLg]}>
         Keputusan akhir tetap di tanganmu. Langkah ini hanya menunjukkan apa
         kata sumbernya sendiri dan media lain.
       </Text>
 
       {/* Action buttons */}
       <View style={styles.buttonRow}>
-        <Pressable style={styles.secondaryBtn} onPress={onBack}>
-          <Text style={styles.secondaryBtnText}>Kembali</Text>
+        <Pressable
+          style={[styles.secondaryBtn, isFamilyMode && styles.btnLg]}
+          onPress={onBack}
+        >
+          <Text style={[styles.secondaryBtnText, isFamilyMode && styles.btnTextLg]}>
+            Kembali
+          </Text>
         </Pressable>
-        <Pressable style={styles.primaryBtn} onPress={onSeeResult}>
-          <Text style={styles.primaryBtnText}>Lihat hasil lengkap</Text>
+        <Pressable
+          style={[styles.primaryBtn, isFamilyMode && styles.btnLg]}
+          onPress={onSeeResult}
+        >
+          <Text style={[styles.primaryBtnText, isFamilyMode && styles.btnTextLg]}>
+            Lihat hasil lengkap
+          </Text>
         </Pressable>
       </View>
     </ScrollView>
@@ -190,6 +241,25 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 2,
     marginBottom: 8,
+  },
+  contactChip: {
+    alignSelf: 'flex-start',
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    borderRadius: 12,
+    marginTop: 4,
+    marginBottom: 8,
+  },
+  contactChipSaved: {
+    backgroundColor: '#DCFCE7',
+  },
+  contactChipForwarded: {
+    backgroundColor: '#FEE2E2',
+  },
+  contactChipText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#1F2937',
   },
   profileSummary: {
     color: '#1F2937',
@@ -280,6 +350,30 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '600',
   },
+
+  // -----------------------------------------------------------------------
+  // Family-mode size overrides — modest bump, fits the 380 px phone frame.
+  // -----------------------------------------------------------------------
+  eyebrowLg: { fontSize: 12 },
+  titleLg: { fontSize: 22, lineHeight: 27, marginBottom: 14 },
+
+  cardLabelLg: { fontSize: 12 },
+  accountNameLg: { fontSize: 20, lineHeight: 25 },
+  accountTypeLg: { fontSize: 13, marginTop: 3, marginBottom: 8 },
+
+  profileSummaryLg: { fontSize: 14, lineHeight: 21 },
+  profileMetaLg: { fontSize: 12, marginTop: 8 },
+
+  outletNameLg: { fontSize: 14 },
+  outletStatusLg: { fontSize: 13 },
+
+  verdictLabelLg: { fontSize: 12 },
+  verdictTextLg: { fontSize: 19, lineHeight: 24 },
+
+  disclaimerLg: { fontSize: 12, lineHeight: 18 },
+
+  btnLg: { paddingVertical: 14, borderRadius: 14 },
+  btnTextLg: { fontSize: 16 },
 });
 
 // Grounding note (proposal §5.4): the source-verification layer is the

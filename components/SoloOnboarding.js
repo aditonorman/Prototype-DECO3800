@@ -48,7 +48,10 @@ const slides = [
 ];
 
 export default function SoloOnboarding({ onActivate, onBackHome }) {
-  // Step 0..2 = illustrated slides. Step 3 = consent screen.
+  // Step 0..2 = illustrated slides. Step 3 = sample-check walkthrough.
+  // Step 4 = consent screen. The walkthrough was added in response to
+  // usability testing — older users wanted a first-time demonstration of
+  // how the Checker works on a real-looking message before activating.
   const [step, setStep] = useState(0);
 
   // Consent boxes.
@@ -58,11 +61,11 @@ export default function SoloOnboarding({ onActivate, onBackHome }) {
   const allAgreed = agree1 && agree2 && agree3;
 
   function next() {
-    if (step < 3) setStep(step + 1);
+    if (step < 4) setStep(step + 1);
   }
 
   function skipToConsent() {
-    setStep(3);
+    setStep(4);
   }
 
   function handleActivate() {
@@ -81,7 +84,7 @@ export default function SoloOnboarding({ onActivate, onBackHome }) {
               <Text style={styles.cancelText}>Tutup</Text>
             </Pressable>
             <View style={styles.dots}>
-              {[0, 1, 2].map((i) => (
+              {[0, 1, 2, 3].map((i) => (
                 <View
                   key={i}
                   style={[styles.dot, i === step && styles.dotActive]}
@@ -114,15 +117,87 @@ export default function SoloOnboarding({ onActivate, onBackHome }) {
     );
   }
 
+  // Sample-check walkthrough (step 3) — shows a fake suspicious message and
+  // annotated steps so the first independent use is not unfamiliar.
+  if (step === 3) {
+    return (
+      <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.scrollInner}>
+          <View style={styles.topBar}>
+            <Pressable onPress={() => setStep(2)}>
+              <Text style={styles.cancelText}>← Kembali</Text>
+            </Pressable>
+            <View style={styles.dots}>
+              {[0, 1, 2, 3].map((i) => (
+                <View
+                  key={i}
+                  style={[styles.dot, i === step && styles.dotActive]}
+                />
+              ))}
+            </View>
+            <Pressable onPress={skipToConsent}>
+              <Text style={styles.skipText}>Lewati</Text>
+            </Pressable>
+          </View>
+
+          <Text style={styles.slideTitle}>Ayo coba sekali dulu</Text>
+          <Text style={styles.slideBody}>
+            Begini cara Legitimate Checker bekerja saat kamu menemukan pesan
+            yang mencurigakan.
+          </Text>
+
+          {/* Sample suspicious WhatsApp-style message */}
+          <View style={styles.samplePreview}>
+            <Text style={styles.sampleForwarded}>↪ Diteruskan banyak kali</Text>
+            <Text style={styles.sampleSender}>Om Budi</Text>
+            <Text style={styles.sampleText}>
+              Pemerintah akan memberi uang gratis ke setiap warga jika kamu
+              klik tautan ini hari ini! Buruan, hanya berlaku 24 jam.
+            </Text>
+          </View>
+
+          {/* Three numbered steps */}
+          <WalkthroughStep
+            number="1"
+            title="Ketuk tombol Teruskan atau bulatan biru"
+            body="Saat kamu hendak meneruskan pesan, Legitimate Checker akan berhenti sejenak untuk membantu kamu."
+          />
+          <WalkthroughStep
+            number="2"
+            title="Lihat siapa yang memposting"
+            body="Kamu akan melihat nama pengirim dan apakah dia tersimpan di kontakmu."
+          />
+          <WalkthroughStep
+            number="3"
+            title="Tekan “Periksa sumber”"
+            body="Kami menunjukkan apa yang dikatakan media lain seperti Kompas, Detik, atau Kementerian Keuangan tentang klaim ini."
+          />
+          <WalkthroughStep
+            number="4"
+            title="Kamu yang memutuskan"
+            body="Bagikan, simpan, atau abaikan — Legitimate Checker hanya membantu kamu memutuskan dengan lebih tenang."
+          />
+        </ScrollView>
+
+        <View style={styles.footer}>
+          <Pressable style={styles.primaryBtn} onPress={next}>
+            <Text style={styles.primaryBtnText}>Saya mengerti</Text>
+          </Pressable>
+        </View>
+      </View>
+    );
+  }
+
   // Consent screen
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollInner}>
         <View style={styles.topBar}>
-          <Pressable onPress={() => setStep(2)}>
+          <Pressable onPress={() => setStep(3)}>
             <Text style={styles.cancelText}>← Kembali</Text>
           </Pressable>
           <View style={styles.dots}>
+            <View style={[styles.dot, styles.dotActive]} />
             <View style={[styles.dot, styles.dotActive]} />
             <View style={[styles.dot, styles.dotActive]} />
             <View style={[styles.dot, styles.dotActive]} />
@@ -167,6 +242,21 @@ export default function SoloOnboarding({ onActivate, onBackHome }) {
         >
           <Text style={styles.primaryBtnText}>Aktifkan Checker</Text>
         </Pressable>
+      </View>
+    </View>
+  );
+}
+
+// A single numbered step in the sample-check walkthrough.
+function WalkthroughStep({ number, title, body }) {
+  return (
+    <View style={styles.walkRow}>
+      <View style={styles.walkNumber}>
+        <Text style={styles.walkNumberText}>{number}</Text>
+      </View>
+      <View style={{ flex: 1 }}>
+        <Text style={styles.walkTitle}>{title}</Text>
+        <Text style={styles.walkBody}>{body}</Text>
       </View>
     </View>
   );
@@ -238,6 +328,67 @@ const styles = StyleSheet.create({
     color: '#374151',
     lineHeight: 21,
     textAlign: 'center',
+  },
+  samplePreview: {
+    backgroundColor: '#FEF3C7',
+    borderLeftWidth: 4,
+    borderLeftColor: '#F59E0B',
+    borderRadius: 10,
+    padding: 12,
+    marginTop: 16,
+    marginBottom: 16,
+  },
+  sampleForwarded: {
+    color: '#92400E',
+    fontSize: 11,
+    fontStyle: 'italic',
+    marginBottom: 4,
+  },
+  sampleSender: {
+    color: '#0F172A',
+    fontSize: 13,
+    fontWeight: '700',
+    marginBottom: 4,
+  },
+  sampleText: {
+    color: '#1F2937',
+    fontSize: 13,
+    lineHeight: 18,
+  },
+  walkRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    backgroundColor: '#F9FAFB',
+    borderRadius: 10,
+  },
+  walkNumber: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: '#2563EB',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+    marginTop: 2,
+  },
+  walkNumberText: {
+    color: '#fff',
+    fontWeight: '800',
+    fontSize: 13,
+  },
+  walkTitle: {
+    color: '#0F172A',
+    fontSize: 13,
+    fontWeight: '700',
+    marginBottom: 2,
+  },
+  walkBody: {
+    color: '#4B5563',
+    fontSize: 12,
+    lineHeight: 17,
   },
   consentTitle: {
     fontSize: 22,

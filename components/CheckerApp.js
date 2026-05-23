@@ -18,18 +18,29 @@ import {
 import { checkerIcons } from '../data/dummyContent';
 
 // A small checkbox row component used in the agreement card.
-function CheckRow({ label, checked, onToggle }) {
+function CheckRow({ label, checked, onToggle, large = false }) {
   return (
-    <Pressable style={styles.checkRow} onPress={onToggle}>
-      <View style={[styles.checkbox, checked && styles.checkboxChecked]}>
+    <Pressable
+      style={[styles.checkRow, large && styles.checkRowLg]}
+      onPress={onToggle}
+    >
+      <View
+        style={[
+          styles.checkbox,
+          large && styles.checkboxLg,
+          checked && styles.checkboxChecked,
+        ]}
+      >
         {checked && (
           <Image
             source={{ uri: checkerIcons.check }}
-            style={styles.checkmarkIcon}
+            style={[styles.checkmarkIcon, large && styles.checkmarkIconLg]}
           />
         )}
       </View>
-      <Text style={styles.checkLabel}>{label}</Text>
+      <Text style={[styles.checkLabel, large && styles.checkLabelLg]}>
+        {label}
+      </Text>
     </Pressable>
   );
 }
@@ -38,6 +49,7 @@ export default function CheckerApp({
   onActivate,
   onBackHome,
   checkerActive,
+  interfaceMode = 'self',
 }) {
   // Three agreement boxes — all three must be ticked to activate.
   const [agree1, setAgree1] = useState(false);
@@ -47,31 +59,20 @@ export default function CheckerApp({
   // After tapping Activate we briefly show a confirmation view inside the app.
   const [justActivated, setJustActivated] = useState(false);
 
-  // Finding 7 — household inoculation. Picking "for a family member" turns on
-  // the simpler defaults so a younger user can configure for an older relative.
-  const [setupFor, setSetupFor] = useState('self'); // 'self' | 'family'
-
   // Finding 4 — plain-language algorithm explainer is hidden behind a tap
   // so it does not crowd the page, but is offered to anyone who wants it.
   const [showAlgoExplainer, setShowAlgoExplainer] = useState(false);
 
+  // Family mode is now decided once at OnboardingEntry, so we don't need
+  // an in-app "Untuk siapa ini?" toggle anymore. Family mode applies a
+  // larger, simpler interface for elderly users and switches a few defaults.
+  const isFamilyMode = interfaceMode === 'family';
+
   // Settings — these are visual only, they don't change behaviour.
-  // Defaults shift if the user is setting up for a family member.
-  const isFamilyMode = setupFor === 'family';
+  // Family mode flips the defaults to be friendlier.
   const [simpleLanguage, setSimpleLanguage] = useState(true);
   const [showSourceReminders, setShowSourceReminders] = useState(true);
-  const [oneTapDismiss, setOneTapDismiss] = useState(false);
-
-  // When the user switches to family mode, nudge the toggles to friendly defaults.
-  // We set them once on every change rather than mirroring state, to keep this simple.
-  function handleSetupForChange(value) {
-    setSetupFor(value);
-    if (value === 'family') {
-      setSimpleLanguage(true);
-      setShowSourceReminders(true);
-      setOneTapDismiss(true);
-    }
-  }
+  const [oneTapDismiss, setOneTapDismiss] = useState(isFamilyMode);
 
   const allAgreed = agree1 && agree2 && agree3;
 
@@ -82,21 +83,57 @@ export default function CheckerApp({
   }
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
+    <ScrollView
+      style={styles.container}
+      // Generous bottom padding so the Activate button + settings always
+      // clear the Samsung footer, especially in family mode where text is
+      // taller and the page is longer.
+      contentContainerStyle={{ paddingBottom: 120 }}
+    >
       {/* Header bar with back button */}
       <View style={styles.header}>
         <Pressable onPress={onBackHome} style={styles.backBtn}>
-          <Text style={styles.backText}>← Beranda</Text>
+          <Text style={[styles.backText, isFamilyMode && styles.backTextLg]}>
+            ← Beranda
+          </Text>
         </Pressable>
+      </View>
+
+      {/* Mode pill — quick visual signal so a setup-helper can see at a glance
+          which mode the app is currently configured for. */}
+      <View style={styles.modePillRow}>
+        <View
+          style={[
+            styles.modePill,
+            isFamilyMode ? styles.modePillFamily : styles.modePillSelf,
+          ]}
+        >
+          <Text
+            style={[
+              styles.modePillText,
+              isFamilyMode && styles.modePillTextFamily,
+            ]}
+          >
+            {isFamilyMode ? '👨‍👩‍👧  Mode untuk orang tua' : '👤  Mode standar'}
+          </Text>
+        </View>
       </View>
 
       {/* Logo + title */}
       <View style={styles.logoArea}>
-        <View style={styles.logoCircle}>
-          <Text style={styles.logoText}>LC</Text>
+        <View
+          style={[styles.logoCircle, isFamilyMode && styles.logoCircleLg]}
+        >
+          <Text style={[styles.logoText, isFamilyMode && styles.logoTextLg]}>
+            LC
+          </Text>
         </View>
-        <Text style={styles.title}>Legitimate Checker</Text>
-        <Text style={styles.subtitle}>Berhenti. Periksa. Pikir dulu sebelum membagikan.</Text>
+        <Text style={[styles.title, isFamilyMode && styles.titleLg]}>
+          Legitimate Checker
+        </Text>
+        <Text style={[styles.subtitle, isFamilyMode && styles.subtitleLg]}>
+          Berhenti. Periksa. Pikir dulu sebelum membagikan.
+        </Text>
       </View>
 
       {/* If user just activated OR already active, show success view */}
@@ -135,8 +172,10 @@ export default function CheckerApp({
         <>
           {/* Purpose card */}
           <View style={styles.card}>
-            <Text style={styles.cardTitle}>Apa yang dilakukan alat ini</Text>
-            <Text style={styles.cardBody}>
+            <Text style={[styles.cardTitle, isFamilyMode && styles.cardTitleLg]}>
+              Apa yang dilakukan alat ini
+            </Text>
+            <Text style={[styles.cardBody, isFamilyMode && styles.cardBodyLg]}>
               Alat ini tidak memutuskan kebenaran untukmu. Alat ini membantu
               kamu memeriksa sumber, mengenali tanda peringatan, dan berpikir
               lebih hati-hati sebelum percaya atau membagikan informasi.
@@ -150,7 +189,13 @@ export default function CheckerApp({
               style={styles.expandHeader}
               onPress={() => setShowAlgoExplainer(!showAlgoExplainer)}
             >
-              <Text style={[styles.cardTitle, styles.expandTitle]}>
+              <Text
+                style={[
+                  styles.cardTitle,
+                  styles.expandTitle,
+                  isFamilyMode && styles.cardTitleLg,
+                ]}
+              >
                 Kenapa aku melihat ini di feed-ku?
               </Text>
               <Image
@@ -163,7 +208,7 @@ export default function CheckerApp({
               />
             </Pressable>
             {showAlgoExplainer && (
-              <Text style={styles.cardBody}>
+              <Text style={[styles.cardBody, isFamilyMode && styles.cardBodyLg]}>
                 Aplikasi seperti Instagram, TikTok, dan X mencoba menebak apa
                 yang kamu suka. Mereka memperhatikan apa yang kamu berhenti
                 lihat, apa yang kamu ketuk, dan apa yang kamu bagikan. Lalu
@@ -177,107 +222,48 @@ export default function CheckerApp({
             )}
           </View>
 
-          {/* Household setup toggle — Finding 7.
-              Younger users often install reflective tools for older relatives. */}
-          {!checkerActive && (
-            <View style={styles.card}>
-              <Text style={styles.cardTitle}>Untuk siapa ini?</Text>
-              <Text style={styles.cardBody}>
-                Pilih siapa yang akan menggunakan Checker. Kalau ini untuk
-                anggota keluargamu, kami akan menyiapkan pengaturan yang lebih
-                ramah.
-              </Text>
-              <View style={styles.setupRow}>
-                <Pressable
-                  onPress={() => handleSetupForChange('self')}
-                  style={[
-                    styles.setupChip,
-                    !isFamilyMode && styles.setupChipActive,
-                  ]}
-                >
-                  <View style={styles.setupChipContent}>
-                    <Image
-                      source={{ uri: checkerIcons.self }}
-                      style={[
-                        styles.setupChipIcon,
-                        !isFamilyMode && styles.setupChipIconActive,
-                      ]}
-                    />
-                    <Text
-                      style={[
-                        styles.setupChipText,
-                        !isFamilyMode && styles.setupChipTextActive,
-                      ]}
-                    >
-                      Saya sendiri
-                    </Text>
-                  </View>
-                </Pressable>
-                <Pressable
-                  onPress={() => handleSetupForChange('family')}
-                  style={[
-                    styles.setupChip,
-                    isFamilyMode && styles.setupChipActive,
-                  ]}
-                >
-                  <View style={styles.setupChipContent}>
-                    <Image
-                      source={{ uri: checkerIcons.family }}
-                      style={[
-                        styles.setupChipIcon,
-                        isFamilyMode && styles.setupChipIconActive,
-                      ]}
-                    />
-                    <Text
-                      style={[
-                        styles.setupChipText,
-                        isFamilyMode && styles.setupChipTextActive,
-                      ]}
-                    >
-                      Untuk anggota keluarga
-                    </Text>
-                  </View>
-                </Pressable>
-              </View>
-              {isFamilyMode && (
-                <Text style={styles.familyNote}>
-                  Mode keluarga akan menyalakan Bahasa sederhana dan Tutup
-                  dengan satu ketukan. Kamu masih bisa mengubahnya di
-                  Pengaturan di bawah.
-                </Text>
-              )}
-            </View>
-          )}
-
           {/* Agreement card — only shown if not already active */}
           {!checkerActive && (
             <View style={styles.card}>
-              <Text style={styles.cardTitle}>Sebelum kamu mulai</Text>
+              <Text style={[styles.cardTitle, isFamilyMode && styles.cardTitleLg]}>
+                Sebelum kamu mulai
+              </Text>
               <CheckRow
                 label="Saya memahami alat ini hanyalah panduan."
                 checked={agree1}
                 onToggle={() => setAgree1(!agree1)}
+                large={isFamilyMode}
               />
               <CheckRow
                 label="Saya memahami keputusan akhir tetap di tangan saya."
                 checked={agree2}
                 onToggle={() => setAgree2(!agree2)}
+                large={isFamilyMode}
               />
               <CheckRow
                 label="Saya setuju memakai alat ini untuk mendukung literasi digital."
                 checked={agree3}
                 onToggle={() => setAgree3(!agree3)}
+                large={isFamilyMode}
               />
 
               <Pressable
                 style={[
                   styles.primaryBtn,
+                  isFamilyMode && styles.primaryBtnLg,
                   !allAgreed && styles.primaryBtnDisabled,
                 ]}
                 disabled={!allAgreed}
                 onPress={handleActivate}
               >
-                <Text style={styles.primaryBtnText}>Aktifkan Checker</Text>
+                <Text
+                  style={[
+                    styles.primaryBtnText,
+                    isFamilyMode && styles.primaryBtnTextLg,
+                  ]}
+                >
+                  Aktifkan Checker
+                </Text>
               </Pressable>
             </View>
           )}
@@ -286,20 +272,34 @@ export default function CheckerApp({
 
       {/* Settings — always available */}
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>Pengaturan</Text>
+        <Text style={[styles.cardTitle, isFamilyMode && styles.cardTitleLg]}>
+          Pengaturan
+        </Text>
 
         <View style={styles.settingRow}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.settingTitle}>Mode bahasa sederhana</Text>
-            <Text style={styles.settingHint}>Pakai kata-kata yang mudah dibaca.</Text>
+            <Text
+              style={[styles.settingTitle, isFamilyMode && styles.settingTitleLg]}
+            >
+              Mode bahasa sederhana
+            </Text>
+            <Text
+              style={[styles.settingHint, isFamilyMode && styles.settingHintLg]}
+            >
+              Pakai kata-kata yang mudah dibaca.
+            </Text>
           </View>
           <Switch value={simpleLanguage} onValueChange={setSimpleLanguage} />
         </View>
 
         <View style={styles.settingRow}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.settingTitle}>Tampilkan pengingat sumber</Text>
-            <Text style={styles.settingHint}>
+            <Text
+              style={[styles.settingTitle, isFamilyMode && styles.settingTitleLg]}
+            >
+              Tampilkan pengingat sumber
+            </Text>
+            <Text style={[styles.settingHint, isFamilyMode && styles.settingHintLg]}>
               Selalu ingatkan saya untuk memeriksa sumber.
             </Text>
           </View>
@@ -311,8 +311,12 @@ export default function CheckerApp({
 
         <View style={styles.settingRow}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.settingTitle}>Tutup dengan satu ketukan</Text>
-            <Text style={styles.settingHint}>
+            <Text
+              style={[styles.settingTitle, isFamilyMode && styles.settingTitleLg]}
+            >
+              Tutup dengan satu ketukan
+            </Text>
+            <Text style={[styles.settingHint, isFamilyMode && styles.settingHintLg]}>
               Tutup pop-up bulatan dengan sekali ketuk.
             </Text>
           </View>
@@ -533,52 +537,63 @@ const styles = StyleSheet.create({
     fontSize: 11,
     marginTop: 2,
   },
-  setupRow: {
-    flexDirection: 'row',
-    gap: 8,
-    marginTop: 10,
+  // -----------------------------------------------------------------------
+  // Mode pill — visible at the top of the screen so a helper can see which
+  // interface mode is currently in effect.
+  // -----------------------------------------------------------------------
+  modePillRow: {
+    alignItems: 'center',
+    marginBottom: 4,
   },
-  setupChip: {
-    flex: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 8,
-    borderRadius: 12,
+  modePill: {
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+    borderRadius: 14,
     borderWidth: 1,
-    borderColor: '#D1D5DB',
-    alignItems: 'center',
-    backgroundColor: '#fff',
   },
-  setupChipActive: {
-    backgroundColor: '#2563EB',
-    borderColor: '#2563EB',
-  },
-  setupChipText: {
-    color: '#374151',
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  setupChipContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  setupChipIcon: {
-    width: 12,
-    height: 12,
-    marginRight: 5,
-    tintColor: '#374151',
-  },
-  setupChipIconActive: {
-    tintColor: '#fff',
-  },
-  setupChipTextActive: {
-    color: '#fff',
-  },
-  familyNote: {
-    marginTop: 10,
-    color: '#1E3A8A',
-    fontSize: 12,
+  modePillSelf: {
     backgroundColor: '#EFF6FF',
-    padding: 10,
-    borderRadius: 8,
+    borderColor: '#BFDBFE',
   },
+  modePillFamily: {
+    backgroundColor: '#FFF7ED',
+    borderColor: '#F59E0B',
+  },
+  modePillText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#1E40AF',
+  },
+  modePillTextFamily: {
+    fontSize: 14,
+    color: '#92400E',
+  },
+
+  // -----------------------------------------------------------------------
+  // Family-mode size overrides. Layered on top of the base styles via array
+  // notation, e.g. style={[styles.title, isFamilyMode && styles.titleLg]}.
+  // Sizes are deliberately modest — bigger than self mode but still fitting
+  // the 380 px phone frame without overflow or clipping.
+  // -----------------------------------------------------------------------
+  backTextLg: { fontSize: 16 },
+
+  logoCircleLg: { width: 78, height: 78, borderRadius: 39 },
+  logoTextLg: { fontSize: 28 },
+
+  titleLg: { fontSize: 25, lineHeight: 30 },
+  subtitleLg: { fontSize: 14, lineHeight: 20, marginTop: 4 },
+
+  cardTitleLg: { fontSize: 17, lineHeight: 22, marginBottom: 10 },
+  cardBodyLg: { fontSize: 15, lineHeight: 22 },
+
+  checkRowLg: { paddingVertical: 12 },
+  checkboxLg: { width: 26, height: 26, borderRadius: 7, marginRight: 12 },
+  checkmarkIconLg: { width: 15, height: 15 },
+  checkLabelLg: { fontSize: 15, lineHeight: 21 },
+
+  primaryBtnLg: { paddingVertical: 14, borderRadius: 14, marginTop: 14 },
+  primaryBtnTextLg: { fontSize: 17 },
+
+  settingTitleLg: { fontSize: 16, lineHeight: 21 },
+  settingHintLg: { fontSize: 13, marginTop: 3 },
 });

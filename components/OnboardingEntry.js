@@ -1,18 +1,30 @@
 // OnboardingEntry
 // First screen shown when the Checker app is opened for the first time
-// (proposal §5.2.1–§5.2.3). Lets the user pick how they arrived so we can
-// route them through the right onboarding flow:
+// (proposal §5.2.1–§5.2.3). The chooser is now two equal side-by-side
+// cards plus a survey-style "Saya tiba di sini melalui" section below.
 //
-//   - "Seorang anggota keluarga membantu saya menyiapkan" → State A
-//     (existing CheckerApp flow with family/self toggle).
-//   - "Saya sendiri" → State B (SoloOnboarding).
+// Mapping:
+//   - "Saya sendiri"           → solo path (SoloOnboarding walkthrough) + family mode.
+//     This is the elderly user installing for themselves and getting the
+//     first-time guided demo.
+//   - "Untuk orang tua atau
+//      keluarga"               → assisted path (CheckerApp settings) + family mode.
+//     This is a digitally-literate helper configuring the app on behalf of
+//     an older relative.
 //
-// Below those two primary paths, three community entry cards are listed:
-// QR di papan masjid/RT, tautan WhatsApp komunitas, dan halaman literasi
-// Kemenkomdigi. These are visual-only — tapping any of them routes to
-// State B, which is the intended path for community-referred users.
+// Both paths end up in family mode so the elderly user always sees the
+// large, simpler interface.
 
-import { View, Text, StyleSheet, Pressable, ScrollView, Image } from 'react-native';
+import { useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  ScrollView,
+  Image,
+  TextInput,
+} from 'react-native';
 import { checkerIcons } from '../data/dummyContent';
 
 export default function OnboardingEntry({
@@ -20,6 +32,22 @@ export default function OnboardingEntry({
   onPickSolo,
   onBackHome,
 }) {
+  // The "Saya tiba di sini melalui" section is a survey — it captures
+  // where the user heard about the app, but it does NOT trigger install.
+  // Install only happens via the two main mode cards above.
+  //   surveyChoice: null | 'qr' | 'whatsapp' | 'kemenkomdigi' | 'other'
+  const [surveyChoice, setSurveyChoice] = useState(null);
+  const [otherText, setOtherText] = useState('');
+
+  function pickSurvey(key) {
+    setSurveyChoice(key);
+  }
+
+  function submitOther() {
+    if (otherText.trim().length === 0) return;
+    setSurveyChoice('other');
+  }
+
   return (
     <ScrollView
       style={styles.container}
@@ -32,62 +60,126 @@ export default function OnboardingEntry({
         </Pressable>
       </View>
 
-      {/* Logo + title */}
+      {/* Logo + title (subtitle removed per design feedback) */}
       <View style={styles.logoArea}>
         <View style={styles.logoCircle}>
           <Text style={styles.logoText}>LC</Text>
         </View>
         <Text style={styles.title}>Legitimate Checker</Text>
-        <Text style={styles.subtitle}>Berhenti. Periksa. Pikir dulu sebelum membagikan.</Text>
       </View>
 
-      <Text style={styles.sectionLabel}>Pertama kali menggunakan?</Text>
+      <Text style={styles.sectionLabel}>Siapa yang akan menggunakan?</Text>
 
-      {/* Primary entry: assisted */}
-      <Pressable style={styles.primaryCard} onPress={onPickAssisted}>
-        <Image source={{ uri: checkerIcons.family }} style={styles.primaryIcon} />
-        <View style={{ flex: 1 }}>
-          <Text style={styles.primaryTitle}>
-            Seorang anggota keluarga membantu saya menyiapkan
+      {/* Two equal side-by-side cards. Same size and same colour — the
+          interface adapts based on which one is chosen, but neither card is
+          visually privileged on the chooser screen. */}
+      <View style={styles.modeRow}>
+        <Pressable
+          style={styles.modeCard}
+          onPress={() => onPickSolo('family')}
+        >
+          <Image source={{ uri: checkerIcons.self }} style={styles.modeIcon} />
+          <Text style={styles.modeTitle}>Saya sendiri</Text>
+        </Pressable>
+
+        <Pressable
+          style={styles.modeCard}
+          onPress={() => onPickAssisted('family')}
+        >
+          <Image
+            source={{ uri: checkerIcons.family }}
+            style={styles.modeIcon}
+          />
+          <Text style={styles.modeTitle}>
+            Untuk orang tua{'\n'}atau keluarga
           </Text>
-        </View>
-      </Pressable>
+        </Pressable>
+      </View>
 
-      {/* Primary entry: solo */}
-      <Pressable style={styles.primaryCard} onPress={onPickSolo}>
-        <Image source={{ uri: checkerIcons.self }} style={styles.primaryIcon} />
-        <View style={{ flex: 1 }}>
-          <Text style={styles.primaryTitle}>Saya sendiri</Text>
-        </View>
-      </Pressable>
-
-      {/* Community entry section */}
-      <Text style={[styles.sectionLabel, { marginTop: 18 }]}>
+      {/* Community entry — survey-style. The four predefined options route
+          straight to family mode; the "Lainnya" row lets the user type a
+          custom channel and submit. */}
+      <Text style={[styles.sectionLabel, styles.surveyLabel]}>
         Saya tiba di sini melalui...
       </Text>
 
-      <CommunityCard
+      <SurveyOption
         title="QR code di papan masjid atau RT"
         emoji="🟦"
-        onPress={onPickSolo}
+        selected={surveyChoice === 'qr'}
+        onPress={() => pickSurvey('qr')}
       />
-      <CommunityCard
+      <SurveyOption
         title="Tautan WhatsApp dari grup komunitas"
         emoji="🟩"
-        onPress={onPickSolo}
+        selected={surveyChoice === 'whatsapp'}
+        onPress={() => pickSurvey('whatsapp')}
       />
-      <CommunityCard
+      <SurveyOption
         title="Halaman literasi digital Kementerian Komunikasi dan Digital"
         emoji="🟧"
-        onPress={onPickSolo}
+        selected={surveyChoice === 'kemenkomdigi'}
+        onPress={() => pickSurvey('kemenkomdigi')}
       />
+
+      {/* "Lainnya" — free-text survey input. Submitting marks this row as
+          the selected survey answer but does not start onboarding. */}
+      <View
+        style={[
+          styles.otherCard,
+          surveyChoice === 'other' && styles.otherCardSelected,
+        ]}
+      >
+        <View
+          style={[
+            styles.radio,
+            surveyChoice === 'other' && styles.radioSelected,
+          ]}
+        />
+        <Text style={styles.communityEmoji}>✏️</Text>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.otherLabel}>Lainnya</Text>
+          <View style={styles.otherInputRow}>
+            <TextInput
+              style={styles.otherInput}
+              placeholder="Ketik darimana kamu tahu..."
+              placeholderTextColor="#9CA3AF"
+              value={otherText}
+              onChangeText={setOtherText}
+              onSubmitEditing={submitOther}
+              returnKeyType="send"
+            />
+            <Pressable
+              style={[
+                styles.otherSubmit,
+                otherText.trim().length === 0 && styles.otherSubmitDisabled,
+              ]}
+              onPress={submitOther}
+              disabled={otherText.trim().length === 0}
+            >
+              <Text style={styles.otherSubmitText}>Kirim</Text>
+            </Pressable>
+          </View>
+        </View>
+      </View>
+
+      {/* Light confirmation that the survey choice was recorded. */}
+      {surveyChoice && (
+        <Text style={styles.surveyConfirm}>
+          Terima kasih — jawabanmu sudah dicatat.
+        </Text>
+      )}
     </ScrollView>
   );
 }
 
-function CommunityCard({ title, emoji, onPress }) {
+function SurveyOption({ title, emoji, selected, onPress }) {
   return (
-    <Pressable style={styles.communityCard} onPress={onPress}>
+    <Pressable
+      style={[styles.communityCard, selected && styles.communityCardSelected]}
+      onPress={onPress}
+    >
+      <View style={[styles.radio, selected && styles.radioSelected]} />
       <Text style={styles.communityEmoji}>{emoji}</Text>
       <View style={{ flex: 1 }}>
         <Text style={styles.communityTitle}>{title}</Text>
@@ -132,11 +224,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#0F172A',
   },
-  subtitle: {
-    color: '#4B5563',
-    fontSize: 12,
-    marginTop: 2,
-  },
   sectionLabel: {
     color: '#0F172A',
     fontSize: 14,
@@ -144,34 +231,52 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginBottom: 10,
   },
-  primaryCard: {
+  surveyLabel: {
+    marginTop: 28,
+  },
+
+  // -----------------------------------------------------------------------
+  // Two equal mode cards, side by side.
+  // -----------------------------------------------------------------------
+  modeRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
     marginHorizontal: 16,
-    marginBottom: 10,
-    padding: 14,
+    gap: 10,
+  },
+  modeCard: {
+    flex: 1,
+    backgroundColor: '#fff',
     borderRadius: 14,
     borderWidth: 1,
     borderColor: '#E5E7EB',
+    paddingVertical: 24,
+    paddingHorizontal: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 130,
     shadowColor: '#000',
     shadowOpacity: 0.04,
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 },
     elevation: 1,
   },
-  primaryIcon: {
-    width: 28,
-    height: 28,
-    marginRight: 12,
+  modeIcon: {
+    width: 36,
+    height: 36,
+    marginBottom: 12,
     tintColor: '#2563EB',
   },
-  primaryTitle: {
+  modeTitle: {
     color: '#0F172A',
     fontSize: 14,
     fontWeight: '700',
     lineHeight: 19,
+    textAlign: 'center',
   },
+
+  // -----------------------------------------------------------------------
+  // Community survey section.
+  // -----------------------------------------------------------------------
   communityCard: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -183,6 +288,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E5E7EB',
   },
+  communityCardSelected: {
+    backgroundColor: '#EFF6FF',
+    borderColor: '#2563EB',
+  },
   communityEmoji: {
     fontSize: 22,
     marginRight: 10,
@@ -193,9 +302,81 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     lineHeight: 18,
   },
+  radio: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    borderWidth: 2,
+    borderColor: '#9CA3AF',
+    marginRight: 10,
+    backgroundColor: '#fff',
+  },
+  radioSelected: {
+    backgroundColor: '#2563EB',
+    borderColor: '#2563EB',
+  },
+
+  // "Lainnya" free-text row.
+  otherCard: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#fff',
+    marginHorizontal: 16,
+    marginBottom: 8,
+    padding: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+  },
+  otherCardSelected: {
+    backgroundColor: '#EFF6FF',
+    borderColor: '#2563EB',
+  },
+  surveyConfirm: {
+    color: '#15803D',
+    fontSize: 12,
+    fontWeight: '600',
+    marginHorizontal: 16,
+    marginTop: 6,
+  },
+  otherLabel: {
+    color: '#0F172A',
+    fontSize: 13,
+    fontWeight: '600',
+    marginBottom: 6,
+  },
+  otherInputRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  otherInput: {
+    flex: 1,
+    backgroundColor: '#F3F4F6',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    fontSize: 13,
+    color: '#0F172A',
+  },
+  otherSubmit: {
+    backgroundColor: '#2563EB',
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 8,
+  },
+  otherSubmitDisabled: {
+    backgroundColor: '#93C5FD',
+  },
+  otherSubmitText: {
+    color: '#fff',
+    fontWeight: '700',
+    fontSize: 13,
+  },
 });
 
-// Grounding note (proposal §5.2.1–§5.2.3): the entry chooser makes the
-// assisted vs solo split visible at the very first screen, and surfaces the
-// community-referral channels (mosque/RT QR, community WhatsApp,
-// Kemenkomdigi page) without inventing functional behaviour for them.
+// Grounding note (proposal §5.2.1–§5.2.3): the entry chooser presents the
+// two paths as equal options. Both land in family mode (large interface)
+// because the eventual user is always the elderly family member — the
+// distinction is only whether they walked up themselves (gets the
+// walkthrough) or whether a relative is configuring on their behalf.

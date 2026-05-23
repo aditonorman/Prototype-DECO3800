@@ -113,7 +113,7 @@ export const whatsappMessages = [
     sender: 'Om Budi',
     avatarUrl: 'https://randomuser.me/api/portraits/men/54.jpg',
     text:
-      'Diteruskan banyak kali: Pemerintah akan memberi uang gratis ke setiap warga jika kamu klik tautan ini hari ini! Buruan, hanya berlaku 24 jam 👉 bit.ly/uang-gratis-id',
+      'Pemerintah akan memberi uang gratis ke setiap warga jika kamu klik tautan ini hari ini! Buruan, hanya berlaku 24 jam 👉 bit.ly/uang-gratis-id',
     time: '08:45',
     forwarded: true,
     isMine: false,
@@ -398,9 +398,13 @@ const sourceVerificationDb = {
     verdict: 'opinion',
   },
   // ---------- WhatsApp ----------
+  // `contactStatus` is a WhatsApp-only field surfaced as a quick "how close /
+  // distant is this source" cue in the verification modal, added in response
+  // to usability testing feedback.
   'Ibu': {
     accountName: 'Ibu',
     accountType: 'Kontak pribadi (keluarga)',
+    contactStatus: 'saved',
     profileSummary:
       'Pesan langsung dari kontak yang kamu kenal. Bukan klaim berita.',
     corroboration: [
@@ -411,6 +415,7 @@ const sourceVerificationDb = {
   'Om Budi (diteruskan)': {
     accountName: 'Om Budi (diteruskan)',
     accountType: 'Pesan diteruskan dari sumber tidak jelas',
+    contactStatus: 'forwarded_unknown',
     profileSummary:
       'Pesan diteruskan banyak kali. Tautan tidak menuju situs resmi pemerintah atau bank.',
     corroboration: [
@@ -423,6 +428,7 @@ const sourceVerificationDb = {
   'Kakak': {
     accountName: 'Kakak',
     accountType: 'Kontak pribadi (keluarga)',
+    contactStatus: 'saved',
     profileSummary:
       'Pesan langsung dari kontak yang kamu kenal. Bukan klaim berita.',
     corroboration: [

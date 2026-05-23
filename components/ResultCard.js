@@ -10,7 +10,7 @@
 //   7. Recommended next action
 // Wording is intentionally soft — never "true" or "false".
 
-import React from 'react';
+import { useState } from 'react';
 import {
   View,
   Text,
@@ -108,7 +108,8 @@ function buildNextAction(riskType) {
   }
 }
 
-export default function ResultCard({ content, onClose }) {
+export default function ResultCard({ content, onClose, interfaceMode = 'self' }) {
+  const isFamilyMode = interfaceMode === 'family';
   // Pick the right template + references using the selected content.
   const template = resultTemplates[content.riskType] || resultTemplates.low_evidence;
   const statusIcon =
@@ -117,80 +118,174 @@ export default function ResultCard({ content, onClose }) {
   const checks = buildSectionChecks(content.riskType);
   const nextAction = buildNextAction(content.riskType);
 
+  // Detail sections collapsed by default (testing feedback: results page felt
+  // cluttered and repetitive). The high-level result and the three checks
+  // stay visible; literacy reminders + references hide behind an expander.
+  const [detailsOpen, setDetailsOpen] = useState(false);
+
+  const isMisleading = content.riskType === 'misleading';
+  const isReliable = content.riskType === 'reliable';
+
   return (
     <ScrollView
       style={styles.scroll}
       contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 30 }}
     >
-      {/* Big judgement label (plain Bahasa Indonesia — proposal §5.4). */}
-      <View style={[styles.labelBox, { backgroundColor: template.color }]}>
-        <Image source={{ uri: statusIcon }} style={styles.labelIcon} />
+      {/* Strong warning banner for misleading content — testing feedback
+          asked for stronger visual signals at a glance. */}
+      {isMisleading && (
+        <View style={styles.warningBanner}>
+          <Image
+            source={{ uri: checkerIcons.section.bad }}
+            style={[
+              styles.warningBannerIcon,
+              isFamilyMode && styles.warningBannerIconLg,
+            ]}
+          />
+          <Text
+            style={[
+              styles.warningBannerText,
+              isFamilyMode && styles.warningBannerTextLg,
+            ]}
+          >
+            Hati-hati — tanda peringatan terdeteksi
+          </Text>
+        </View>
+      )}
+
+      {/* Big judgement label. Extra red border for misleading; verified-style
+          green border for reliable. */}
+      <View
+        style={[
+          styles.labelBox,
+          { backgroundColor: template.color },
+          isMisleading && styles.labelBoxDanger,
+          isReliable && styles.labelBoxVerified,
+        ]}
+      >
+        <Image source={{ uri: statusIcon }} style={[styles.labelIcon, isFamilyMode && styles.labelIconLg]} />
         <View style={{ flex: 1 }}>
-          <Text style={styles.labelText}>{template.label}</Text>
-          <Text style={styles.labelSub}>Keputusan akhir tetap di tanganmu.</Text>
+          <Text style={[styles.labelText, isFamilyMode && styles.labelTextLg]}>
+            {template.label}
+          </Text>
+          <Text style={[styles.labelSub, isFamilyMode && styles.labelSubLg]}>
+            Keputusan akhir tetap di tanganmu.
+          </Text>
         </View>
       </View>
 
-      <Text style={styles.explanation}>{template.explanation}</Text>
-
-      {/* Section: Source check */}
-      <Section title="Pemeriksaan sumber" item={checks.source} />
-
-      {/* Section: Evidence check */}
-      <Section title="Pemeriksaan bukti" item={checks.evidence} />
-
-      {/* Section: Bias / emotional language check */}
-      <Section title="Bias / bahasa emosional" item={checks.bias} />
-
-      {/* Section: Digital literacy reminder */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Pengingat Literasi Digital</Text>
-        {literacyQuestions.map((q, i) => (
-          <Text key={i} style={styles.bullet}>
-            • {q}
-          </Text>
-        ))}
-      </View>
-
-      {/* Section: References */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Referensi yang disarankan untuk dibandingkan</Text>
-        {refs.map((r, i) => (
-          <View key={i} style={styles.refRow}>
-            <Image source={{ uri: checkerIcons.link }} style={styles.refIcon} />
-            <Text style={styles.refItem}>{r}</Text>
-          </View>
-        ))}
-      </View>
-
-      {/* Section: Recommended next action */}
-      <View style={[styles.section, styles.actionSection]}>
-        <Text style={styles.sectionTitle}>Tindakan selanjutnya yang disarankan</Text>
-        <Text style={styles.actionText}>{nextAction}</Text>
-      </View>
-
-      {/* Soft reminder line */}
-      <Text style={styles.disclaimer}>
-        Alat ini hanyalah panduan. Alat ini tidak memutuskan kebenaran untukmu.
-        Periksa dulu sebelum membagikan.
+      <Text style={[styles.explanation, isFamilyMode && styles.explanationLg]}>
+        {template.explanation}
       </Text>
 
+      {/* Recommended next action — promoted up so the most important
+          guidance is near the top, not buried at the bottom. */}
+      <View
+        style={[
+          styles.section,
+          styles.actionSection,
+          isMisleading && styles.actionSectionDanger,
+        ]}
+      >
+        <Text
+          style={[
+            styles.sectionTitle,
+            isFamilyMode && styles.sectionTitleLg,
+            isMisleading && styles.sectionTitleDanger,
+          ]}
+        >
+          Tindakan selanjutnya yang disarankan
+        </Text>
+        <Text
+          style={[
+            styles.actionText,
+            isFamilyMode && styles.actionTextLg,
+            isMisleading && styles.actionTextDanger,
+          ]}
+        >
+          {nextAction}
+        </Text>
+      </View>
+
+      {/* Three quick checks — always visible, short bullet rows. */}
+      <Section title="Pemeriksaan sumber" item={checks.source} large={isFamilyMode} />
+      <Section title="Pemeriksaan bukti" item={checks.evidence} large={isFamilyMode} />
+      <Section title="Bias / bahasa emosional" item={checks.bias} large={isFamilyMode} />
+
+      {/* Everything else lives behind a single expander to keep the page
+          short. Open by default for misleading content where the literacy
+          reminders matter most. */}
+      <Pressable
+        style={styles.detailToggle}
+        onPress={() => setDetailsOpen(!detailsOpen)}
+      >
+        <Text style={[styles.detailToggleText, isFamilyMode && styles.detailToggleTextLg]}>
+          {detailsOpen ? 'Sembunyikan detail' : 'Lihat detail lengkap'}
+        </Text>
+        <Text style={styles.detailToggleChevron}>
+          {detailsOpen ? '▴' : '▾'}
+        </Text>
+      </Pressable>
+
+      {detailsOpen && (
+        <>
+          {/* Section: Digital literacy reminder */}
+          <View style={styles.section}>
+            <Text style={[styles.sectionTitle, isFamilyMode && styles.sectionTitleLg]}>
+              Pengingat Literasi Digital
+            </Text>
+            {literacyQuestions.map((q, i) => (
+              <Text key={i} style={[styles.bullet, isFamilyMode && styles.bulletLg]}>
+                • {q}
+              </Text>
+            ))}
+          </View>
+
+          {/* Section: References */}
+          <View style={styles.section}>
+            <Text style={[styles.sectionTitle, isFamilyMode && styles.sectionTitleLg]}>
+              Referensi yang disarankan untuk dibandingkan
+            </Text>
+            {refs.map((r, i) => (
+              <View key={i} style={styles.refRow}>
+                <Image source={{ uri: checkerIcons.link }} style={styles.refIcon} />
+                <Text style={[styles.refItem, isFamilyMode && styles.refItemLg]}>
+                  {r}
+                </Text>
+              </View>
+            ))}
+          </View>
+        </>
+      )}
+
       {/* Close button */}
-      <Pressable style={styles.closeBtn} onPress={onClose}>
-        <Text style={styles.closeText}>Tutup</Text>
+      <Pressable
+        style={[styles.closeBtn, isFamilyMode && styles.closeBtnLg]}
+        onPress={onClose}
+      >
+        <Text style={[styles.closeText, isFamilyMode && styles.closeTextLg]}>
+          Tutup
+        </Text>
       </Pressable>
     </ScrollView>
   );
 }
 
 // Tiny helper component so each labelled section looks the same.
-function Section({ title, item }) {
+function Section({ title, item, large = false }) {
   return (
     <View style={styles.section}>
-      <Text style={styles.sectionTitle}>{title}</Text>
+      <Text style={[styles.sectionTitle, large && styles.sectionTitleLg]}>
+        {title}
+      </Text>
       <View style={styles.sectionBodyRow}>
-        <Image source={{ uri: item.iconUri }} style={styles.sectionIcon} />
-        <Text style={styles.sectionBody}>{item.text}</Text>
+        <Image
+          source={{ uri: item.iconUri }}
+          style={[styles.sectionIcon, large && styles.sectionIconLg]}
+        />
+        <Text style={[styles.sectionBody, large && styles.sectionBodyLg]}>
+          {item.text}
+        </Text>
       </View>
     </View>
   );
@@ -199,6 +294,66 @@ function Section({ title, item }) {
 const styles = StyleSheet.create({
   scroll: {
     paddingTop: 4,
+  },
+  warningBanner: {
+    backgroundColor: '#FEE2E2',
+    borderWidth: 1,
+    borderColor: '#DC2626',
+    borderRadius: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    marginBottom: 10,
+    marginTop: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  warningBannerIcon: {
+    width: 20,
+    height: 20,
+    marginRight: 10,
+  },
+  warningBannerText: {
+    color: '#991B1B',
+    fontWeight: '700',
+    fontSize: 13,
+    flex: 1,
+  },
+  labelBoxDanger: {
+    borderWidth: 3,
+    borderColor: '#991B1B',
+  },
+  labelBoxVerified: {
+    borderWidth: 3,
+    borderColor: '#14532D',
+  },
+  actionSectionDanger: {
+    backgroundColor: '#FEE2E2',
+  },
+  sectionTitleDanger: {
+    color: '#991B1B',
+  },
+  actionTextDanger: {
+    color: '#991B1B',
+    fontWeight: '600',
+  },
+  detailToggle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    backgroundColor: '#F3F4F6',
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  detailToggleText: {
+    color: '#2563EB',
+    fontWeight: '600',
+    fontSize: 13,
+  },
+  detailToggleChevron: {
+    color: '#2563EB',
+    fontSize: 14,
   },
   labelBox: {
     flexDirection: 'row',
@@ -287,14 +442,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '500',
   },
-  disclaimer: {
-    color: '#6B7280',
-    fontSize: 11,
-    textAlign: 'center',
-    marginTop: 8,
-    marginBottom: 14,
-    fontStyle: 'italic',
-  },
   closeBtn: {
     backgroundColor: '#111827',
     paddingVertical: 12,
@@ -305,4 +452,30 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '600',
   },
+
+  // -----------------------------------------------------------------------
+  // Family-mode size overrides — modest bump, fits the 380 px phone frame.
+  // -----------------------------------------------------------------------
+  warningBannerIconLg: { width: 22, height: 22, marginRight: 10 },
+  warningBannerTextLg: { fontSize: 14, lineHeight: 19 },
+
+  labelIconLg: { width: 26, height: 26, marginRight: 12 },
+  labelTextLg: { fontSize: 20, lineHeight: 25 },
+  labelSubLg: { fontSize: 13, marginTop: 3 },
+
+  explanationLg: { fontSize: 14, lineHeight: 20 },
+
+  sectionTitleLg: { fontSize: 14, lineHeight: 19, marginBottom: 8 },
+  sectionBodyLg: { fontSize: 14, lineHeight: 20 },
+  sectionIconLg: { width: 18, height: 18, marginRight: 10 },
+
+  actionTextLg: { fontSize: 14, lineHeight: 20 },
+
+  bulletLg: { fontSize: 13, lineHeight: 19, marginBottom: 3 },
+  refItemLg: { fontSize: 14, lineHeight: 20 },
+
+  detailToggleTextLg: { fontSize: 14 },
+
+  closeBtnLg: { paddingVertical: 14, borderRadius: 14 },
+  closeTextLg: { fontSize: 16 },
 });
