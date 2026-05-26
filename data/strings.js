@@ -200,6 +200,9 @@ export const strings = {
     en: 'Tap a post or message in the app first, then tap the bubble.',
   },
   'modal.checkSource': { id: 'Periksa sumber', en: 'Check source' },
+  // Proposal §5 interaction model: the prompt offers two choices — first
+  // continues the share, second opens the source-verification screen.
+  'modal.shareNow': { id: 'Bagikan sekarang', en: 'Share now' },
   'modal.fallbackQuestion': {
     id: 'Apakah sumbernya jelas dan dapat dipercaya?',
     en: 'Is the source clear and trustworthy?',

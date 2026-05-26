@@ -114,18 +114,24 @@ export default function CheckerModal({
               </View>
             )}
 
+            {/* Proposal §5 — two choices. The first continues the share
+                (in this prototype the share is simulated; the modal closes
+                and the user returns to the post). The second opens the
+                source-verification step. Both buttons are equal width so
+                neither choice is visually privileged. */}
             <View style={styles.buttonRow}>
               <Pressable
-                style={[styles.secondaryBtn, isFamilyMode && styles.btnLg]}
+                style={[styles.shareNowBtn, isFamilyMode && styles.btnLg]}
                 onPress={onClose}
               >
-                <Text style={[styles.secondaryText, isFamilyMode && styles.btnTextLg]}>
-                  {t('common.cancel')}
+                <Text style={[styles.shareNowText, isFamilyMode && styles.btnTextLg]}>
+                  {t('modal.shareNow')}
                 </Text>
               </Pressable>
               <Pressable
                 style={[
                   styles.primaryBtn,
+                  styles.primaryBtnEqual,
                   isFamilyMode && styles.btnLg,
                   !selectedContent && styles.primaryBtnDisabled,
                 ]}
@@ -299,8 +305,28 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
   },
+  // Used when paired with shareNowBtn so neither choice dominates.
+  primaryBtnEqual: {
+    flex: 1,
+  },
   primaryBtnDisabled: {
     backgroundColor: '#93C5FD',
+  },
+  // "Bagikan sekarang" — green-tinted to read as a share action, but with a
+  // lighter weight than the primary so the design still nudges toward source
+  // checking without hiding the share option.
+  shareNowBtn: {
+    flex: 1,
+    paddingVertical: 12,
+    backgroundColor: '#fff',
+    borderWidth: 1.5,
+    borderColor: '#16A34A',
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  shareNowText: {
+    color: '#15803D',
+    fontWeight: '600',
   },
   primaryText: {
     color: '#fff',
