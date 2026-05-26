@@ -19,104 +19,112 @@ import {
   Pressable,
   Image,
 } from 'react-native';
-import {
-  checkerIcons,
-  resultTemplates,
-  referencesByCategory,
-  literacyQuestions,
-} from '../data/dummyContent';
+import { checkerIcons } from '../data/dummyContent';
+import { useT } from '../LanguageContext';
+
+// Map result.riskType to the i18n keys for label and explanation.
+const resultLabelKey = {
+  reliable: 'result.reliable.label',
+  bias: 'result.bias.label',
+  low_evidence: 'result.low_evidence.label',
+  misleading: 'result.misleading.label',
+};
+const resultExplanationKey = {
+  reliable: 'result.reliable.explanation',
+  bias: 'result.bias.explanation',
+  low_evidence: 'result.low_evidence.explanation',
+  misleading: 'result.misleading.explanation',
+};
+
+// Risk-type → soft tint colour (kept here so we don't depend on dummyContent
+// for the visual palette either).
+const resultColor = {
+  reliable: '#16A34A',
+  bias: '#F59E0B',
+  low_evidence: '#6B7280',
+  misleading: '#DC2626',
+};
+
+// Reference list keys per category (1..N per category).
+const referenceKeysByCategory = {
+  health: ['ref.health.1', 'ref.health.2', 'ref.health.3'],
+  political: ['ref.political.1', 'ref.political.2', 'ref.political.3'],
+  scam: ['ref.scam.1', 'ref.scam.2', 'ref.scam.3'],
+  celebrity: ['ref.celebrity.1', 'ref.celebrity.2', 'ref.celebrity.3'],
+  news: ['ref.news.1', 'ref.news.2', 'ref.news.3'],
+  lifestyle: ['ref.lifestyle.1', 'ref.lifestyle.2'],
+  family: ['ref.family.1', 'ref.family.2'],
+};
+
+const literacyKeys = [
+  'literacy.1',
+  'literacy.2',
+  'literacy.3',
+  'literacy.4',
+  'literacy.5',
+  'literacy.6',
+];
 
 // Build a small per-section checklist. The text changes with the riskType so
 // the result feels related to the content, while staying simple to maintain.
+// Returns i18n keys; the component renders them via t().
 function buildSectionChecks(riskType) {
   switch (riskType) {
     case 'reliable':
       return {
-        source: {
-          iconUri: checkerIcons.section.good,
-          text: 'Sumber tampak dikenali.',
-        },
-        evidence: {
-          iconUri: checkerIcons.section.good,
-          text: 'Klaim didukung oleh referensi lain.',
-        },
-        bias: {
-          iconUri: checkerIcons.section.warn,
-          text: 'Tetap baca lebih dari sekadar judul sebelum membagikan.',
-        },
+        source: { iconUri: checkerIcons.section.good, textKey: 'check.reliable.source' },
+        evidence: { iconUri: checkerIcons.section.good, textKey: 'check.reliable.evidence' },
+        bias: { iconUri: checkerIcons.section.warn, textKey: 'check.reliable.bias' },
       };
     case 'bias':
       return {
-        source: {
-          iconUri: checkerIcons.section.warn,
-          text: 'Sumber mungkin memiliki sudut pandang yang kuat.',
-        },
-        evidence: {
-          iconUri: checkerIcons.section.warn,
-          text: 'Bukti tidak lengkap atau satu sisi.',
-        },
-        bias: {
-          iconUri: checkerIcons.section.warn,
-          text: 'Bahasanya emosional. Mungkin mencoba memengaruhi opinimu.',
-        },
+        source: { iconUri: checkerIcons.section.warn, textKey: 'check.bias.source' },
+        evidence: { iconUri: checkerIcons.section.warn, textKey: 'check.bias.evidence' },
+        bias: { iconUri: checkerIcons.section.warn, textKey: 'check.bias.bias' },
       };
     case 'low_evidence':
       return {
-        source: {
-          iconUri: checkerIcons.section.warn,
-          text: 'Sumber tidak jelas atau belum terverifikasi.',
-        },
-        evidence: {
-          iconUri: checkerIcons.section.warn,
-          text: 'Tidak ada bukti atau referensi yang jelas.',
-        },
-        bias: {
-          iconUri: checkerIcons.section.info,
-          text: 'Nadanya terburu-buru atau berdasarkan rumor.',
-        },
+        source: { iconUri: checkerIcons.section.warn, textKey: 'check.low_evidence.source' },
+        evidence: { iconUri: checkerIcons.section.warn, textKey: 'check.low_evidence.evidence' },
+        bias: { iconUri: checkerIcons.section.info, textKey: 'check.low_evidence.bias' },
       };
     case 'misleading':
     default:
       return {
-        source: {
-          iconUri: checkerIcons.section.bad,
-          text: 'Sumber tidak dikenali atau mencurigakan.',
-        },
-        evidence: {
-          iconUri: checkerIcons.section.bad,
-          text: 'Klaim tidak didukung (mis. klaim kesehatan yang belum terbukti atau penipuan).',
-        },
-        bias: {
-          iconUri: checkerIcons.section.bad,
-          text: 'Menggunakan bahasa yang mendesak, emosional, atau menekan.',
-        },
+        source: { iconUri: checkerIcons.section.bad, textKey: 'check.misleading.source' },
+        evidence: { iconUri: checkerIcons.section.bad, textKey: 'check.misleading.evidence' },
+        bias: { iconUri: checkerIcons.section.bad, textKey: 'check.misleading.bias' },
       };
   }
 }
 
-function buildNextAction(riskType) {
+function nextActionKey(riskType) {
   switch (riskType) {
     case 'reliable':
-      return 'Boleh dibagikan, tapi pertimbangkan menambahkan konteks atau sumber aslinya.';
+      return 'next.reliable';
     case 'bias':
-      return 'Bandingkan dengan sumber lain sebelum membagikan. Perhatikan cara pembingkaiannya.';
+      return 'next.bias';
     case 'low_evidence':
-      return 'Berhenti dulu. Tunggu konfirmasi dari sumber terpercaya sebelum membagikan.';
+      return 'next.low_evidence';
     case 'misleading':
     default:
-      return 'Jangan dibagikan. Verifikasi dengan sumber terpercaya dulu.';
+      return 'next.misleading';
   }
 }
 
 export default function ResultCard({ content, onClose, interfaceMode = 'self' }) {
+  const t = useT();
   const isFamilyMode = interfaceMode === 'family';
-  // Pick the right template + references using the selected content.
-  const template = resultTemplates[content.riskType] || resultTemplates.low_evidence;
+  // Pick the right keys + colour for this risk type.
+  const labelKey = resultLabelKey[content.riskType] || resultLabelKey.low_evidence;
+  const explanationKey =
+    resultExplanationKey[content.riskType] || resultExplanationKey.low_evidence;
+  const color = resultColor[content.riskType] || resultColor.low_evidence;
   const statusIcon =
     checkerIcons.status[content.riskType] || checkerIcons.status.low_evidence;
-  const refs = referencesByCategory[content.contentCategory] || [];
+  const refKeys = referenceKeysByCategory[content.contentCategory] || [];
   const checks = buildSectionChecks(content.riskType);
-  const nextAction = buildNextAction(content.riskType);
+  const nextActionStr = t(nextActionKey(content.riskType));
 
   // Detail sections collapsed by default (testing feedback: results page felt
   // cluttered and repetitive). The high-level result and the three checks
@@ -148,7 +156,7 @@ export default function ResultCard({ content, onClose, interfaceMode = 'self' })
               isFamilyMode && styles.warningBannerTextLg,
             ]}
           >
-            Hati-hati — tanda peringatan terdeteksi
+            {t('rc.warningBanner')}
           </Text>
         </View>
       )}
@@ -158,7 +166,7 @@ export default function ResultCard({ content, onClose, interfaceMode = 'self' })
       <View
         style={[
           styles.labelBox,
-          { backgroundColor: template.color },
+          { backgroundColor: color },
           isMisleading && styles.labelBoxDanger,
           isReliable && styles.labelBoxVerified,
         ]}
@@ -166,16 +174,16 @@ export default function ResultCard({ content, onClose, interfaceMode = 'self' })
         <Image source={{ uri: statusIcon }} style={[styles.labelIcon, isFamilyMode && styles.labelIconLg]} />
         <View style={{ flex: 1 }}>
           <Text style={[styles.labelText, isFamilyMode && styles.labelTextLg]}>
-            {template.label}
+            {t(labelKey)}
           </Text>
           <Text style={[styles.labelSub, isFamilyMode && styles.labelSubLg]}>
-            Keputusan akhir tetap di tanganmu.
+            {t('rc.finalDecision')}
           </Text>
         </View>
       </View>
 
       <Text style={[styles.explanation, isFamilyMode && styles.explanationLg]}>
-        {template.explanation}
+        {t(explanationKey)}
       </Text>
 
       {/* Recommended next action — promoted up so the most important
@@ -194,7 +202,7 @@ export default function ResultCard({ content, onClose, interfaceMode = 'self' })
             isMisleading && styles.sectionTitleDanger,
           ]}
         >
-          Tindakan selanjutnya yang disarankan
+          {t('rc.nextAction')}
         </Text>
         <Text
           style={[
@@ -203,14 +211,14 @@ export default function ResultCard({ content, onClose, interfaceMode = 'self' })
             isMisleading && styles.actionTextDanger,
           ]}
         >
-          {nextAction}
+          {nextActionStr}
         </Text>
       </View>
 
       {/* Three quick checks — always visible, short bullet rows. */}
-      <Section title="Pemeriksaan sumber" item={checks.source} large={isFamilyMode} />
-      <Section title="Pemeriksaan bukti" item={checks.evidence} large={isFamilyMode} />
-      <Section title="Bias / bahasa emosional" item={checks.bias} large={isFamilyMode} />
+      <Section title={t('rc.sourceCheck')} item={checks.source} large={isFamilyMode} />
+      <Section title={t('rc.evidenceCheck')} item={checks.evidence} large={isFamilyMode} />
+      <Section title={t('rc.biasCheck')} item={checks.bias} large={isFamilyMode} />
 
       {/* Everything else lives behind a single expander to keep the page
           short. Open by default for misleading content where the literacy
@@ -220,7 +228,7 @@ export default function ResultCard({ content, onClose, interfaceMode = 'self' })
         onPress={() => setDetailsOpen(!detailsOpen)}
       >
         <Text style={[styles.detailToggleText, isFamilyMode && styles.detailToggleTextLg]}>
-          {detailsOpen ? 'Sembunyikan detail' : 'Lihat detail lengkap'}
+          {detailsOpen ? t('rc.hideDetails') : t('rc.seeDetails')}
         </Text>
         <Text style={styles.detailToggleChevron}>
           {detailsOpen ? '▴' : '▾'}
@@ -232,11 +240,11 @@ export default function ResultCard({ content, onClose, interfaceMode = 'self' })
           {/* Section: Digital literacy reminder */}
           <View style={styles.section}>
             <Text style={[styles.sectionTitle, isFamilyMode && styles.sectionTitleLg]}>
-              Pengingat Literasi Digital
+              {t('rc.literacyReminder')}
             </Text>
-            {literacyQuestions.map((q, i) => (
-              <Text key={i} style={[styles.bullet, isFamilyMode && styles.bulletLg]}>
-                • {q}
+            {literacyKeys.map((key) => (
+              <Text key={key} style={[styles.bullet, isFamilyMode && styles.bulletLg]}>
+                • {t(key)}
               </Text>
             ))}
           </View>
@@ -244,13 +252,13 @@ export default function ResultCard({ content, onClose, interfaceMode = 'self' })
           {/* Section: References */}
           <View style={styles.section}>
             <Text style={[styles.sectionTitle, isFamilyMode && styles.sectionTitleLg]}>
-              Referensi yang disarankan untuk dibandingkan
+              {t('rc.references')}
             </Text>
-            {refs.map((r, i) => (
-              <View key={i} style={styles.refRow}>
+            {refKeys.map((key) => (
+              <View key={key} style={styles.refRow}>
                 <Image source={{ uri: checkerIcons.link }} style={styles.refIcon} />
                 <Text style={[styles.refItem, isFamilyMode && styles.refItemLg]}>
-                  {r}
+                  {t(key)}
                 </Text>
               </View>
             ))}
@@ -264,7 +272,7 @@ export default function ResultCard({ content, onClose, interfaceMode = 'self' })
         onPress={onClose}
       >
         <Text style={[styles.closeText, isFamilyMode && styles.closeTextLg]}>
-          Tutup
+          {t('common.close')}
         </Text>
       </Pressable>
     </ScrollView>
@@ -272,7 +280,10 @@ export default function ResultCard({ content, onClose, interfaceMode = 'self' })
 }
 
 // Tiny helper component so each labelled section looks the same.
+// `item.textKey` is an i18n key; we resolve it inside the helper so the row
+// re-renders when the language changes.
 function Section({ title, item, large = false }) {
+  const t = useT();
   return (
     <View style={styles.section}>
       <Text style={[styles.sectionTitle, large && styles.sectionTitleLg]}>
@@ -284,7 +295,7 @@ function Section({ title, item, large = false }) {
           style={[styles.sectionIcon, large && styles.sectionIconLg]}
         />
         <Text style={[styles.sectionBody, large && styles.sectionBodyLg]}>
-          {item.text}
+          {t(item.textKey)}
         </Text>
       </View>
     </View>

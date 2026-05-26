@@ -11,7 +11,18 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import ResultCard from './ResultCard';
 import SourceVerificationModal from './SourceVerificationModal';
-import { categoryQuestions } from '../data/dummyContent';
+import { loc, useLang, useT } from '../LanguageContext';
+
+// Map each content category to its source-question i18n key.
+const categoryQuestionKey = {
+  health: 'catq.health',
+  political: 'catq.political',
+  scam: 'catq.scam',
+  celebrity: 'catq.celebrity',
+  news: 'catq.news',
+  lifestyle: 'catq.lifestyle',
+  family: 'catq.family',
+};
 
 export default function CheckerModal({
   visible,
@@ -26,6 +37,8 @@ export default function CheckerModal({
   interfaceMode = 'self',
 }) {
   const isFamilyMode = interfaceMode === 'family';
+  const t = useT();
+  const lang = useLang();
   // When not visible, render nothing.
   if (!visible) return null;
 
@@ -44,10 +57,10 @@ export default function CheckerModal({
             {/* Source-first headline (Finding 5). The first thing the user sees
                 is the *source*, not a verdict. */}
             <Text style={[styles.eyebrow, isFamilyMode && styles.eyebrowLg]}>
-              Berhenti — sebelum kamu membagikan
+              {t('modal.eyebrow')}
             </Text>
             <Text style={[styles.title, isFamilyMode && styles.titleLg]}>
-              Siapa yang memposting ini?
+              {t('modal.whoPosted')}
             </Text>
 
             {selectedContent ? (
@@ -55,47 +68,48 @@ export default function CheckerModal({
                 {/* Big source name — most prominent element */}
                 <View style={styles.sourceBox}>
                   <Text style={[styles.sourceLabel, isFamilyMode && styles.sourceLabelLg]}>
-                    Sumber
+                    {t('modal.source')}
                   </Text>
                   <Text style={[styles.sourceName, isFamilyMode && styles.sourceNameLg]}>
-                    {selectedContent.source || 'Tidak diketahui'}
+                    {loc(selectedContent, 'source', lang) || t('common.unknown')}
                   </Text>
                   <Text style={[styles.sourceMeta, isFamilyMode && styles.sourceMetaLg]}>
-                    Dilihat di {selectedContent.appName}
+                    {t('modal.seenOn')} {selectedContent.appName}
                   </Text>
                 </View>
 
                 {/* Category-specific source question (Finding 3) */}
                 <View style={styles.questionBox}>
                   <Text style={[styles.questionLabel, isFamilyMode && styles.questionLabelLg]}>
-                    Tanyakan pada diri sendiri
+                    {t('modal.askYourself')}
                   </Text>
                   <Text style={[styles.questionText, isFamilyMode && styles.questionTextLg]}>
-                    {categoryQuestions[selectedContent.contentCategory] ||
-                      'Apakah sumbernya jelas dan dapat dipercaya?'}
+                    {categoryQuestionKey[selectedContent.contentCategory]
+                      ? t(categoryQuestionKey[selectedContent.contentCategory])
+                      : t('modal.fallbackQuestion')}
                   </Text>
                 </View>
 
                 {/* The content itself comes second, not first */}
                 <View style={styles.previewBox}>
                   <Text style={[styles.previewLabel, isFamilyMode && styles.previewLabelLg]}>
-                    Konten
+                    {t('modal.content')}
                   </Text>
                   <Text
                     style={[styles.previewText, isFamilyMode && styles.previewTextLg]}
                     numberOfLines={3}
                   >
-                    “{selectedContent.preview}”
+                    “{loc(selectedContent, 'preview', lang)}”
                   </Text>
                 </View>
               </>
             ) : (
               <View style={styles.previewBox}>
                 <Text style={[styles.previewLabel, isFamilyMode && styles.previewLabelLg]}>
-                  Tidak ada konten yang dipilih
+                  {t('modal.noSelection.title')}
                 </Text>
                 <Text style={[styles.previewText, isFamilyMode && styles.previewTextLg]}>
-                  Ketuk unggahan atau pesan di aplikasi dulu, lalu ketuk bulatan.
+                  {t('modal.noSelection.body')}
                 </Text>
               </View>
             )}
@@ -106,7 +120,7 @@ export default function CheckerModal({
                 onPress={onClose}
               >
                 <Text style={[styles.secondaryText, isFamilyMode && styles.btnTextLg]}>
-                  Batal
+                  {t('common.cancel')}
                 </Text>
               </Pressable>
               <Pressable
@@ -119,7 +133,7 @@ export default function CheckerModal({
                 onPress={onCheckSource}
               >
                 <Text style={[styles.primaryText, isFamilyMode && styles.btnTextLg]}>
-                  Periksa sumber
+                  {t('modal.checkSource')}
                 </Text>
               </Pressable>
             </View>

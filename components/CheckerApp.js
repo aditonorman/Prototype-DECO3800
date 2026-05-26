@@ -16,6 +16,7 @@ import {
   Image,
 } from 'react-native';
 import { checkerIcons } from '../data/dummyContent';
+import { useT } from '../LanguageContext';
 
 // A small checkbox row component used in the agreement card.
 function CheckRow({ label, checked, onToggle, large = false }) {
@@ -51,6 +52,8 @@ export default function CheckerApp({
   checkerActive,
   interfaceMode = 'self',
 }) {
+  const t = useT();
+
   // Three agreement boxes — all three must be ticked to activate.
   const [agree1, setAgree1] = useState(false);
   const [agree2, setAgree2] = useState(false);
@@ -94,7 +97,7 @@ export default function CheckerApp({
       <View style={styles.header}>
         <Pressable onPress={onBackHome} style={styles.backBtn}>
           <Text style={[styles.backText, isFamilyMode && styles.backTextLg]}>
-            ← Beranda
+            ← {t('common.home')}
           </Text>
         </Pressable>
       </View>
@@ -114,7 +117,7 @@ export default function CheckerApp({
               isFamilyMode && styles.modePillTextFamily,
             ]}
           >
-            {isFamilyMode ? '👨‍👩‍👧  Mode untuk orang tua' : '👤  Mode standar'}
+            {isFamilyMode ? t('checker.mode.family') : t('checker.mode.self')}
           </Text>
         </View>
       </View>
@@ -132,7 +135,7 @@ export default function CheckerApp({
           Legitimate Checker
         </Text>
         <Text style={[styles.subtitle, isFamilyMode && styles.subtitleLg]}>
-          Berhenti. Periksa. Pikir dulu sebelum membagikan.
+          {t('checker.tagline')}
         </Text>
       </View>
 
@@ -141,12 +144,9 @@ export default function CheckerApp({
         <View style={styles.activeBanner}>
           <View style={styles.statusRow}>
             <Image source={{ uri: checkerIcons.active }} style={styles.statusIcon} />
-            <Text style={styles.activeBannerTitle}>Checker aktif</Text>
+            <Text style={styles.activeBannerTitle}>{t('checker.active.title')}</Text>
           </View>
-          <Text style={styles.activeBannerBody}>
-            Bulatan kecil akan muncul saat kamu membuka Instagram, WhatsApp, X,
-            dan TikTok.
-          </Text>
+          <Text style={styles.activeBannerBody}>{t('checker.active.body')}</Text>
         </View>
       )}
 
@@ -155,17 +155,12 @@ export default function CheckerApp({
         <View style={styles.successCard}>
           <View style={styles.statusRow}>
             <Image source={{ uri: checkerIcons.active }} style={styles.statusIcon} />
-            <Text style={styles.successTitle}>Checker aktif</Text>
+            <Text style={styles.successTitle}>{t('checker.active.title')}</Text>
           </View>
-          <Text style={styles.successBody}>
-            Bulatan kecil akan muncul saat kamu menjelajah.
-          </Text>
-          <Text style={styles.onboardNote}>
-            Checker aktif. Sekarang kamu bisa pakai bulatan untuk berhenti
-            sejenak dan memeriksa konten yang mencurigakan.
-          </Text>
+          <Text style={styles.successBody}>{t('checker.active.short')}</Text>
+          <Text style={styles.onboardNote}>{t('checker.activated.note')}</Text>
           <Pressable style={styles.primaryBtn} onPress={onBackHome}>
-            <Text style={styles.primaryBtnText}>Kembali ke Beranda</Text>
+            <Text style={styles.primaryBtnText}>{t('checker.backHome')}</Text>
           </Pressable>
         </View>
       ) : (
@@ -173,12 +168,10 @@ export default function CheckerApp({
           {/* Purpose card */}
           <View style={styles.card}>
             <Text style={[styles.cardTitle, isFamilyMode && styles.cardTitleLg]}>
-              Apa yang dilakukan alat ini
+              {t('checker.purpose.title')}
             </Text>
             <Text style={[styles.cardBody, isFamilyMode && styles.cardBodyLg]}>
-              Alat ini tidak memutuskan kebenaran untukmu. Alat ini membantu
-              kamu memeriksa sumber, mengenali tanda peringatan, dan berpikir
-              lebih hati-hati sebelum percaya atau membagikan informasi.
+              {t('checker.purpose.body')}
             </Text>
           </View>
 
@@ -196,7 +189,7 @@ export default function CheckerApp({
                   isFamilyMode && styles.cardTitleLg,
                 ]}
               >
-                Kenapa aku melihat ini di feed-ku?
+                {t('checker.algo.title')}
               </Text>
               <Image
                 source={{
@@ -209,15 +202,7 @@ export default function CheckerApp({
             </Pressable>
             {showAlgoExplainer && (
               <Text style={[styles.cardBody, isFamilyMode && styles.cardBodyLg]}>
-                Aplikasi seperti Instagram, TikTok, dan X mencoba menebak apa
-                yang kamu suka. Mereka memperhatikan apa yang kamu berhenti
-                lihat, apa yang kamu ketuk, dan apa yang kamu bagikan. Lalu
-                mereka menampilkan lebih banyak posting yang mirip.
-                {'\n\n'}
-                Ini kadang disebut “algoritma.” Itu hanyalah aturan urutan yang
-                dipakai aplikasi. Bukan berita, dan bukan juga temanmu yang
-                memutuskan. Kalau kamu terus melihat jenis cerita yang sama,
-                itu mungkin algoritma — bukan dunia — yang sedang mengulanginya.
+                {t('checker.algo.body')}
               </Text>
             )}
           </View>
@@ -226,22 +211,22 @@ export default function CheckerApp({
           {!checkerActive && (
             <View style={styles.card}>
               <Text style={[styles.cardTitle, isFamilyMode && styles.cardTitleLg]}>
-                Sebelum kamu mulai
+                {t('checker.agree.title')}
               </Text>
               <CheckRow
-                label="Saya memahami alat ini hanyalah panduan."
+                label={t('checker.agree.1')}
                 checked={agree1}
                 onToggle={() => setAgree1(!agree1)}
                 large={isFamilyMode}
               />
               <CheckRow
-                label="Saya memahami keputusan akhir tetap di tangan saya."
+                label={t('checker.agree.2')}
                 checked={agree2}
                 onToggle={() => setAgree2(!agree2)}
                 large={isFamilyMode}
               />
               <CheckRow
-                label="Saya setuju memakai alat ini untuk mendukung literasi digital."
+                label={t('checker.agree.3')}
                 checked={agree3}
                 onToggle={() => setAgree3(!agree3)}
                 large={isFamilyMode}
@@ -262,7 +247,7 @@ export default function CheckerApp({
                     isFamilyMode && styles.primaryBtnTextLg,
                   ]}
                 >
-                  Aktifkan Checker
+                  {t('checker.activate')}
                 </Text>
               </Pressable>
             </View>
@@ -273,7 +258,7 @@ export default function CheckerApp({
       {/* Settings — always available */}
       <View style={styles.card}>
         <Text style={[styles.cardTitle, isFamilyMode && styles.cardTitleLg]}>
-          Pengaturan
+          {t('checker.settings.title')}
         </Text>
 
         <View style={styles.settingRow}>
@@ -281,12 +266,12 @@ export default function CheckerApp({
             <Text
               style={[styles.settingTitle, isFamilyMode && styles.settingTitleLg]}
             >
-              Mode bahasa sederhana
+              {t('checker.settings.simple.title')}
             </Text>
             <Text
               style={[styles.settingHint, isFamilyMode && styles.settingHintLg]}
             >
-              Pakai kata-kata yang mudah dibaca.
+              {t('checker.settings.simple.hint')}
             </Text>
           </View>
           <Switch value={simpleLanguage} onValueChange={setSimpleLanguage} />
@@ -297,10 +282,10 @@ export default function CheckerApp({
             <Text
               style={[styles.settingTitle, isFamilyMode && styles.settingTitleLg]}
             >
-              Tampilkan pengingat sumber
+              {t('checker.settings.source.title')}
             </Text>
             <Text style={[styles.settingHint, isFamilyMode && styles.settingHintLg]}>
-              Selalu ingatkan saya untuk memeriksa sumber.
+              {t('checker.settings.source.hint')}
             </Text>
           </View>
           <Switch
@@ -314,10 +299,10 @@ export default function CheckerApp({
             <Text
               style={[styles.settingTitle, isFamilyMode && styles.settingTitleLg]}
             >
-              Tutup dengan satu ketukan
+              {t('checker.settings.dismiss.title')}
             </Text>
             <Text style={[styles.settingHint, isFamilyMode && styles.settingHintLg]}>
-              Tutup pop-up bulatan dengan sekali ketuk.
+              {t('checker.settings.dismiss.hint')}
             </Text>
           </View>
           <Switch value={oneTapDismiss} onValueChange={setOneTapDismiss} />

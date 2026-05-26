@@ -11,6 +11,7 @@ import {
   Image,
 } from 'react-native';
 import { appLogos, uiIcons, whatsappMessages } from '../data/dummyContent';
+import { loc, useLang, useT } from '../LanguageContext';
 
 export default function FakeWhatsApp({
   onBackHome,
@@ -19,12 +20,14 @@ export default function FakeWhatsApp({
   selectedPostId,
   checkerActive,
 }) {
+  const t = useT();
+  const lang = useLang();
   return (
     <View style={styles.container}>
       {/* Top bar */}
       <View style={styles.topBar}>
         <Pressable onPress={onBackHome} style={styles.backBtn}>
-          <Text style={styles.backText}>← Beranda</Text>
+          <Text style={styles.backText}>← {t('common.home')}</Text>
         </Pressable>
         <View style={{ flex: 1 }}>
           <View style={styles.groupTitleRow}>
@@ -33,9 +36,9 @@ export default function FakeWhatsApp({
               style={styles.appLogo}
               resizeMode="contain"
             />
-            <Text style={styles.groupName}>Grup Keluarga</Text>
+            <Text style={styles.groupName}>{t('wa.group')}</Text>
           </View>
-          <Text style={styles.groupSub}>Ibu, Ayah, Kakak, Om Budi, Saya</Text>
+          <Text style={styles.groupSub}>{t('wa.members')}</Text>
         </View>
       </View>
 
@@ -70,7 +73,7 @@ export default function FakeWhatsApp({
                       source={{ uri: msg.avatarUrl }}
                       style={styles.senderAvatar}
                     />
-                    <Text style={styles.sender}>{msg.sender}</Text>
+                    <Text style={styles.sender}>{loc(msg, 'sender', lang)}</Text>
                   </View>
                 )}
 
@@ -80,17 +83,17 @@ export default function FakeWhatsApp({
                       source={{ uri: uiIcons.light.forward }}
                       style={styles.forwardedIcon}
                     />
-                    <Text style={styles.forwarded}>Diteruskan banyak kali</Text>
+                    <Text style={styles.forwarded}>{t('wa.forwardedManyTimes')}</Text>
                   </View>
                 )}
 
-                <Text style={styles.bubbleText}>{msg.text}</Text>
+                <Text style={styles.bubbleText}>{loc(msg, 'text', lang)}</Text>
                 <Text style={styles.time}>{msg.time}</Text>
 
                 {!isMine && (
                   <View style={styles.bubbleActions}>
                     <Text style={styles.tapHint}>
-                      {isSelected ? '✓ Dipilih' : 'Ketuk untuk memilih'}
+                      {isSelected ? t('wa.selected') : t('wa.tapToSelect')}
                     </Text>
                     {/* Forward button — Finding 2: pause at the moment of sharing. */}
                     <Pressable
@@ -109,7 +112,7 @@ export default function FakeWhatsApp({
                         source={{ uri: uiIcons.dark.forward }}
                         style={styles.forwardBtnIcon}
                       />
-                      <Text style={styles.forwardBtnText}>Teruskan</Text>
+                      <Text style={styles.forwardBtnText}>{t('wa.forward')}</Text>
                     </Pressable>
                   </View>
                 )}

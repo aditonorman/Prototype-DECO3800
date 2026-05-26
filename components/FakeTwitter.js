@@ -10,6 +10,7 @@ import {
   Image,
 } from 'react-native';
 import { appLogos, twitterPosts, uiIcons } from '../data/dummyContent';
+import { loc, useLang, useT } from '../LanguageContext';
 
 export default function FakeTwitter({
   onBackHome,
@@ -18,12 +19,14 @@ export default function FakeTwitter({
   selectedPostId,
   checkerActive,
 }) {
+  const t = useT();
+  const lang = useLang();
   return (
     <View style={styles.container}>
       {/* Top bar */}
       <View style={styles.topBar}>
         <Pressable onPress={onBackHome} style={styles.backBtn}>
-          <Text style={styles.backText}>← Beranda</Text>
+          <Text style={styles.backText}>← {t('common.home')}</Text>
         </Pressable>
         <View style={styles.centerHeader}>
           <Image
@@ -52,7 +55,7 @@ export default function FakeTwitter({
                     {tweet.user}{' '}
                     <Text style={styles.handle}>{tweet.handle}</Text>
                   </Text>
-                  <Text style={styles.tweetText}>{tweet.text}</Text>
+                  <Text style={styles.tweetText}>{loc(tweet, 'text', lang)}</Text>
                   {tweet.imageUrl && (
                     <Image
                       source={{ uri: tweet.imageUrl }}
@@ -73,7 +76,7 @@ export default function FakeTwitter({
                       </View>
                       <View style={styles.metaGroup}>
                         <Image source={{ uri: uiIcons.dark.save }} style={styles.metaIcon} />
-                        <Text style={styles.meta}>Simpan</Text>
+                        <Text style={styles.meta}>{t('tw.save')}</Text>
                       </View>
                     </View>
                     {/* Repost — Finding 2: pause at the moment of sharing. */}
@@ -89,7 +92,7 @@ export default function FakeTwitter({
                       style={styles.repostBtn}
                     >
                       <Image source={{ uri: uiIcons.dark.repost }} style={styles.repostIcon} />
-                      <Text style={styles.repostBtnText}>Repost</Text>
+                      <Text style={styles.repostBtnText}>{t('tw.repost')}</Text>
                     </Pressable>
                   </View>
 
@@ -99,9 +102,7 @@ export default function FakeTwitter({
                       isSelected && styles.tapHintActive,
                     ]}
                   >
-                    {isSelected
-                      ? '✓ Dipilih untuk Checker'
-                      : 'Ketuk untuk memilih untuk Checker'}
+                    {isSelected ? t('tw.selected') : t('tw.tapToSelect')}
                   </Text>
                 </View>
               </View>

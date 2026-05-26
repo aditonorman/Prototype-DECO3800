@@ -18,6 +18,15 @@ import {
   lookupSourceVerification,
   verificationLabels,
 } from '../data/dummyContent';
+import { loc, useLang, useT } from '../LanguageContext';
+
+// Map each verdict key to its i18n key so the verdict text can flip language.
+const verdictLabelKey = {
+  confirmed: 'verdict.confirmed',
+  opinion: 'verdict.opinion',
+  personal: 'verdict.personal',
+  unconfirmed: 'verdict.unconfirmed',
+};
 
 export default function SourceVerificationModal({
   selectedContent,
@@ -28,16 +37,16 @@ export default function SourceVerificationModal({
   interfaceMode = 'self',
 }) {
   const isFamilyMode = interfaceMode === 'family';
+  const t = useT();
+  const lang = useLang();
   // If for some reason no content is selected, show a friendly fallback.
   if (!selectedContent) {
     return (
       <View style={{ padding: 20 }}>
-        <Text style={styles.title}>Periksa sumber</Text>
-        <Text style={styles.body}>
-          Tidak ada konten yang dipilih. Silakan pilih unggahan terlebih dahulu.
-        </Text>
+        <Text style={styles.title}>{t('source.eyebrow')}</Text>
+        <Text style={styles.body}>{t('modal.noSelection.body')}</Text>
         <Pressable style={styles.primaryBtn} onPress={onBack}>
-          <Text style={styles.primaryBtnText}>Kembali</Text>
+          <Text style={styles.primaryBtnText}>{t('common.back')}</Text>
         </Pressable>
       </View>
     );
@@ -53,21 +62,18 @@ export default function SourceVerificationModal({
     >
       {/* Eyebrow + source-first title */}
       <Text style={[styles.eyebrow, isFamilyMode && styles.eyebrowLg]}>
-        Periksa sumber
+        {t('source.eyebrow')}
       </Text>
       <Text style={[styles.title, isFamilyMode && styles.titleLg]}>
-        Apa yang dikatakan sumbernya?
+        {t('source.title')}
       </Text>
 
       {/* One-time tooltip for solo-onboarded users explaining the step */}
       {showTooltip && (
         <View style={styles.tooltip}>
-          <Text style={styles.tooltipText}>
-            Periksa sumbernya langsung — langkah ini membuka profil atau situs
-            resmi outlet yang disebutkan, sebelum hasil akhir ditampilkan.
-          </Text>
+          <Text style={styles.tooltipText}>{t('source.tooltip')}</Text>
           <Pressable onPress={onDismissTooltip} style={styles.tooltipBtn}>
-            <Text style={styles.tooltipBtnText}>Mengerti</Text>
+            <Text style={styles.tooltipBtnText}>{t('common.gotIt')}</Text>
           </Pressable>
         </View>
       )}
@@ -75,13 +81,13 @@ export default function SourceVerificationModal({
       {/* Simulated outlet profile */}
       <View style={styles.profileCard}>
         <Text style={[styles.cardLabel, isFamilyMode && styles.cardLabelLg]}>
-          Profil sumber
+          {t('source.profile')}
         </Text>
         <Text style={[styles.accountName, isFamilyMode && styles.accountNameLg]}>
-          {record.accountName}
+          {loc(record, 'accountName', lang)}
         </Text>
         <Text style={[styles.accountType, isFamilyMode && styles.accountTypeLg]}>
-          {record.accountType}
+          {loc(record, 'accountType', lang)}
         </Text>
 
         {/* Contact-status chip — WhatsApp-only quick cue, added after
@@ -89,39 +95,37 @@ export default function SourceVerificationModal({
             how close/distant the sender was. */}
         {record.contactStatus === 'saved' && (
           <View style={[styles.contactChip, styles.contactChipSaved]}>
-            <Text style={styles.contactChipText}>
-              ✓ Tersimpan di kontak
-            </Text>
+            <Text style={styles.contactChipText}>{t('source.contact.saved')}</Text>
           </View>
         )}
         {record.contactStatus === 'forwarded_unknown' && (
           <View style={[styles.contactChip, styles.contactChipForwarded]}>
             <Text style={styles.contactChipText}>
-              ⚠ Diteruskan — sumber asli tidak diketahui
+              {t('source.contact.forwardedUnknown')}
             </Text>
           </View>
         )}
 
         <Text style={[styles.profileSummary, isFamilyMode && styles.profileSummaryLg]}>
-          {record.profileSummary}
+          {loc(record, 'profileSummary', lang)}
         </Text>
         <Text style={[styles.profileMeta, isFamilyMode && styles.profileMetaLg]}>
-          Dilihat di {selectedContent.appName}
+          {t('modal.seenOn')} {selectedContent.appName}
         </Text>
       </View>
 
       {/* Corroboration list */}
       <View style={styles.corroborationCard}>
         <Text style={[styles.cardLabel, isFamilyMode && styles.cardLabelLg]}>
-          Apakah outlet lain melaporkan hal yang sama?
+          {t('source.corrobTitle')}
         </Text>
         {record.corroboration.map((row, i) => (
           <View key={i} style={styles.corroborationRow}>
             <Text style={[styles.outletName, isFamilyMode && styles.outletNameLg]}>
-              {row.outlet}
+              {loc(row, 'outlet', lang)}
             </Text>
             <Text style={[styles.outletStatus, isFamilyMode && styles.outletStatusLg]}>
-              {row.status}
+              {loc(row, 'status', lang)}
             </Text>
           </View>
         ))}
@@ -130,16 +134,15 @@ export default function SourceVerificationModal({
       {/* Verdict line (one of four soft labels — never true/false) */}
       <View style={[styles.verdictBox, { backgroundColor: verdict.color }]}>
         <Text style={[styles.verdictLabel, isFamilyMode && styles.verdictLabelLg]}>
-          Status sumber
+          {t('source.status')}
         </Text>
         <Text style={[styles.verdictText, isFamilyMode && styles.verdictTextLg]}>
-          {verdict.id}
+          {t(verdictLabelKey[record.verdict] || 'verdict.unconfirmed')}
         </Text>
       </View>
 
       <Text style={[styles.disclaimer, isFamilyMode && styles.disclaimerLg]}>
-        Keputusan akhir tetap di tanganmu. Langkah ini hanya menunjukkan apa
-        kata sumbernya sendiri dan media lain.
+        {t('source.disclaimer')}
       </Text>
 
       {/* Action buttons */}
@@ -149,7 +152,7 @@ export default function SourceVerificationModal({
           onPress={onBack}
         >
           <Text style={[styles.secondaryBtnText, isFamilyMode && styles.btnTextLg]}>
-            Kembali
+            {t('common.back')}
           </Text>
         </Pressable>
         <Pressable
@@ -157,7 +160,7 @@ export default function SourceVerificationModal({
           onPress={onSeeResult}
         >
           <Text style={[styles.primaryBtnText, isFamilyMode && styles.btnTextLg]}>
-            Lihat hasil lengkap
+            {t('source.seeFullResult')}
           </Text>
         </Pressable>
       </View>

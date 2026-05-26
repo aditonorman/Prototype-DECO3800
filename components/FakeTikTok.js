@@ -12,6 +12,7 @@ import {
   FlatList,
 } from 'react-native';
 import { appLogos, tiktokPosts, uiIcons } from '../data/dummyContent';
+import { loc, useLang, useT } from '../LanguageContext';
 
 export default function FakeTikTok({
   onBackHome,
@@ -19,6 +20,8 @@ export default function FakeTikTok({
   onShareAttempt,
   checkerActive,
 }) {
+  const t = useT();
+  const lang = useLang();
   const [pageHeight, setPageHeight] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -58,12 +61,8 @@ export default function FakeTikTok({
   }
 
   function getSongLabel(video, index) {
-    const songs = [
-      'Suara asli - wellness_daily_id',
-      'Mix berita - update sipil',
-      'Beat tren - opini panas',
-    ];
-    return songs[index % songs.length];
+    const keys = ['tk.song.0', 'tk.song.1', 'tk.song.2'];
+    return t(keys[index % keys.length]);
   }
 
   function renderVideo({ item, index }) {
@@ -80,10 +79,10 @@ export default function FakeTikTok({
             <View style={styles.userRow}>
               <Image source={{ uri: item.avatarUrl }} style={styles.inlineAvatar} />
               <Text style={styles.userLine}>
-                @{item.user} <Text style={styles.followText}>Ikuti</Text>
+                @{item.user} <Text style={styles.followText}>{t('tk.follow')}</Text>
               </Text>
             </View>
-            <Text style={styles.caption}>{item.caption}</Text>
+            <Text style={styles.caption}>{loc(item, 'caption', lang)}</Text>
             <View style={styles.audioRow}>
               <Image source={{ uri: uiIcons.dark.music }} style={styles.audioIcon} />
               <Text style={styles.audioLine}>{getSongLabel(item, index)}</Text>
@@ -93,7 +92,7 @@ export default function FakeTikTok({
                 to tap the floating bubble — no extra select step required. */}
             {checkerActive && (
               <Text style={[styles.selectHint, styles.selectHintActive]}>
-                ✓ Video ini sudah siap — ketuk bulatan LC untuk memeriksa
+                {t('tk.readyHint')}
               </Text>
             )}
           </View>
@@ -115,7 +114,7 @@ export default function FakeTikTok({
 
             <View style={styles.railItem}>
               <Image source={{ uri: uiIcons.dark.save }} style={styles.railIcon} />
-              <Text style={styles.railLabel}>Simpan</Text>
+              <Text style={styles.railLabel}>{t('tk.save')}</Text>
             </View>
 
             <Pressable
@@ -130,7 +129,7 @@ export default function FakeTikTok({
               style={styles.shareRailBtn}
             >
               <Image source={{ uri: uiIcons.dark.share }} style={styles.shareIcon} />
-              <Text style={styles.railLabel}>Bagikan</Text>
+              <Text style={styles.railLabel}>{t('tk.share')}</Text>
             </Pressable>
           </View>
         </View>
@@ -174,7 +173,7 @@ export default function FakeTikTok({
 
       <View style={styles.headerOverlay} pointerEvents="box-none">
         <Pressable style={styles.backPill} onPress={onBackHome}>
-          <Text style={styles.backText}>← Beranda</Text>
+          <Text style={styles.backText}>← {t('common.home')}</Text>
         </Pressable>
 
         <View style={styles.topCenter}>
@@ -183,8 +182,8 @@ export default function FakeTikTok({
             style={styles.topLogo}
             resizeMode="contain"
           />
-          <Text style={styles.topTabMuted}>Mengikuti</Text>
-          <Text style={styles.topTabActive}>Untukmu</Text>
+          <Text style={styles.topTabMuted}>{t('tk.following')}</Text>
+          <Text style={styles.topTabActive}>{t('tk.forYou')}</Text>
         </View>
 
         <Text style={styles.indexText}>

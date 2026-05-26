@@ -15,6 +15,7 @@ import { StatusBar } from 'expo-status-bar';
 import { View, StyleSheet } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { LanguageContext } from './LanguageContext';
 import PhoneFrame from './components/PhoneFrame';
 import LockScreen from './components/LockScreen';
 import HomeScreen from './components/HomeScreen';
@@ -64,6 +65,14 @@ export default function App() {
   // (usability testing finding: bubble should be dismissible without
   // permanently disabling it).
   const [dismissedOn, setDismissedOn] = useState({});
+
+  // Display language. Defaults to Bahasa Indonesia; English is for tutors
+  // and reviewers who don't read Indonesian. Toggled from the home screen.
+  const [language, setLanguage] = useState('id');
+
+  function toggleLanguage() {
+    setLanguage((prev) => (prev === 'id' ? 'en' : 'id'));
+  }
 
   // Which onboarding flow the user is in (proposal §5.2.1–§5.2.3).
   //   'unset'    — first time, show the OnboardingEntry chooser.
@@ -115,8 +124,12 @@ export default function App() {
       return {
         id: ig.id,
         appName: 'Instagram',
-        source: ig.user, // surfaced for the source-first prompt
+        // The Indonesian-keyed `source` is still used to look up the
+        // verification DB; `source_en` is only for display.
+        source: ig.user,
+        source_en: ig.user, // handles aren't translated
         preview: ig.caption,
+        preview_en: ig.caption_en,
         riskType: ig.riskType,
         contentCategory: ig.contentCategory,
       };
@@ -128,7 +141,11 @@ export default function App() {
         id: wa.id,
         appName: 'WhatsApp',
         source: wa.forwarded ? `${wa.sender} (diteruskan)` : wa.sender,
+        source_en: wa.forwarded
+          ? `${wa.sender_en || wa.sender} (forwarded)`
+          : wa.sender_en || wa.sender,
         preview: wa.text,
+        preview_en: wa.text_en,
         riskType: wa.riskType,
         contentCategory: wa.contentCategory,
       };
@@ -140,7 +157,9 @@ export default function App() {
         id: tw.id,
         appName: 'X / Twitter',
         source: `${tw.user} ${tw.handle}`,
+        source_en: `${tw.user} ${tw.handle}`,
         preview: tw.text,
+        preview_en: tw.text_en,
         riskType: tw.riskType,
         contentCategory: tw.contentCategory,
       };
@@ -152,7 +171,9 @@ export default function App() {
         id: tk.id,
         appName: 'TikTok',
         source: `${tk.user} ${tk.handle}`,
+        source_en: `${tk.user} ${tk.handle}`,
         preview: tk.caption,
+        preview_en: tk.caption_en,
         riskType: tk.riskType,
         contentCategory: tk.contentCategory,
       };
@@ -326,7 +347,12 @@ export default function App() {
     );
   } else if (screen === 'home') {
     screenContent = (
-      <HomeScreen onOpenApp={openApp} checkerActive={checkerActive} />
+      <HomeScreen
+        onOpenApp={openApp}
+        checkerActive={checkerActive}
+        language={language}
+        onToggleLanguage={toggleLanguage}
+      />
     );
   } else if (screen === 'checker') {
     // Route through onboarding entry on first visit (proposal §5.2.1–§5.2.3).
@@ -399,6 +425,7 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
+      <LanguageContext.Provider value={language}>
       <View style={styles.root}>
         <StatusBar style="light" hidden />
         <PhoneFrame>
@@ -449,6 +476,7 @@ export default function App() {
           </View>
         </PhoneFrame>
       </View>
+      </LanguageContext.Provider>
     </SafeAreaProvider>
   );
 }

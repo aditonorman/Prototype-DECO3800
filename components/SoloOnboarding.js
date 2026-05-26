@@ -24,30 +24,30 @@ import {
   Image,
 } from 'react-native';
 import { checkerIcons } from '../data/dummyContent';
+import { useT } from '../LanguageContext';
 
 // Illustration URLs (icons8 / generic). Plain, friendly, not figurative.
+// Strings are referenced by i18n key so we can flip language at runtime.
 const slides = [
   {
     illustration: 'https://img.icons8.com/color/240/search--v1.png',
-    title: 'Legitimate Checker membantu kamu memeriksa sumber sebelum berbagi.',
-    body:
-      'Sebelum kamu menekan tombol Bagikan atau Teruskan, alat ini berhenti sebentar dan menunjukkan siapa yang memposting konten tersebut.',
+    titleKey: 'solo.slide1.title',
+    bodyKey: 'solo.slide1.body',
   },
   {
     illustration: 'https://img.icons8.com/color/240/question-mark.png',
-    title: 'Kami tidak memberitahu kamu apa yang benar atau salah.',
-    body:
-      'Alat ini bukan hakim kebenaran. Alat ini menunjukkan informasi tentang sumber dan apakah media lain melaporkan hal yang sama.',
+    titleKey: 'solo.slide2.title',
+    bodyKey: 'solo.slide2.body',
   },
   {
     illustration: 'https://img.icons8.com/color/240/touchscreen.png',
-    title: 'Kamu tetap yang memutuskan.',
-    body:
-      'Setelah membaca informasi yang disiapkan, kamu yang memutuskan apakah ingin membagikan, menyimpan, atau menutup konten.',
+    titleKey: 'solo.slide3.title',
+    bodyKey: 'solo.slide3.body',
   },
 ];
 
 export default function SoloOnboarding({ onActivate, onBackHome }) {
+  const t = useT();
   // Step 0..2 = illustrated slides. Step 3 = sample-check walkthrough.
   // Step 4 = consent screen. The walkthrough was added in response to
   // usability testing — older users wanted a first-time demonstration of
@@ -81,7 +81,7 @@ export default function SoloOnboarding({ onActivate, onBackHome }) {
         <ScrollView contentContainerStyle={styles.scrollInner}>
           <View style={styles.topBar}>
             <Pressable onPress={onBackHome}>
-              <Text style={styles.cancelText}>Tutup</Text>
+              <Text style={styles.cancelText}>{t('common.close')}</Text>
             </Pressable>
             <View style={styles.dots}>
               {[0, 1, 2, 3].map((i) => (
@@ -92,7 +92,7 @@ export default function SoloOnboarding({ onActivate, onBackHome }) {
               ))}
             </View>
             <Pressable onPress={skipToConsent}>
-              <Text style={styles.skipText}>Lewati</Text>
+              <Text style={styles.skipText}>{t('common.skip')}</Text>
             </Pressable>
           </View>
 
@@ -104,13 +104,13 @@ export default function SoloOnboarding({ onActivate, onBackHome }) {
             />
           </View>
 
-          <Text style={styles.slideTitle}>{slide.title}</Text>
-          <Text style={styles.slideBody}>{slide.body}</Text>
+          <Text style={styles.slideTitle}>{t(slide.titleKey)}</Text>
+          <Text style={styles.slideBody}>{t(slide.bodyKey)}</Text>
         </ScrollView>
 
         <View style={styles.footer}>
           <Pressable style={styles.primaryBtn} onPress={next}>
-            <Text style={styles.primaryBtnText}>Lanjut</Text>
+            <Text style={styles.primaryBtnText}>{t('common.continue')}</Text>
           </Pressable>
         </View>
       </View>
@@ -125,7 +125,7 @@ export default function SoloOnboarding({ onActivate, onBackHome }) {
         <ScrollView contentContainerStyle={styles.scrollInner}>
           <View style={styles.topBar}>
             <Pressable onPress={() => setStep(2)}>
-              <Text style={styles.cancelText}>← Kembali</Text>
+              <Text style={styles.cancelText}>← {t('common.back')}</Text>
             </Pressable>
             <View style={styles.dots}>
               {[0, 1, 2, 3].map((i) => (
@@ -136,52 +136,52 @@ export default function SoloOnboarding({ onActivate, onBackHome }) {
               ))}
             </View>
             <Pressable onPress={skipToConsent}>
-              <Text style={styles.skipText}>Lewati</Text>
+              <Text style={styles.skipText}>{t('common.skip')}</Text>
             </Pressable>
           </View>
 
-          <Text style={styles.slideTitle}>Ayo coba sekali dulu</Text>
-          <Text style={styles.slideBody}>
-            Begini cara Legitimate Checker bekerja saat kamu menemukan pesan
-            yang mencurigakan.
-          </Text>
+          <Text style={styles.slideTitle}>{t('solo.walkthrough.title')}</Text>
+          <Text style={styles.slideBody}>{t('solo.walkthrough.intro')}</Text>
 
           {/* Sample suspicious WhatsApp-style message */}
           <View style={styles.samplePreview}>
-            <Text style={styles.sampleForwarded}>↪ Diteruskan banyak kali</Text>
-            <Text style={styles.sampleSender}>Om Budi</Text>
+            <Text style={styles.sampleForwarded}>
+              {t('solo.walkthrough.sample.forwarded')}
+            </Text>
+            <Text style={styles.sampleSender}>
+              {t('solo.walkthrough.sample.sender')}
+            </Text>
             <Text style={styles.sampleText}>
-              Pemerintah akan memberi uang gratis ke setiap warga jika kamu
-              klik tautan ini hari ini! Buruan, hanya berlaku 24 jam.
+              {t('solo.walkthrough.sample.text')}
             </Text>
           </View>
 
-          {/* Three numbered steps */}
+          {/* Four numbered steps */}
           <WalkthroughStep
             number="1"
-            title="Ketuk tombol Teruskan atau bulatan biru"
-            body="Saat kamu hendak meneruskan pesan, Legitimate Checker akan berhenti sejenak untuk membantu kamu."
+            title={t('solo.walkthrough.step1.title')}
+            body={t('solo.walkthrough.step1.body')}
           />
           <WalkthroughStep
             number="2"
-            title="Lihat siapa yang memposting"
-            body="Kamu akan melihat nama pengirim dan apakah dia tersimpan di kontakmu."
+            title={t('solo.walkthrough.step2.title')}
+            body={t('solo.walkthrough.step2.body')}
           />
           <WalkthroughStep
             number="3"
-            title="Tekan “Periksa sumber”"
-            body="Kami menunjukkan apa yang dikatakan media lain seperti Kompas, Detik, atau Kementerian Keuangan tentang klaim ini."
+            title={t('solo.walkthrough.step3.title')}
+            body={t('solo.walkthrough.step3.body')}
           />
           <WalkthroughStep
             number="4"
-            title="Kamu yang memutuskan"
-            body="Bagikan, simpan, atau abaikan — Legitimate Checker hanya membantu kamu memutuskan dengan lebih tenang."
+            title={t('solo.walkthrough.step4.title')}
+            body={t('solo.walkthrough.step4.body')}
           />
         </ScrollView>
 
         <View style={styles.footer}>
           <Pressable style={styles.primaryBtn} onPress={next}>
-            <Text style={styles.primaryBtnText}>Saya mengerti</Text>
+            <Text style={styles.primaryBtnText}>{t('common.understand')}</Text>
           </Pressable>
         </View>
       </View>
@@ -194,7 +194,7 @@ export default function SoloOnboarding({ onActivate, onBackHome }) {
       <ScrollView contentContainerStyle={styles.scrollInner}>
         <View style={styles.topBar}>
           <Pressable onPress={() => setStep(3)}>
-            <Text style={styles.cancelText}>← Kembali</Text>
+            <Text style={styles.cancelText}>← {t('common.back')}</Text>
           </Pressable>
           <View style={styles.dots}>
             <View style={[styles.dot, styles.dotActive]} />
@@ -205,30 +205,27 @@ export default function SoloOnboarding({ onActivate, onBackHome }) {
           <View style={{ width: 50 }} />
         </View>
 
-        <Text style={styles.consentTitle}>Sebelum kamu mulai</Text>
+        <Text style={styles.consentTitle}>{t('solo.consent.title')}</Text>
 
         <View style={styles.card}>
           <ConsentRow
-            label="Saya memahami alat ini hanyalah panduan."
+            label={t('checker.agree.1')}
             checked={agree1}
             onToggle={() => setAgree1(!agree1)}
           />
           <ConsentRow
-            label="Saya memahami keputusan akhir tetap di tangan saya."
+            label={t('checker.agree.2')}
             checked={agree2}
             onToggle={() => setAgree2(!agree2)}
           />
           <ConsentRow
-            label="Saya setuju memakai alat ini untuk mendukung literasi digital."
+            label={t('checker.agree.3')}
             checked={agree3}
             onToggle={() => setAgree3(!agree3)}
           />
         </View>
 
-        <Text style={styles.defaultsNote}>
-          Pengaturan default: Bahasa sederhana, Pengingat sumber, dan Tutup
-          dengan satu ketukan akan diaktifkan supaya lebih mudah digunakan.
-        </Text>
+        <Text style={styles.defaultsNote}>{t('solo.consent.defaults')}</Text>
       </ScrollView>
 
       <View style={styles.footer}>
@@ -240,7 +237,7 @@ export default function SoloOnboarding({ onActivate, onBackHome }) {
           disabled={!allAgreed}
           onPress={handleActivate}
         >
-          <Text style={styles.primaryBtnText}>Aktifkan Checker</Text>
+          <Text style={styles.primaryBtnText}>{t('checker.activate')}</Text>
         </Pressable>
       </View>
     </View>

@@ -1,11 +1,17 @@
 // LockScreen
 // Fake phone lock screen with current time, date, and a "Swipe up to unlock" button.
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
 import { checkerIcons } from '../data/dummyContent';
+import { useLang, useT } from '../LanguageContext';
 
 export default function LockScreen({ onUnlock }) {
+  const lang = useLang();
+  const t = useT();
+  // Format the date in the current language locale.
+  const locale = lang === 'en' ? 'en-GB' : 'id-ID';
+
   // Update the time every minute so the lock screen feels alive.
   const [now, setNow] = useState(new Date());
 
@@ -14,12 +20,12 @@ export default function LockScreen({ onUnlock }) {
     return () => clearInterval(interval);
   }, []);
 
-  const timeString = now.toLocaleTimeString('id-ID', {
+  const timeString = now.toLocaleTimeString(locale, {
     hour: '2-digit',
     minute: '2-digit',
   });
 
-  const dateString = now.toLocaleDateString('id-ID', {
+  const dateString = now.toLocaleDateString(locale, {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
@@ -45,15 +51,13 @@ export default function LockScreen({ onUnlock }) {
           <Image source={{ uri: checkerIcons.bell }} style={styles.notifIcon} />
           <Text style={styles.notifTitle}>Legitimate Checker</Text>
         </View>
-        <Text style={styles.notifBody}>
-          Berhenti. Periksa. Pikir dulu sebelum membagikan.
-        </Text>
+        <Text style={styles.notifBody}>{t('lock.notif.body')}</Text>
       </View>
 
       {/* Swipe-up button (just a tap in this prototype) */}
       <Pressable style={styles.unlockButton} onPress={onUnlock}>
         <Text style={styles.unlockArrow}>⌃</Text>
-        <Text style={styles.unlockText}>Geser ke atas untuk membuka</Text>
+        <Text style={styles.unlockText}>{t('lock.swipeUp')}</Text>
       </Pressable>
     </View>
   );

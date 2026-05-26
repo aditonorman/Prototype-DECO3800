@@ -1,7 +1,6 @@
 // OpenTabsSheet
 // Small "recent apps" panel opened from the Samsung footer.
 
-import React from 'react';
 import {
   View,
   Text,
@@ -10,6 +9,7 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
+import { useT } from '../LanguageContext';
 
 export default function OpenTabsSheet({
   visible,
@@ -19,6 +19,7 @@ export default function OpenTabsSheet({
   onOpenTab,
   bottomInset = 0,
 }) {
+  const t = useT();
   if (!visible) return null;
 
   return (
@@ -27,14 +28,11 @@ export default function OpenTabsSheet({
 
       <View style={[styles.sheet, { marginBottom: bottomInset }]}>
         <View style={styles.handle} />
-        <Text style={styles.title}>Aplikasi yang terbuka</Text>
+        <Text style={styles.title}>{t('tabs.title')}</Text>
 
         {tabs.length === 0 ? (
           <View style={styles.emptyState}>
-            <Text style={styles.emptyText}>
-              Belum ada aplikasi yang dibuka. Buka Instagram, WhatsApp, X,
-              TikTok, atau Checker.
-            </Text>
+            <Text style={styles.emptyText}>{t('tabs.empty')}</Text>
           </View>
         ) : (
           <ScrollView
@@ -66,7 +64,7 @@ export default function OpenTabsSheet({
                     {tab.label}
                   </Text>
                   <Text style={styles.tabSub}>
-                    {isActive ? 'Aplikasi saat ini' : 'Ketuk untuk membuka'}
+                    {isActive ? t('tabs.current') : t('tabs.tapToOpen')}
                   </Text>
                 </Pressable>
               );

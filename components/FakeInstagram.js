@@ -12,6 +12,7 @@ import {
   Image,
 } from 'react-native';
 import { appLogos, instagramPosts, uiIcons } from '../data/dummyContent';
+import { loc, useLang, useT } from '../LanguageContext';
 
 export default function FakeInstagram({
   onBackHome,
@@ -20,12 +21,14 @@ export default function FakeInstagram({
   selectedPostId,
   checkerActive,
 }) {
+  const t = useT();
+  const lang = useLang();
   return (
     <View style={styles.container}>
       {/* App-style top bar */}
       <View style={styles.topBar}>
         <Pressable onPress={onBackHome} style={styles.backBtn}>
-          <Text style={styles.backText}>← Beranda</Text>
+          <Text style={styles.backText}>← {t('common.home')}</Text>
         </Pressable>
         <View style={styles.centerHeader}>
           <Image
@@ -77,18 +80,18 @@ export default function FakeInstagram({
                   style={styles.shareBtn}
                 >
                   <Image source={{ uri: uiIcons.dark.share }} style={styles.shareIcon} />
-                  <Text style={styles.shareBtnText}>Bagikan</Text>
+                  <Text style={styles.shareBtnText}>{t('ig.share')}</Text>
                 </Pressable>
               </View>
 
               {/* Likes + caption */}
-              <Text style={styles.likes}>{post.likes} suka</Text>
+              <Text style={styles.likes}>{post.likes} {t('ig.likes')}</Text>
               <Text style={styles.caption}>
                 <Text style={styles.usernameInline}>{post.user} </Text>
-                {post.caption}
+                {loc(post, 'caption', lang)}
               </Text>
               <Text style={styles.commentsHint}>
-                Lihat semua {post.comments} komentar
+                {t('ig.viewAllComments').replace('{n}', post.comments)}
               </Text>
 
               {/* Secondary: tap to select for the floating bubble (no share). */}
@@ -105,9 +108,7 @@ export default function FakeInstagram({
                     isSelected && styles.checkPostTextActive,
                   ]}
                 >
-                  {isSelected
-                    ? '✓ Dipilih untuk Checker'
-                    : 'Ketuk untuk memilih untuk Checker'}
+                  {isSelected ? t('ig.selected') : t('ig.tapToSelect')}
                 </Text>
               </Pressable>
             </View>

@@ -66,6 +66,8 @@ export const instagramPosts = [
     imageUrl: 'https://picsum.photos/seed/ig-post-1/1080/1080',
     caption:
       'Video viral! Minuman herbal ini bisa menyembuhkan penyakit berat dalam semalam. Para dokter terkejut!',
+    caption_en:
+      'Viral video! This herbal drink can cure serious illness overnight. Doctors are shocked!',
     likes: '24,512',
     comments: 1820,
     riskType: 'misleading',
@@ -77,6 +79,7 @@ export const instagramPosts = [
     avatarUrl: 'https://randomuser.me/api/portraits/women/68.jpg',
     imageUrl: 'https://picsum.photos/seed/ig-post-2/1080/1080',
     caption: 'Matahari terbenam di Bali — rehat sejenak dari layar minggu ini. ✨',
+    caption_en: 'Sunset in Bali — taking a break from screens this week. ✨',
     likes: '1,204',
     comments: 38,
     riskType: 'reliable',
@@ -89,6 +92,8 @@ export const instagramPosts = [
     imageUrl: 'https://picsum.photos/seed/ig-post-3/1080/1080',
     caption:
       'Opini: Kebijakan pemerintah merusak masa depan kita! Bagikan kalau setuju — mereka tidak ingin kamu melihat ini.',
+    caption_en:
+      'Opinion: Government policy is destroying our future! Share if you agree — they don\'t want you to see this.',
     likes: '8,930',
     comments: 612,
     riskType: 'bias',
@@ -100,8 +105,10 @@ export const whatsappMessages = [
   {
     id: 'wa1',
     sender: 'Ibu',
+    sender_en: 'Mom',
     avatarUrl: 'https://randomuser.me/api/portraits/women/33.jpg',
     text: 'Selamat pagi semua! Jangan lupa makan siang hari Minggu 🍲',
+    text_en: 'Good morning everyone! Don\'t forget lunch on Sunday 🍲',
     time: '08:12',
     forwarded: false,
     isMine: false,
@@ -111,9 +118,12 @@ export const whatsappMessages = [
   {
     id: 'wa2',
     sender: 'Om Budi',
+    sender_en: 'Uncle Budi',
     avatarUrl: 'https://randomuser.me/api/portraits/men/54.jpg',
     text:
       'Pemerintah akan memberi uang gratis ke setiap warga jika kamu klik tautan ini hari ini! Buruan, hanya berlaku 24 jam 👉 bit.ly/uang-gratis-id',
+    text_en:
+      'The government will give free money to every citizen if you click this link today! Hurry, only valid for 24 hours 👉 bit.ly/uang-gratis-id',
     time: '08:45',
     forwarded: true,
     isMine: false,
@@ -123,8 +133,10 @@ export const whatsappMessages = [
   {
     id: 'wa3',
     sender: 'Kakak',
+    sender_en: 'Sister',
     avatarUrl: 'https://randomuser.me/api/portraits/women/12.jpg',
     text: 'Bu, aku bawa kuenya 🎂',
+    text_en: 'Mom, I\'ll bring the cake 🎂',
     time: '09:02',
     forwarded: false,
     isMine: false,
@@ -134,8 +146,10 @@ export const whatsappMessages = [
   {
     id: 'wa4',
     sender: 'Saya',
+    sender_en: 'Me',
     avatarUrl: 'https://randomuser.me/api/portraits/men/11.jpg',
     text: 'Sampai ketemu hari Minggu!',
+    text_en: 'See you all on Sunday!',
     time: '09:05',
     forwarded: false,
     isMine: true,
@@ -153,6 +167,8 @@ export const twitterPosts = [
     imageUrl: 'https://picsum.photos/seed/tw-post-1/1200/800',
     text:
       'BERITA: Tokoh publik terkenal dikabarkan meninggal menurut akun-akun viral. Detail belum jelas. RT untuk sebarkan!',
+    text_en:
+      'BREAKING: Famous public figure reportedly dead according to viral accounts. Details unclear. RT to spread!',
     likes: '12.4K',
     retweets: '8.1K',
     riskType: 'low_evidence',
@@ -166,6 +182,8 @@ export const twitterPosts = [
     imageUrl: 'https://picsum.photos/seed/tw-post-2/1200/800',
     text:
       'Anggaran pendidikan nasional baru diumumkan hari ini. Rincian lengkap dan pernyataan resmi ada di artikel kami.',
+    text_en:
+      'New national education budget announced today. Full details and official statements in our article.',
     likes: '2.1K',
     retweets: '540',
     riskType: 'reliable',
@@ -179,6 +197,8 @@ export const twitterPosts = [
     imageUrl: 'https://picsum.photos/seed/tw-post-3/1200/800',
     text:
       'Mereka MEMBOHONGI kamu lagi. Bangun! Pihak lain tidak akan pernah memberi tahu kebenaran sebenarnya tentang kebijakan ini.',
+    text_en:
+      'They are LYING to you again. Wake up! The other side will never tell you the real truth about this policy.',
     likes: '5.8K',
     retweets: '3.2K',
     riskType: 'bias',
@@ -195,6 +215,8 @@ export const tiktokPosts = [
     imageUrl: 'https://picsum.photos/seed/tk-post-1/1080/1920',
     caption:
       'Tips cepat: minuman dapur ini bisa membersihkan racun dalam 1 hari. Simpan dan bagikan sekarang!',
+    caption_en:
+      'Quick tip: this kitchen drink can flush all toxins in 1 day. Save and share now!',
     likes: '45.8K',
     comments: '4,210',
     shares: '9,302',
@@ -209,6 +231,8 @@ export const tiktokPosts = [
     imageUrl: 'https://picsum.photos/seed/tk-post-2/1080/1920',
     caption:
       'Rangkuman hari ini: Sorotan sidang parlemen dengan tautan sumber di bio.',
+    caption_en:
+      "Today's roundup: Parliament session highlights with source links in bio.",
     likes: '8,114',
     comments: '320',
     shares: '412',
@@ -223,6 +247,8 @@ export const tiktokPosts = [
     imageUrl: 'https://picsum.photos/seed/tk-post-3/1080/1920',
     caption:
       'Mereka tidak pernah memberi tahu sisi cerita ini. Repost sebelum ini dihilangkan!',
+    caption_en:
+      'They never tell you this side of the story. Repost before this gets buried!',
     likes: '21.3K',
     comments: '2,081',
     shares: '5,145',
@@ -367,33 +393,72 @@ const sourceVerificationDb = {
   'wellness_daily_id': {
     accountName: '@wellness_daily_id',
     accountType: 'Akun lifestyle / influencer',
+    accountType_en: 'Lifestyle / influencer account',
     profileSummary:
       'Akun ini tidak terdaftar sebagai sumber kesehatan resmi. Tidak ada tautan ke profesional medis atau institusi kesehatan.',
+    profileSummary_en:
+      'This account is not registered as an official health source. There are no links to medical professionals or health institutions.',
     corroboration: [
-      { outlet: 'Kementerian Kesehatan RI', status: 'Tidak menyebut klaim ini' },
-      { outlet: 'Kompas Health', status: 'Tidak ada laporan serupa' },
-      { outlet: 'CNN Indonesia', status: 'Tidak ada laporan' },
+      {
+        outlet: 'Kementerian Kesehatan RI',
+        outlet_en: 'Indonesian Ministry of Health',
+        status: 'Tidak menyebut klaim ini',
+        status_en: 'Does not mention this claim',
+      },
+      {
+        outlet: 'Kompas Health',
+        outlet_en: 'Kompas Health',
+        status: 'Tidak ada laporan serupa',
+        status_en: 'No similar report',
+      },
+      {
+        outlet: 'CNN Indonesia',
+        outlet_en: 'CNN Indonesia',
+        status: 'Tidak ada laporan',
+        status_en: 'No report',
+      },
     ],
     verdict: 'unconfirmed',
   },
   'sarah.travels': {
     accountName: '@sarah.travels',
     accountType: 'Akun pribadi (traveller)',
+    accountType_en: 'Personal account (traveller)',
     profileSummary:
       'Akun pribadi. Unggahan berisi foto perjalanan, bukan klaim berita atau kesehatan.',
+    profileSummary_en:
+      'Personal account. Posts contain travel photos, not news or health claims.',
     corroboration: [
-      { outlet: 'Profil pengguna', status: 'Konsisten dengan unggahan pribadi lain' },
+      {
+        outlet: 'Profil pengguna',
+        outlet_en: 'User profile',
+        status: 'Konsisten dengan unggahan pribadi lain',
+        status_en: 'Consistent with other personal posts',
+      },
     ],
     verdict: 'personal',
   },
   'politik_now': {
     accountName: '@politik_now',
     accountType: 'Akun komentar politik',
+    accountType_en: 'Political commentary account',
     profileSummary:
       'Halaman yang fokus pada opini politik. Bahasa cenderung emosional dan satu sisi.',
+    profileSummary_en:
+      'A page focused on political opinion. Language tends to be emotional and one-sided.',
     corroboration: [
-      { outlet: 'Detik', status: 'Berita berbeda nadanya' },
-      { outlet: 'Kompas', status: 'Berita berbeda nadanya' },
+      {
+        outlet: 'Detik',
+        outlet_en: 'Detik',
+        status: 'Berita berbeda nadanya',
+        status_en: 'Reports differ in tone',
+      },
+      {
+        outlet: 'Kompas',
+        outlet_en: 'Kompas',
+        status: 'Berita berbeda nadanya',
+        status_en: 'Reports differ in tone',
+      },
     ],
     verdict: 'opinion',
   },
@@ -403,36 +468,73 @@ const sourceVerificationDb = {
   // to usability testing feedback.
   'Ibu': {
     accountName: 'Ibu',
+    accountName_en: 'Mom',
     accountType: 'Kontak pribadi (keluarga)',
+    accountType_en: 'Personal contact (family)',
     contactStatus: 'saved',
     profileSummary:
       'Pesan langsung dari kontak yang kamu kenal. Bukan klaim berita.',
+    profileSummary_en:
+      'A direct message from a contact you know. Not a news claim.',
     corroboration: [
-      { outlet: 'Percakapan langsung', status: 'Pesan pribadi keluarga' },
+      {
+        outlet: 'Percakapan langsung',
+        outlet_en: 'Direct conversation',
+        status: 'Pesan pribadi keluarga',
+        status_en: 'Personal family message',
+      },
     ],
     verdict: 'personal',
   },
   'Om Budi (diteruskan)': {
     accountName: 'Om Budi (diteruskan)',
+    accountName_en: 'Uncle Budi (forwarded)',
     accountType: 'Pesan diteruskan dari sumber tidak jelas',
+    accountType_en: 'Forwarded message from an unclear source',
     contactStatus: 'forwarded_unknown',
     profileSummary:
       'Pesan diteruskan banyak kali. Tautan tidak menuju situs resmi pemerintah atau bank.',
+    profileSummary_en:
+      'Message forwarded many times. The link does not lead to an official government or bank website.',
     corroboration: [
-      { outlet: 'Kementerian Keuangan RI', status: 'Tidak ada program seperti ini' },
-      { outlet: 'OJK', status: 'Memperingatkan modus penipuan serupa' },
-      { outlet: 'CNN Indonesia', status: 'Tidak ada laporan' },
+      {
+        outlet: 'Kementerian Keuangan RI',
+        outlet_en: 'Indonesian Ministry of Finance',
+        status: 'Tidak ada program seperti ini',
+        status_en: 'No such programme exists',
+      },
+      {
+        outlet: 'OJK',
+        outlet_en: 'OJK (Financial Services Authority)',
+        status: 'Memperingatkan modus penipuan serupa',
+        status_en: 'Warns of a similar scam pattern',
+      },
+      {
+        outlet: 'CNN Indonesia',
+        outlet_en: 'CNN Indonesia',
+        status: 'Tidak ada laporan',
+        status_en: 'No report',
+      },
     ],
     verdict: 'unconfirmed',
   },
   'Kakak': {
     accountName: 'Kakak',
+    accountName_en: 'Sister',
     accountType: 'Kontak pribadi (keluarga)',
+    accountType_en: 'Personal contact (family)',
     contactStatus: 'saved',
     profileSummary:
       'Pesan langsung dari kontak yang kamu kenal. Bukan klaim berita.',
+    profileSummary_en:
+      'A direct message from a contact you know. Not a news claim.',
     corroboration: [
-      { outlet: 'Percakapan langsung', status: 'Pesan pribadi keluarga' },
+      {
+        outlet: 'Percakapan langsung',
+        outlet_en: 'Direct conversation',
+        status: 'Pesan pribadi keluarga',
+        status_en: 'Personal family message',
+      },
     ],
     verdict: 'personal',
   },
@@ -440,35 +542,84 @@ const sourceVerificationDb = {
   'ViralUpdates24 @viralupdates24': {
     accountName: '@viralupdates24',
     accountType: 'Akun "viral updates" tanpa verifikasi',
+    accountType_en: 'Unverified "viral updates" account',
     profileSummary:
       'Akun ini tidak memiliki centang verifikasi. Banyak unggahan bersifat sensasional dan tidak menyertakan tautan resmi.',
+    profileSummary_en:
+      'This account has no verification badge. Many posts are sensational and do not include official links.',
     corroboration: [
-      { outlet: 'Kompas', status: 'Tidak ada laporan' },
-      { outlet: 'Detik', status: 'Tidak ada laporan' },
-      { outlet: 'CNN Indonesia', status: 'Tidak ada laporan' },
+      {
+        outlet: 'Kompas',
+        outlet_en: 'Kompas',
+        status: 'Tidak ada laporan',
+        status_en: 'No report',
+      },
+      {
+        outlet: 'Detik',
+        outlet_en: 'Detik',
+        status: 'Tidak ada laporan',
+        status_en: 'No report',
+      },
+      {
+        outlet: 'CNN Indonesia',
+        outlet_en: 'CNN Indonesia',
+        status: 'Tidak ada laporan',
+        status_en: 'No report',
+      },
     ],
     verdict: 'unconfirmed',
   },
   'KompasNews @kompascom': {
     accountName: '@kompascom',
     accountType: 'Outlet berita nasional terverifikasi',
+    accountType_en: 'Verified national news outlet',
     profileSummary:
       'Akun resmi Kompas. Artikel yang sama juga terbit di kompas.com.',
+    profileSummary_en:
+      'Official Kompas account. The same article is also published on kompas.com.',
     corroboration: [
-      { outlet: 'kompas.com', status: 'Artikel resmi tersedia' },
-      { outlet: 'Detik', status: 'Melaporkan kejadian yang sama' },
-      { outlet: 'CNN Indonesia', status: 'Melaporkan kejadian yang sama' },
+      {
+        outlet: 'kompas.com',
+        outlet_en: 'kompas.com',
+        status: 'Artikel resmi tersedia',
+        status_en: 'Official article available',
+      },
+      {
+        outlet: 'Detik',
+        outlet_en: 'Detik',
+        status: 'Melaporkan kejadian yang sama',
+        status_en: 'Reports the same event',
+      },
+      {
+        outlet: 'CNN Indonesia',
+        outlet_en: 'CNN Indonesia',
+        status: 'Melaporkan kejadian yang sama',
+        status_en: 'Reports the same event',
+      },
     ],
     verdict: 'confirmed',
   },
   'OpinionDaily @opiniondaily': {
     accountName: '@opiniondaily',
     accountType: 'Akun opini / komentar politik',
+    accountType_en: 'Political opinion / commentary account',
     profileSummary:
       'Akun yang fokus pada komentar politik. Bahasa emosional dan satu sisi.',
+    profileSummary_en:
+      'An account focused on political commentary. Language is emotional and one-sided.',
     corroboration: [
-      { outlet: 'Kompas', status: 'Berita berbeda nadanya' },
-      { outlet: 'CNN Indonesia', status: 'Tidak menggunakan kerangka serupa' },
+      {
+        outlet: 'Kompas',
+        outlet_en: 'Kompas',
+        status: 'Berita berbeda nadanya',
+        status_en: 'Reports differ in tone',
+      },
+      {
+        outlet: 'CNN Indonesia',
+        outlet_en: 'CNN Indonesia',
+        status: 'Tidak menggunakan kerangka serupa',
+        status_en: 'Does not use the same framing',
+      },
     ],
     verdict: 'opinion',
   },
@@ -476,33 +627,72 @@ const sourceVerificationDb = {
   'health_hacks.id @health_hacks.id': {
     accountName: '@health_hacks.id',
     accountType: 'Akun tips kesehatan tanpa verifikasi',
+    accountType_en: 'Unverified health-tips account',
     profileSummary:
       'Tidak terdaftar sebagai akun resmi kesehatan. Tidak ada profesional medis yang tertera di profil.',
+    profileSummary_en:
+      'Not registered as an official health account. No medical professionals are listed on the profile.',
     corroboration: [
-      { outlet: 'Kementerian Kesehatan RI', status: 'Tidak menyebut klaim ini' },
-      { outlet: 'Kompas Health', status: 'Tidak ada laporan serupa' },
+      {
+        outlet: 'Kementerian Kesehatan RI',
+        outlet_en: 'Indonesian Ministry of Health',
+        status: 'Tidak menyebut klaim ini',
+        status_en: 'Does not mention this claim',
+      },
+      {
+        outlet: 'Kompas Health',
+        outlet_en: 'Kompas Health',
+        status: 'Tidak ada laporan serupa',
+        status_en: 'No similar report',
+      },
     ],
     verdict: 'unconfirmed',
   },
   'newsminute.id @newsminute.id': {
     accountName: '@newsminute.id',
     accountType: 'Akun ringkasan berita',
+    accountType_en: 'News digest account',
     profileSummary:
       'Akun menyertakan tautan ke artikel asli pada profil. Cocokkan dengan outlet sumber sebelum membagikan.',
+    profileSummary_en:
+      'The account includes links to the original article on its profile. Cross-check with the source outlet before sharing.',
     corroboration: [
-      { outlet: 'Kompas', status: 'Melaporkan kejadian yang sama' },
-      { outlet: 'Detik', status: 'Melaporkan kejadian yang sama' },
+      {
+        outlet: 'Kompas',
+        outlet_en: 'Kompas',
+        status: 'Melaporkan kejadian yang sama',
+        status_en: 'Reports the same event',
+      },
+      {
+        outlet: 'Detik',
+        outlet_en: 'Detik',
+        status: 'Melaporkan kejadian yang sama',
+        status_en: 'Reports the same event',
+      },
     ],
     verdict: 'confirmed',
   },
   'hottakesdaily @hottakesdaily': {
     accountName: '@hottakesdaily',
     accountType: 'Akun komentar politik',
+    accountType_en: 'Political commentary account',
     profileSummary:
       'Akun fokus pada opini politik. Mendorong "repost" dengan bahasa emosional.',
+    profileSummary_en:
+      'Account focused on political opinion. Encourages "reposts" with emotional language.',
     corroboration: [
-      { outlet: 'Kompas', status: 'Berita berbeda nadanya' },
-      { outlet: 'CNN Indonesia', status: 'Tidak ada laporan' },
+      {
+        outlet: 'Kompas',
+        outlet_en: 'Kompas',
+        status: 'Berita berbeda nadanya',
+        status_en: 'Reports differ in tone',
+      },
+      {
+        outlet: 'CNN Indonesia',
+        outlet_en: 'CNN Indonesia',
+        status: 'Tidak ada laporan',
+        status_en: 'No report',
+      },
     ],
     verdict: 'opinion',
   },
@@ -517,11 +707,20 @@ export function lookupSourceVerification(sourceString) {
   }
   return {
     accountName: sourceString || 'Sumber tidak dikenali',
+    accountName_en: sourceString || 'Unrecognised source',
     accountType: 'Tidak ditemukan di basis data sumber',
+    accountType_en: 'Not found in the source database',
     profileSummary:
       'Kami tidak menemukan profil resmi yang cocok untuk sumber ini. Periksa langsung ke media atau lembaga yang disebutkan.',
+    profileSummary_en:
+      'We could not find an official profile matching this source. Check directly with the outlet or institution mentioned.',
     corroboration: [
-      { outlet: 'Tidak ada media yang dicocokkan', status: '—' },
+      {
+        outlet: 'Tidak ada media yang dicocokkan',
+        outlet_en: 'No outlets matched',
+        status: '—',
+        status_en: '—',
+      },
     ],
     verdict: 'unconfirmed',
   };

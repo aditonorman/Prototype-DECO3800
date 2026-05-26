@@ -26,12 +26,14 @@ import {
   TextInput,
 } from 'react-native';
 import { checkerIcons } from '../data/dummyContent';
+import { useT } from '../LanguageContext';
 
 export default function OnboardingEntry({
   onPickAssisted,
   onPickSolo,
   onBackHome,
 }) {
+  const t = useT();
   // The "Saya tiba di sini melalui" section is a survey — it captures
   // where the user heard about the app, but it does NOT trigger install.
   // Install only happens via the two main mode cards above.
@@ -56,7 +58,7 @@ export default function OnboardingEntry({
       {/* Top bar */}
       <View style={styles.header}>
         <Pressable onPress={onBackHome}>
-          <Text style={styles.cancelText}>← Beranda</Text>
+          <Text style={styles.cancelText}>← {t('common.home')}</Text>
         </Pressable>
       </View>
 
@@ -68,7 +70,7 @@ export default function OnboardingEntry({
         <Text style={styles.title}>Legitimate Checker</Text>
       </View>
 
-      <Text style={styles.sectionLabel}>Siapa yang akan menggunakan?</Text>
+      <Text style={styles.sectionLabel}>{t('onboard.whoWillUse')}</Text>
 
       {/* Two equal side-by-side cards. Same size and same colour — the
           interface adapts based on which one is chosen, but neither card is
@@ -79,7 +81,7 @@ export default function OnboardingEntry({
           onPress={() => onPickSolo('family')}
         >
           <Image source={{ uri: checkerIcons.self }} style={styles.modeIcon} />
-          <Text style={styles.modeTitle}>Saya sendiri</Text>
+          <Text style={styles.modeTitle}>{t('onboard.self')}</Text>
         </Pressable>
 
         <Pressable
@@ -90,9 +92,7 @@ export default function OnboardingEntry({
             source={{ uri: checkerIcons.family }}
             style={styles.modeIcon}
           />
-          <Text style={styles.modeTitle}>
-            Untuk orang tua{'\n'}atau keluarga
-          </Text>
+          <Text style={styles.modeTitle}>{t('onboard.forFamily')}</Text>
         </Pressable>
       </View>
 
@@ -100,23 +100,23 @@ export default function OnboardingEntry({
           straight to family mode; the "Lainnya" row lets the user type a
           custom channel and submit. */}
       <Text style={[styles.sectionLabel, styles.surveyLabel]}>
-        Saya tiba di sini melalui...
+        {t('onboard.survey.title')}
       </Text>
 
       <SurveyOption
-        title="QR code di papan masjid atau RT"
+        title={t('onboard.survey.qr')}
         emoji="🟦"
         selected={surveyChoice === 'qr'}
         onPress={() => pickSurvey('qr')}
       />
       <SurveyOption
-        title="Tautan WhatsApp dari grup komunitas"
+        title={t('onboard.survey.wa')}
         emoji="🟩"
         selected={surveyChoice === 'whatsapp'}
         onPress={() => pickSurvey('whatsapp')}
       />
       <SurveyOption
-        title="Halaman literasi digital Kementerian Komunikasi dan Digital"
+        title={t('onboard.survey.gov')}
         emoji="🟧"
         selected={surveyChoice === 'kemenkomdigi'}
         onPress={() => pickSurvey('kemenkomdigi')}
@@ -138,11 +138,11 @@ export default function OnboardingEntry({
         />
         <Text style={styles.communityEmoji}>✏️</Text>
         <View style={{ flex: 1 }}>
-          <Text style={styles.otherLabel}>Lainnya</Text>
+          <Text style={styles.otherLabel}>{t('onboard.survey.other')}</Text>
           <View style={styles.otherInputRow}>
             <TextInput
               style={styles.otherInput}
-              placeholder="Ketik darimana kamu tahu..."
+              placeholder={t('onboard.survey.otherPlaceholder')}
               placeholderTextColor="#9CA3AF"
               value={otherText}
               onChangeText={setOtherText}
@@ -157,7 +157,7 @@ export default function OnboardingEntry({
               onPress={submitOther}
               disabled={otherText.trim().length === 0}
             >
-              <Text style={styles.otherSubmitText}>Kirim</Text>
+              <Text style={styles.otherSubmitText}>{t('common.send')}</Text>
             </Pressable>
           </View>
         </View>
@@ -165,9 +165,7 @@ export default function OnboardingEntry({
 
       {/* Light confirmation that the survey choice was recorded. */}
       {surveyChoice && (
-        <Text style={styles.surveyConfirm}>
-          Terima kasih — jawabanmu sudah dicatat.
-        </Text>
+        <Text style={styles.surveyConfirm}>{t('onboard.survey.thanks')}</Text>
       )}
     </ScrollView>
   );
